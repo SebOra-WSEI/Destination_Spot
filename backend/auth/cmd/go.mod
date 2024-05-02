@@ -1,0 +1,3 @@
+module github.com/SebOra-WSEI/auth
+
+go 1.21.5
