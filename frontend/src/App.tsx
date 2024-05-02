@@ -1,9 +1,5 @@
-import React from 'react'
+import React from 'react';
 
 export const App: React.FC = () => {
-
-  return (
-    <>Destination Spot</>
-  )
-}
-
+  return <>Destination Spot</>;
+};
