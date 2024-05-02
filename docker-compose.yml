@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  database:
+    container_name: destination_db
+    restart: "always"
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    env_file:
+      - "./database/.env"
+    platform: linux/x86_64
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
