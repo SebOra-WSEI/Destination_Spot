@@ -2,17 +2,23 @@ package start
 
 import (
 	"fmt"
-	"github.com/SebOra-WSEI/auth/internal/env"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"log"
+	"os"
 )
+
+const ConnectionStringEnvName string = "CONNECTION_STRING"
 
 var Db *gorm.DB
 
 func Database() {
 	var err error
 
-	connStr := env.GetEnvVariableByName(env.ConnectionStringEnvName)
+	connStr := os.Getenv(ConnectionStringEnvName)
+	if connStr == "" {
+		log.Fatalf("Environment variable %v is empty", connStr)
+	}
 
 	Db, err = gorm.Open("mysql", connStr)
 	if err != nil {
