@@ -12,6 +12,51 @@ services:
     platform: linux/x86_64
     volumes:
       - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+  core:
+    container_name: destination_core
+    restart: "always"
+    build:
+      context: ./backend/core
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    networks:
+      - app-network
+
+  auth:
+    container_name: destination_auth
+    restart: "always"
+    build:
+      context: ./backend/auth
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - core
+      - database
+    networks:
+      - app-network
+
+  frontend:
+    container_name: destination_frontend
+    restart: "always"
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:3000"
+    depends_on:
+      - core
+    networks:
+      - app-network
+
+networks:
+  app-network:
 
 volumes:
   mysql-data:
