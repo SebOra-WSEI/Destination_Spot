@@ -10,7 +10,7 @@ checkEnvFile() {
         rm -r .env
         touch .env
     else
-        touch .env
+        touch .envs
 fi
 }
 
@@ -25,6 +25,7 @@ checkEnvFile ./frontend
 cd ..
 
 checkEnvFile ./backend/auth
+echo "CONNECTION_STRING=user:${1}@tcp(database:3306)/destination_spot" >> .env
 cd ../..
 
 checkEnvFile ./backend/core
