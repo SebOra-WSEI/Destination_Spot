@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/SebOra-WSEI/auth/internal/routes"
+	"github.com/SebOra-WSEI/auth/internal/route"
 	"github.com/SebOra-WSEI/auth/start"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -20,7 +20,7 @@ func main() {
 	start.Database()
 
 	r := gin.Default()
-	routes.InitRoutes(r)
+	route.InitRoutes(r)
 
 	log.Fatal(r.Run(Port))
 }
