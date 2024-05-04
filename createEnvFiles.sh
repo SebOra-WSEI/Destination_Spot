@@ -10,7 +10,7 @@ checkEnvFile() {
         rm -r .env
         touch .env
     else
-        touch .envs
+        touch .env
 fi
 }
 
