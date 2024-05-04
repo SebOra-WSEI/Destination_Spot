@@ -1,6 +1,29 @@
 version: "3.9"
 
 services:
+  core:
+    container_name: destination_core
+    restart: "always"
+    build:
+      context: ./backend/core
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+
+  auth:
+    container_name: destination_auth
+    restart: "always"
+    build:
+      context: ./backend/auth
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - core
+      - database
+
   database:
     container_name: destination_db
     restart: "always"
