@@ -2,9 +2,9 @@ package start
 
 import (
 	"fmt"
+	"github.com/SebOra-WSEI/auth/internal/env"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"os"
 )
 
 var Db *gorm.DB
@@ -12,9 +12,9 @@ var Db *gorm.DB
 func Database() {
 	var err error
 
-	conn := os.Getenv("CONNECTION_STRING")
+	connStr := env.GetEnvVariableByName(env.ConnectionStringEnvName)
 
-	Db, err = gorm.Open("mysql", conn)
+	Db, err = gorm.Open("mysql", connStr)
 	if err != nil {
 		fmt.Println("Error while connecting to the database:", err.Error())
 		panic("Failed to connect to the database")

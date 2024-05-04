@@ -16,7 +16,7 @@ func main() {
 		  fmt.Println(err.Error())
 		  log.Fatal("Error loading .env file")
 	 }
-	
+
 	 start.Database()
 
 	 r := gin.Default()
