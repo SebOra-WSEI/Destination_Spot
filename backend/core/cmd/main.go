@@ -1,7 +1,25 @@
 package main
 
-import "fmt"
+import (
+	"github.com/gin-gonic/gin"
+	"log"
+	"net/http"
+)
+
+const Port = ":8080"
 
 func main() {
-	fmt.Println("Hello from Core Service")
+	r := gin.Default()
+
+	r.GET(
+		"/", func(c *gin.Context) {
+			c.JSON(
+				http.StatusOK, gin.H{
+					"Service": "Core",
+				},
+			)
+		},
+	)
+
+	log.Fatal(r.Run(Port))
 }
