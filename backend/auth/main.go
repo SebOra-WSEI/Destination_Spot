@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/SebOra-WSEI/auth/internal/route"
-	"github.com/SebOra-WSEI/auth/start"
+	"github.com/SebOra-WSEI/auth/startup"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"log"
@@ -17,7 +17,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	start.Database()
+	startup.Database()
 
 	r := gin.Default()
 	route.InitRoutes(r)
