@@ -1,7 +1,8 @@
-# ./createEnvFiles.sh <sql_password> <domain>
+# ./createEnvFiles.sh <sql_password> <domain> <jwtSecretKey>
 
 echo "sql_password: $1"
 echo "domain: $2"
+echo "jwtSecretKey: $3"
 
 checkEnvFile() {
   cd $1
@@ -28,6 +29,7 @@ cd ..
 checkEnvFile ./backend/auth
 echo "CONNECTION_STRING=user:${1}@tcp(database:3306)/destination_spot" >> .env
 echo "DOMAIN=${2}" >> .env
+echo "JWT_SECRET_KEY=${3}" >> .env
 cd ../..
 
 checkEnvFile ./backend/core
