@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"github.com/SebastianOraczek/internal/response"
-	"github.com/SebastianOraczek/internal/token"
+	"github.com/SebastianOraczek/auth/internal/response"
+	"github.com/SebastianOraczek/auth/internal/token"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

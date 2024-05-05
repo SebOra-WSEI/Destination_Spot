@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/SebastianOraczek/internal/route"
-	"github.com/SebastianOraczek/startup"
+	"github.com/SebastianOraczek/auth/internal/route"
+	"github.com/SebastianOraczek/auth/startup"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"log"

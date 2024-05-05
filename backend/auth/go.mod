@@ -1,4 +1,4 @@
-module github.com/SebastianOraczek
+module github.com/SebastianOraczek/auth
 
 go 1.21.5
 

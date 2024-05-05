@@ -1,7 +1,7 @@
 package route
 
 import (
-	"github.com/SebastianOraczek/internal/handler"
+	"github.com/SebastianOraczek/auth/internal/handler"
 	"github.com/gin-gonic/gin"
 )
 

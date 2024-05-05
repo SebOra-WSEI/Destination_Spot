@@ -2,7 +2,7 @@ package password
 
 import (
 	"fmt"
-	"github.com/SebastianOraczek/internal/response"
+	"github.com/SebastianOraczek/auth/internal/response"
 	"regexp"
 )
 
