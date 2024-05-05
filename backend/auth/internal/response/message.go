@@ -1,5 +1,6 @@
 package response
 
+// Error messages
 const (
 	EmptyFieldsErrorMsg            string = "Fields can not be empty"
 	UserAlreadyExistsErrorMsg             = "User already exists"
@@ -13,5 +14,9 @@ const (
 	InternalServerErrorMsg                = "Internal server error"
 	ProblemWhileRegistrationErrMsg        = "Problem while registration"
 	InvalidLoginOrPasswordErrMsg          = "Invalid login or password"
-	UserCreatedErrMsg                     = "User created successfully!"
+	ErrorWhileCreatingTokenErrMsg         = "Error while creating token"
+)
+
+const (
+	UserCreatedMsg string = "User created successfully!"
 )

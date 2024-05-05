@@ -8,6 +8,7 @@ import (
 const (
 	ConnectionString string = "CONNECTION_STRING"
 	Domain                  = "DOMAIN"
+	JwtSecretKey            = "JWT_SECRET_KEY"
 )
 
 func GetEnvVariableByName(name string) string {

@@ -69,5 +69,5 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, response.CreateMessageResponse(response.UserCreatedErrMsg))
+	c.JSON(http.StatusCreated, gin.H{"message": response.UserCreatedMsg})
 }
