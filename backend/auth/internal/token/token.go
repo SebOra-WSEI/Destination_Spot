@@ -66,5 +66,9 @@ func Verify(authHeader string) (*jwt.Token, error) {
 
 	token.Valid = expTime.Unix()-time.Now().UnixMilli() > 0
 
+	if !token.Valid {
+		return nil, fmt.Errorf(response.TokenExpiredErrMsg)
+	}
+
 	return token, nil
 }

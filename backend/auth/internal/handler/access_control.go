@@ -16,8 +16,5 @@ func AccessControl(c *gin.Context) {
 		  return
 	 }
 
-	 if !t.Valid {
-		  c.JSON(http.StatusBadRequest, response.CreateErrorResponse(response.TokenExpiredErrMsg))
-		  return
-	 }
+	 c.JSON(200, t)
 }
