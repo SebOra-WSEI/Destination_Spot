@@ -2,8 +2,8 @@ package email
 
 import (
 	"fmt"
-	"github.com/SebOra-WSEI/auth/internal/env"
-	"github.com/SebOra-WSEI/auth/internal/response"
+	"github.com/SebastianOraczek/internal/env"
+	"github.com/SebastianOraczek/internal/response"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 	"net/mail"

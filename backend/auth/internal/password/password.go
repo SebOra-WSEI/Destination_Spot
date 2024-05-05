@@ -2,7 +2,7 @@ package password
 
 import (
 	"fmt"
-	"github.com/SebOra-WSEI/auth/internal/response"
+	"github.com/SebastianOraczek/internal/response"
 	"regexp"
 )
 

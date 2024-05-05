@@ -2,7 +2,7 @@ package startup
 
 import (
 	"fmt"
-	"github.com/SebOra-WSEI/auth/internal/env"
+	"github.com/SebastianOraczek/internal/env"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
