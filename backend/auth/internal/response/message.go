@@ -12,4 +12,6 @@ const (
 	PasswordNotTheSameErrorMsg            = "Provided passwords are not the same"
 	InternalServerErrorMsg                = "Internal server error"
 	ProblemWhileRegistrationErrMsg        = "Problem while registration"
+	InvalidLoginOrPasswordErrMsg          = "Invalid login or password"
+	UserCreatedErrMsg                     = "User created successfully!"
 )

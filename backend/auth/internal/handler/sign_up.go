@@ -69,12 +69,5 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	res := model.ResponseUser{
-		Email:   newUser.Email,
-		Name:    newUser.Name,
-		Surname: newUser.Surname,
-		Role:    newUser.Role,
-	}
-
-	c.JSON(http.StatusCreated, gin.H{"user": res})
+	c.JSON(http.StatusCreated, response.CreateMessageResponse(response.UserCreatedErrMsg))
 }
