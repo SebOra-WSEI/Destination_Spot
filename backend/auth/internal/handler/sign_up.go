@@ -38,7 +38,7 @@ func SignUp(c *gin.Context) {
 	if body.Password != body.ConfirmPassword {
 		c.JSON(http.StatusBadRequest, response.CreateErrorResponse(response.PasswordNotTheSameErrorMsg))
 		return
-	}cd
+	}
 
 	var user model.User
 	if err := startup.Db.Where("email = ?", body.Email).First(&user).Error; err == nil {
