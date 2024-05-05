@@ -15,6 +15,9 @@ const (
 	ProblemWhileRegistrationErrMsg        = "Problem while registration"
 	InvalidLoginOrPasswordErrMsg          = "Invalid login or password"
 	ErrorWhileCreatingTokenErrMsg         = "Error while creating token"
+	AuthTokenNotFoundErrMsg               = "Authorization token not found"
+	AuthTokenIncorrectFormatErrMsg        = "Incorrect authorization token format"
+	TokenExpiredErrMsg                    = "Expired token. Please log in again"
 )
 
 const (
