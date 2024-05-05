@@ -2,12 +2,12 @@ package handler
 
 import (
 	"fmt"
-	"github.com/SebOra-WSEI/auth/internal/email"
-	"github.com/SebOra-WSEI/auth/internal/model"
-	"github.com/SebOra-WSEI/auth/internal/password"
-	"github.com/SebOra-WSEI/auth/internal/request"
-	"github.com/SebOra-WSEI/auth/internal/response"
-	"github.com/SebOra-WSEI/auth/startup"
+	"github.com/SebastianOraczek/auth/internal/email"
+	"github.com/SebastianOraczek/auth/internal/model"
+	"github.com/SebastianOraczek/auth/internal/password"
+	"github.com/SebastianOraczek/auth/internal/request"
+	"github.com/SebastianOraczek/auth/internal/response"
+	"github.com/SebastianOraczek/auth/startup"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"golang.org/x/crypto/bcrypt"
