@@ -1,6 +1,7 @@
-# ./createEnvFiles.sh <sql_password>
+# ./createEnvFiles.sh <sql_password> <domain>
 
 echo "sql_password: $1"
+echo "domain: $2"
 
 checkEnvFile() {
   cd $1
@@ -26,6 +27,7 @@ cd ..
 
 checkEnvFile ./backend/auth
 echo "CONNECTION_STRING=user:${1}@tcp(database:3306)/destination_spot" >> .env
+echo "DOMAIN=${2}" >> .env
 cd ../..
 
 checkEnvFile ./backend/core
