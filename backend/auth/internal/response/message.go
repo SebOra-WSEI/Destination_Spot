@@ -22,6 +22,7 @@ const (
 	AuthTokenNotFoundErrMsg               = "Authorization token not found"
 	AuthTokenIncorrectFormatErrMsg        = "Incorrect authorization token format"
 	TokenExpiredErrMsg                    = "Expired token. Please log in again"
+	ActionNotPermittedErrMsg              = "Action not permitted"
 )
 
 const (

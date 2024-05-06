@@ -18,6 +18,7 @@ func Create(user model.User) (string, error) {
 
 	claims := model.Claims{
 		user.Email,
+		user.Role,
 		jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Unix(expAt, 0)),
 		},

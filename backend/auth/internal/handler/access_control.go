@@ -31,6 +31,20 @@ func AccessControl(c *gin.Context) {
 		return
 	}
 
+	//claims := t.Claims.(jwt.MapClaims)
+	//role, ok := claims["Role"]
+	//if !ok {
+	//	fmt.Println("Role can not be found in claims")
+	//	c.JSON(http.StatusInternalServerError, response.CreateError(response.InternalServerErrMsg))
+	//	return
+	//}
+
+	//if role != AdminRole {
+	//	fmt.Println("Password must be changed by owner or admin")
+	//	c.JSON(http.StatusInternalServerError, response.CreateError(response.ActionNotPermittedErrMsg))
+	//	return
+	//}
+
 	var body model.ResetPasswordBody
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
 		body.CurrentPassword, body.NewPassword, body.ConfirmNewPassword,
