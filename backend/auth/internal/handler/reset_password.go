@@ -18,7 +18,7 @@ import (
 
 const AuthHeader = "Authorization"
 
-func AccessControl(c *gin.Context) {
+func ResetPassword(c *gin.Context) {
 	id := c.Param("id")
 
 	t, err := token.Verify(c.GetHeader(AuthHeader))
