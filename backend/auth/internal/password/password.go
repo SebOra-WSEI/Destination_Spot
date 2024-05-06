@@ -3,6 +3,7 @@ package password
 import (
 	"fmt"
 	"github.com/SebastianOraczek/auth/internal/response"
+	"golang.org/x/crypto/bcrypt"
 	"regexp"
 )
 
@@ -29,4 +30,14 @@ func Validate(password, confirmPassword string) error {
 	}
 
 	return nil
+}
+
+func Generate(password string) (string, error) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 12)
+	if err != nil {
+		fmt.Println("Problem with hashing password", err.Error())
+		return "", fmt.Errorf(response.InternalServerErrMsg)
+	}
+
+	return string(hashedPassword), nil
 }

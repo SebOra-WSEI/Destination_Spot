@@ -16,8 +16,6 @@ import (
 	"net/http"
 )
 
-const AuthHeader = "Authorization"
-
 func ResetPassword(c *gin.Context) {
 	id := c.Param("id")
 
@@ -29,12 +27,12 @@ func ResetPassword(c *gin.Context) {
 
 	var user model.User
 	if err := database.Db.First(&user, id).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, response.CreateError(response.UserNotFoundErrMsg))
+		c.JSON(http.StatusNotFound, response.CreateError(response.UserNotFoundErrMsg))
 		return
 	}
 
-	if err := permission.Get(user.Id, t.Claims.(jwt.MapClaims)); err != nil {
-		c.JSON(http.StatusInternalServerError, response.CreateError(err.Error()))
+	if code, err := permission.User(user.Id, t.Claims.(jwt.MapClaims)); err != nil {
+		c.JSON(code, response.CreateError(err.Error()))
 		return
 	}
 
@@ -61,18 +59,17 @@ func ResetPassword(c *gin.Context) {
 		return
 	}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(body.NewPassword), 12)
+	newPassword, err := password.Generate(body.NewPassword)
 	if err != nil {
-		fmt.Println("Problem with hashing password", err.Error())
-		c.JSON(http.StatusInternalServerError, response.CreateError(response.InternalServerErrMsg))
+		c.JSON(http.StatusInternalServerError, response.CreateError(err.Error()))
 		return
 	}
 
-	user.Password = string(hashedPassword)
+	user.Password = newPassword
 
 	if err := database.Db.Save(&user).Error; err != nil {
 		fmt.Println("Problem saving user", err.Error())
-		c.JSON(http.StatusInternalServerError, response.CreateError(response.ErrorWhileCreatingUSerErrMsg))
+		c.JSON(http.StatusInternalServerError, response.CreateError(response.ErrorWhileCreatingUserErrMsg))
 		return
 	}
 
