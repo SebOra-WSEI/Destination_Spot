@@ -14,7 +14,10 @@ import (
 	"net/http"
 )
 
-const UserRole string = "user"
+const (
+	UserRole  string = "user"
+	AdminRole        = "admin"
+)
 
 func SignUp(c *gin.Context) {
 	var body model.AuthBody

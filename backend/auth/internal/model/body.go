@@ -16,3 +16,8 @@ type ResetPasswordBody struct {
 	NewPassword        string `json:"newPassword"`
 	ConfirmNewPassword string `json:"confirmNewPassword"`
 }
+
+type ActionControlBody struct {
+	NewPassword        string `json:"newPassword"`
+	ConfirmNewPassword string `json:"confirmNewPassword"`
+}
