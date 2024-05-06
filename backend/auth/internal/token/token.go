@@ -12,7 +12,7 @@ import (
 
 var expireTime = (time.Hour * 1).Milliseconds()
 
-func CreateToken(user model.User) (string, error) {
+func Create(user model.User) (string, error) {
 	expAt := time.Now().UnixMilli() + expireTime
 	secretKey := env.GetEnvVariableByName(env.JwtSecretKey)
 
@@ -23,13 +23,12 @@ func CreateToken(user model.User) (string, error) {
 		},
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString([]byte(secretKey))
+	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(secretKey))
 	if err != nil {
 		return "", fmt.Errorf("")
 	}
 
-	return tokenString, nil
+	return token, nil
 }
 
 func Verify(authHeader string) (*jwt.Token, error) {

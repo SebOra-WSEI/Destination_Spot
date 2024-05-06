@@ -2,12 +2,12 @@ package handler
 
 import (
 	"fmt"
+	"github.com/SebastianOraczek/auth/database"
 	"github.com/SebastianOraczek/auth/internal/email"
 	"github.com/SebastianOraczek/auth/internal/model"
 	"github.com/SebastianOraczek/auth/internal/password"
 	"github.com/SebastianOraczek/auth/internal/request"
 	"github.com/SebastianOraczek/auth/internal/response"
-	"github.com/SebastianOraczek/auth/startup"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"golang.org/x/crypto/bcrypt"
@@ -18,42 +18,37 @@ const UserRole string = "user"
 
 func SignUp(c *gin.Context) {
 	var body model.AuthBody
-	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBody(
+	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
 		body.Email, body.Password, body.ConfirmPassword,
 	) {
-		c.JSON(http.StatusBadRequest, response.CreateErrorResponse(response.EmptyFieldsErrMsg))
+		c.JSON(http.StatusBadRequest, response.CreateError(response.EmptyFieldsErrMsg))
 		return
 	}
 
-	if err := email.Verify(body.Email); err != nil {
-		c.JSON(http.StatusBadRequest, response.CreateErrorResponse(err.Error()))
+	if err := email.Validate(body.Email); err != nil {
+		c.JSON(http.StatusBadRequest, response.CreateError(err.Error()))
 		return
 	}
 
-	if err := password.Validate(body.Password); err != nil {
-		c.JSON(http.StatusBadRequest, response.CreateErrorResponse(err.Error()))
-		return
-	}
-
-	if body.Password != body.ConfirmPassword {
-		c.JSON(http.StatusBadRequest, response.CreateErrorResponse(response.PasswordNotTheSameErrMsg))
+	if err := password.Validate(body.Password, body.ConfirmPassword); err != nil {
+		c.JSON(http.StatusBadRequest, response.CreateError(err.Error()))
 		return
 	}
 
 	var user model.User
-	if err := startup.Db.Where("email = ?", body.Email).First(&user).Error; err == nil {
-		c.JSON(http.StatusBadRequest, response.CreateErrorResponse(response.UserAlreadyExistsErrMsg))
+	if err := database.Db.Where("email = ?", body.Email).First(&user).Error; err == nil {
+		c.JSON(http.StatusBadRequest, response.CreateError(response.UserAlreadyExistsErrMsg))
 		return
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(body.Password), 12)
 	if err != nil {
 		fmt.Println("Problem with hashing password", err.Error())
-		c.JSON(http.StatusInternalServerError, response.CreateErrorResponse(response.InternalServerErrMsg))
+		c.JSON(http.StatusInternalServerError, response.CreateError(response.InternalServerErrMsg))
 		return
 	}
 
-	name, surname := email.CreateNameAndSurnameFromEmail(body.Email)
+	name, surname := email.GetNameAndSurname(body.Email)
 
 	newUser := model.User{
 		Email:    body.Email,
@@ -63,11 +58,22 @@ func SignUp(c *gin.Context) {
 		Role:     UserRole,
 	}
 
-	if err := startup.Db.Create(&newUser).Error; err != nil {
+	if err := database.Db.Create(&newUser).Error; err != nil {
 		fmt.Println("Problem creating new user", err.Error())
-		c.JSON(http.StatusInternalServerError, response.CreateErrorResponse(response.ProblemWhileRegistrationErrMsg))
+		c.JSON(http.StatusInternalServerError, response.CreateError(response.ProblemWhileRegistrationErrMsg))
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": response.UserCreatedMsg})
+	res := model.UserResponse{
+		Message: response.UserCreatedMsg,
+		User: model.NoPasswordUser{
+			ID:      newUser.Id,
+			Email:   newUser.Email,
+			Name:    newUser.Name,
+			Surname: newUser.Surname,
+			Role:    newUser.Role,
+		},
+	}
+
+	c.JSON(http.StatusCreated, response.Create(res))
 }

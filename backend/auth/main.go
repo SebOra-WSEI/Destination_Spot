@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/SebastianOraczek/auth/database"
 	"github.com/SebastianOraczek/auth/internal/route"
-	"github.com/SebastianOraczek/auth/startup"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"log"
@@ -17,10 +17,10 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	startup.Database()
+	database.Start()
 
 	r := gin.Default()
-	route.InitRoutes(r)
+	route.Init(r)
 
 	log.Fatal(r.Run(Port))
 }

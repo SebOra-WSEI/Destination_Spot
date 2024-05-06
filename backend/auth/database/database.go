@@ -1,4 +1,4 @@
-package startup
+package database
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 
 var Db *gorm.DB
 
-func Database() {
+func Start() {
 	var err error
 
 	connStr := env.GetEnvVariableByName(env.ConnectionString)

@@ -6,7 +6,7 @@ import (
 	"regexp"
 )
 
-func Validate(password string) error {
+func Validate(password, confirmPassword string) error {
 	if len(password) < 8 {
 		return fmt.Errorf(response.MinCharacterLengthErrMsg)
 	}
@@ -22,6 +22,10 @@ func Validate(password string) error {
 	specialChars := "[!@#$%^&*()_+\\-=\\[\\]{}|\\\\,.?/<>]"
 	if !regexp.MustCompile(specialChars).MatchString(password) {
 		return fmt.Errorf(response.MissingSpecialCharacterErrMsg)
+	}
+
+	if confirmPassword != "" && password != confirmPassword {
+		return fmt.Errorf(response.PasswordNotTheSameErrMsg)
 	}
 
 	return nil
