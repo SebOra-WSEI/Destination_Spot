@@ -10,3 +10,9 @@ type LoginBody struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
+
+type ResetPasswordBody struct {
+	CurrentPassword    string `json:"currentPassword"`
+	NewPassword        string `json:"newPassword"`
+	ConfirmNewPassword string `json:"confirmNewPassword"`
+}

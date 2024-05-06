@@ -6,22 +6,26 @@ import (
 	"regexp"
 )
 
-func Validate(password string) error {
+func Validate(password, confirmPassword string) error {
 	if len(password) < 8 {
-		return fmt.Errorf(response.MinCharacterLengthErrorMsg)
+		return fmt.Errorf(response.MinCharacterLengthErrMsg)
 	}
 
 	if !regexp.MustCompile("[A-Z]+").MatchString(password) {
-		return fmt.Errorf(response.UppercaseCharacterErrorMsg)
+		return fmt.Errorf(response.UppercaseCharacterErrMsg)
 	}
 
 	if !regexp.MustCompile("[0-9]+").MatchString(password) {
-		return fmt.Errorf(response.MissingNumberErrorMsg)
+		return fmt.Errorf(response.MissingNumberErrMsg)
 	}
 
 	specialChars := "[!@#$%^&*()_+\\-=\\[\\]{}|\\\\,.?/<>]"
 	if !regexp.MustCompile(specialChars).MatchString(password) {
 		return fmt.Errorf(response.MissingSpecialCharacterErrMsg)
+	}
+
+	if confirmPassword != "" && password != confirmPassword {
+		return fmt.Errorf(response.PasswordNotTheSameErrMsg)
 	}
 
 	return nil

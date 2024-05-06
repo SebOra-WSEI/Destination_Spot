@@ -10,20 +10,20 @@ import (
 	"strings"
 )
 
-func Verify(email string) error {
+func Validate(email string) error {
 	if _, err := mail.ParseAddress(email); err != nil {
-		return fmt.Errorf(response.InvalidEmailFormatErrorMsg)
+		return fmt.Errorf(response.InvalidEmailFormatErrMsg)
 	}
 
 	domain := env.GetEnvVariableByName(env.Domain)
 	if len(email) < len(domain) || email[len(email)-len(domain):] != domain {
-		return fmt.Errorf(response.InvalidDomainErrorMsg)
+		return fmt.Errorf(response.InvalidDomainErrMsg)
 	}
 
 	return nil
 }
 
-func CreateNameAndSurnameFromEmail(email string) (name string, surname string) {
+func GetNameAndSurname(email string) (name string, surname string) {
 	separatorIndex := strings.Index(email, "@")
 	personData := strings.Split(email[0:separatorIndex], ".")
 

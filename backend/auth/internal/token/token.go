@@ -12,24 +12,24 @@ import (
 
 var expireTime = (time.Hour * 1).Milliseconds()
 
-func CreateToken(user model.User) (string, error) {
+func Create(user model.User) (string, error) {
 	expAt := time.Now().UnixMilli() + expireTime
 	secretKey := env.GetEnvVariableByName(env.JwtSecretKey)
 
 	claims := model.Claims{
 		user.Email,
+		user.Role,
 		jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Unix(expAt, 0)),
 		},
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString([]byte(secretKey))
+	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(secretKey))
 	if err != nil {
 		return "", fmt.Errorf("")
 	}
 
-	return tokenString, nil
+	return token, nil
 }
 
 func Verify(authHeader string) (*jwt.Token, error) {
@@ -61,7 +61,7 @@ func Verify(authHeader string) (*jwt.Token, error) {
 	expTime, err := token.Claims.GetExpirationTime()
 	if err != nil {
 		fmt.Println("Problem with getting expiration time:", err.Error())
-		return nil, fmt.Errorf(response.InternalServerErrorMsg)
+		return nil, fmt.Errorf(response.InternalServerErrMsg)
 	}
 
 	token.Valid = expTime.Unix()-time.Now().UnixMilli() > 0
