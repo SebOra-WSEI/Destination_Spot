@@ -11,7 +11,7 @@ import (
 func Get(id uint, claims jwt.MapClaims) error {
 	reqUserEmail, ok := claims["Email"]
 	if !ok {
-		fmt.Println("Role can not be found in claims")
+		fmt.Println("Email can not be found in claims")
 		return fmt.Errorf(response.InternalServerErrMsg)
 	}
 
@@ -22,7 +22,7 @@ func Get(id uint, claims jwt.MapClaims) error {
 	}
 
 	if reqUser.Id != id {
-		fmt.Println("Password must be changed by owner or admin")
+		fmt.Println("Password must be changed owner")
 		return fmt.Errorf(response.ActionNotPermittedErrMsg)
 	}
 
