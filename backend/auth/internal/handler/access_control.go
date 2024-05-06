@@ -5,11 +5,13 @@ import (
 	"github.com/SebastianOraczek/auth/database"
 	"github.com/SebastianOraczek/auth/internal/model"
 	"github.com/SebastianOraczek/auth/internal/password"
+	"github.com/SebastianOraczek/auth/internal/permission"
 	"github.com/SebastianOraczek/auth/internal/request"
 	"github.com/SebastianOraczek/auth/internal/response"
 	"github.com/SebastianOraczek/auth/internal/token"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
@@ -19,7 +21,7 @@ const AuthHeader = "Authorization"
 func AccessControl(c *gin.Context) {
 	id := c.Param("id")
 
-	_, err := token.Verify(c.GetHeader(AuthHeader))
+	t, err := token.Verify(c.GetHeader(AuthHeader))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err.Error()))
 		return
@@ -31,19 +33,10 @@ func AccessControl(c *gin.Context) {
 		return
 	}
 
-	//claims := t.Claims.(jwt.MapClaims)
-	//role, ok := claims["Role"]
-	//if !ok {
-	//	fmt.Println("Role can not be found in claims")
-	//	c.JSON(http.StatusInternalServerError, response.CreateError(response.InternalServerErrMsg))
-	//	return
-	//}
-
-	//if role != AdminRole {
-	//	fmt.Println("Password must be changed by owner or admin")
-	//	c.JSON(http.StatusInternalServerError, response.CreateError(response.ActionNotPermittedErrMsg))
-	//	return
-	//}
+	if err := permission.Get(user.Id, t.Claims.(jwt.MapClaims)); err != nil {
+		c.JSON(http.StatusInternalServerError, response.CreateError(err.Error()))
+		return
+	}
 
 	var body model.ResetPasswordBody
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
