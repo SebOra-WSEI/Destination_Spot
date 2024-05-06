@@ -5,7 +5,7 @@ const (
 	EmptyFieldsErrMsg              string = "Fields can not be empty"
 	UserAlreadyExistsErrMsg               = "User already exists"
 	UserNotFoundErrMsg                    = "User not found"
-	ErrorWhileCreatingUSerErrMsg          = "Error while creating user"
+	ErrorWhileCreatingUserErrMsg          = "Error while creating user"
 	InvalidEmailFormatErrMsg              = "Invalid email format"
 	InvalidDomainErrMsg                   = "Email should be a part of correct domain"
 	MinCharacterLengthErrMsg              = "Password must contains at least 8 characters"

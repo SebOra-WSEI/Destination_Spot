@@ -10,14 +10,10 @@ import (
 	"github.com/SebastianOraczek/auth/internal/response"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
 
-const (
-	UserRole  string = "user"
-	AdminRole        = "admin"
-)
+const UserRole string = "user"
 
 func SignUp(c *gin.Context) {
 	var body model.AuthBody
@@ -44,10 +40,9 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(body.Password), 12)
+	pass, err := password.Generate(body.Password)
 	if err != nil {
-		fmt.Println("Problem with hashing password", err.Error())
-		c.JSON(http.StatusInternalServerError, response.CreateError(response.InternalServerErrMsg))
+		c.JSON(http.StatusInternalServerError, response.CreateError(err.Error()))
 		return
 	}
 
@@ -55,7 +50,7 @@ func SignUp(c *gin.Context) {
 
 	newUser := model.User{
 		Email:    body.Email,
-		Password: string(hashedPassword),
+		Password: pass,
 		Name:     name,
 		Surname:  surname,
 		Role:     UserRole,
