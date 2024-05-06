@@ -19,7 +19,7 @@ func SignIn(c *gin.Context) {
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBody(
 		body.Email, body.Password,
 	) {
-		c.JSON(http.StatusBadRequest, response.CreateErrorResponse(response.EmptyFieldsErrorMsg))
+		c.JSON(http.StatusBadRequest, response.CreateErrorResponse(response.EmptyFieldsErrMsg))
 		return
 	}
 

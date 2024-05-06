@@ -21,7 +21,7 @@ func SignUp(c *gin.Context) {
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBody(
 		body.Email, body.Password, body.ConfirmPassword,
 	) {
-		c.JSON(http.StatusBadRequest, response.CreateErrorResponse(response.EmptyFieldsErrorMsg))
+		c.JSON(http.StatusBadRequest, response.CreateErrorResponse(response.EmptyFieldsErrMsg))
 		return
 	}
 
@@ -36,20 +36,20 @@ func SignUp(c *gin.Context) {
 	}
 
 	if body.Password != body.ConfirmPassword {
-		c.JSON(http.StatusBadRequest, response.CreateErrorResponse(response.PasswordNotTheSameErrorMsg))
+		c.JSON(http.StatusBadRequest, response.CreateErrorResponse(response.PasswordNotTheSameErrMsg))
 		return
 	}
 
 	var user model.User
 	if err := startup.Db.Where("email = ?", body.Email).First(&user).Error; err == nil {
-		c.JSON(http.StatusBadRequest, response.CreateErrorResponse(response.UserAlreadyExistsErrorMsg))
+		c.JSON(http.StatusBadRequest, response.CreateErrorResponse(response.UserAlreadyExistsErrMsg))
 		return
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(body.Password), 12)
 	if err != nil {
 		fmt.Println("Problem with hashing password", err.Error())
-		c.JSON(http.StatusInternalServerError, response.CreateErrorResponse(response.InternalServerErrorMsg))
+		c.JSON(http.StatusInternalServerError, response.CreateErrorResponse(response.InternalServerErrMsg))
 		return
 	}
 

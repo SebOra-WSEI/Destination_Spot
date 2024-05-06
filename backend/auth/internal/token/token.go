@@ -61,7 +61,7 @@ func Verify(authHeader string) (*jwt.Token, error) {
 	expTime, err := token.Claims.GetExpirationTime()
 	if err != nil {
 		fmt.Println("Problem with getting expiration time:", err.Error())
-		return nil, fmt.Errorf(response.InternalServerErrorMsg)
+		return nil, fmt.Errorf(response.InternalServerErrMsg)
 	}
 
 	token.Valid = expTime.Unix()-time.Now().UnixMilli() > 0

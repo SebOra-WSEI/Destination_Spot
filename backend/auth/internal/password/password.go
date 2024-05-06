@@ -8,15 +8,15 @@ import (
 
 func Validate(password string) error {
 	if len(password) < 8 {
-		return fmt.Errorf(response.MinCharacterLengthErrorMsg)
+		return fmt.Errorf(response.MinCharacterLengthErrMsg)
 	}
 
 	if !regexp.MustCompile("[A-Z]+").MatchString(password) {
-		return fmt.Errorf(response.UppercaseCharacterErrorMsg)
+		return fmt.Errorf(response.UppercaseCharacterErrMsg)
 	}
 
 	if !regexp.MustCompile("[0-9]+").MatchString(password) {
-		return fmt.Errorf(response.MissingNumberErrorMsg)
+		return fmt.Errorf(response.MissingNumberErrMsg)
 	}
 
 	specialChars := "[!@#$%^&*()_+\\-=\\[\\]{}|\\\\,.?/<>]"
