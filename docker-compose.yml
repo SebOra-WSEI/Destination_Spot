@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   database:
-    container_name: destination_db
+    container_name: database
     restart: "always"
     build:
       context: ./database
@@ -16,7 +16,7 @@ services:
       - app-network
 
   core:
-    container_name: destination_core
+    container_name: core
     restart: "always"
     build:
       context: ./backend/core
@@ -29,7 +29,7 @@ services:
       - app-network
 
   auth:
-    container_name: destination_auth
+    container_name: authorization
     restart: "always"
     build:
       context: ./backend/auth
@@ -43,7 +43,7 @@ services:
       - app-network
 
   frontend:
-    container_name: destination_frontend
+    container_name: frontend
     restart: "always"
     build:
       context: ./frontend
