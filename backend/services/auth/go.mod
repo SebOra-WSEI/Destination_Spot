@@ -9,7 +9,10 @@ require (
 	github.com/joho/godotenv v1.5.1
 	golang.org/x/crypto v0.23.0
 	golang.org/x/text v0.15.0
+	github.com/SebOra-WSEI/Destination_spot/shared v0.0.0
 )
+
+replace github.com/SebOra-WSEI/Destination_spot/shared => ../../shared
 
 require (
 	github.com/bytedance/sonic v1.11.6 // indirect
