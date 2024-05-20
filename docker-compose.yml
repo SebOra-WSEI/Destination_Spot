@@ -19,7 +19,7 @@ services:
     container_name: core
     restart: "always"
     build:
-      context: backend/services/core
+      context: backend/core
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
@@ -32,7 +32,7 @@ services:
     container_name: authorization
     restart: "always"
     build:
-      context: ./backend/services/auth
+      context: ./backend/auth
       dockerfile: Dockerfile
     ports:
       - "8081:8081"
