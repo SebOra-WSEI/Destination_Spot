@@ -26,11 +26,11 @@ cd ..
 checkEnvFile ./frontend
 cd ..
 
-checkEnvFile ./backend/services/auth
+checkEnvFile ./backend/auth
 echo "CONNECTION_STRING=user:${1}@tcp(database:3306)/destination_spot" >> .env
 echo "DOMAIN=${2}" >> .env
 echo "JWT_SECRET_KEY=${3}" >> .env
-cd ../../..
+cd ../..
 
-checkEnvFile ./backend/services/core
-cd ../../..
+checkEnvFile ./backend/core
+cd ../..
