@@ -1,7 +1,7 @@
 package route
 
 import (
-	"github.com/SebOra-WSEI/Destination_spot/internal/handler"
+	"github.com/SebOra-WSEI/Destination_spot/auth/internal/handler"
 	"github.com/gin-gonic/gin"
 )
 

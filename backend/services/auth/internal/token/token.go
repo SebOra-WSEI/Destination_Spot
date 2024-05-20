@@ -2,10 +2,9 @@ package token
 
 import (
 	"fmt"
-	"github.com/SebOra-WSEI/Destination_spot/internal/env"
-	"github.com/SebOra-WSEI/Destination_spot/internal/model"
-	"github.com/SebOra-WSEI/Destination_spot/internal/response"
-	"github.com/golang-jwt/jwt/v5"
+	"github.com/SebOra-WSEI/Destination_spot/auth/internal/env"
+	"github.com/SebOra-WSEI/Destination_spot/auth/internal/model"
+	"github.com/SebOra-WSEI/Destination_spot/auth/internal/response"
 	"strings"
 	"time"
 )

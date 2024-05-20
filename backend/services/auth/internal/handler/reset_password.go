@@ -1,15 +1,14 @@
 package handler
 
 import (
-	"github.com/SebOra-WSEI/Destination_spot/internal/model"
-	"github.com/SebOra-WSEI/Destination_spot/internal/password"
-	"github.com/SebOra-WSEI/Destination_spot/internal/permission"
-	"github.com/SebOra-WSEI/Destination_spot/internal/request"
-	"github.com/SebOra-WSEI/Destination_spot/internal/response"
-	"github.com/SebOra-WSEI/Destination_spot/internal/token"
+	"github.com/SebOra-WSEI/Destination_spot/auth/internal/model"
+	"github.com/SebOra-WSEI/Destination_spot/auth/internal/password"
+	"github.com/SebOra-WSEI/Destination_spot/auth/internal/permission"
+	"github.com/SebOra-WSEI/Destination_spot/auth/internal/request"
+	"github.com/SebOra-WSEI/Destination_spot/auth/internal/response"
+	"github.com/SebOra-WSEI/Destination_spot/auth/internal/token"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
