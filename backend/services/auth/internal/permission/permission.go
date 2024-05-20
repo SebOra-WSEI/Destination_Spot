@@ -2,9 +2,9 @@ package permission
 
 import (
 	"fmt"
-	"github.com/SebastianOraczek/auth/database"
-	"github.com/SebastianOraczek/auth/internal/model"
-	"github.com/SebastianOraczek/auth/internal/response"
+	"github.com/SebOra-WSEI/Destination_spot/database"
+	"github.com/SebOra-WSEI/Destination_spot/internal/model"
+	"github.com/SebOra-WSEI/Destination_spot/internal/response"
 	"github.com/golang-jwt/jwt/v5"
 	"net/http"
 )

@@ -2,12 +2,12 @@ package handler
 
 import (
 	"fmt"
-	"github.com/SebastianOraczek/auth/database"
-	"github.com/SebastianOraczek/auth/internal/email"
-	"github.com/SebastianOraczek/auth/internal/model"
-	"github.com/SebastianOraczek/auth/internal/password"
-	"github.com/SebastianOraczek/auth/internal/request"
-	"github.com/SebastianOraczek/auth/internal/response"
+	"github.com/SebOra-WSEI/Destination_spot/database"
+	"github.com/SebOra-WSEI/Destination_spot/internal/email"
+	"github.com/SebOra-WSEI/Destination_spot/internal/model"
+	"github.com/SebOra-WSEI/Destination_spot/internal/password"
+	"github.com/SebOra-WSEI/Destination_spot/internal/request"
+	"github.com/SebOra-WSEI/Destination_spot/internal/response"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"net/http"

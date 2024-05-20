@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/SebastianOraczek/auth/database"
-	"github.com/SebastianOraczek/auth/internal/route"
+	"github.com/SebOra-WSEI/Destination_spot/database"
+	"github.com/SebOra-WSEI/Destination_spot/internal/route"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"log"

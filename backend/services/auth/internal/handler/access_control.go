@@ -1,12 +1,12 @@
 package handler
 
 import (
-	"github.com/SebastianOraczek/auth/internal/model"
-	"github.com/SebastianOraczek/auth/internal/password"
-	"github.com/SebastianOraczek/auth/internal/permission"
-	"github.com/SebastianOraczek/auth/internal/request"
-	"github.com/SebastianOraczek/auth/internal/response"
-	"github.com/SebastianOraczek/auth/internal/token"
+	"github.com/SebOra-WSEI/Destination_spot/internal/model"
+	"github.com/SebOra-WSEI/Destination_spot/internal/password"
+	"github.com/SebOra-WSEI/Destination_spot/internal/permission"
+	"github.com/SebOra-WSEI/Destination_spot/internal/request"
+	"github.com/SebOra-WSEI/Destination_spot/internal/response"
+	"github.com/SebOra-WSEI/Destination_spot/internal/token"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/golang-jwt/jwt/v5"
