@@ -2,7 +2,7 @@ package database
 
 import (
 	"fmt"
-	"github.com/SebOra-WSEI/Destination_spot/internal/env"
+	"github.com/SebOra-WSEI/Destination_spot/auth/internal/env"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )

@@ -1,4 +1,4 @@
-module github.com/SebOra-WSEI/Destination_spot
+module github.com/SebOra-WSEI/Destination_spot/core
 
 go 1.21.5
 
