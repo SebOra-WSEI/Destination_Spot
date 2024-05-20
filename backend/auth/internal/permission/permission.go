@@ -15,18 +15,18 @@ func User(id uint, claims jwt.MapClaims) (int, error) {
 	reqUserEmail, ok := claims["Email"]
 	if !ok {
 		fmt.Println("Email can not be found in claims")
-		return http.StatusInternalServerError, fmt.Errorf(response.InternalServerErrMsg)
+		return http.StatusInternalServerError, response.ErrInternalServer
 	}
 
 	var reqUser model.User
 	if err := database.Db.Where("email = ?", reqUserEmail).First(&reqUser).Error; err != nil {
 		fmt.Println("Requested user not found")
-		return http.StatusNotFound, fmt.Errorf(response.UserNotFoundErrMsg)
+		return http.StatusNotFound, response.ErrUserNotFound
 	}
 
 	if reqUser.Id != id {
-		fmt.Println("Password must be changed owner")
-		return http.StatusForbidden, fmt.Errorf(response.ActionNotPermittedErrMsg)
+		fmt.Println("Password must be changed by owner")
+		return http.StatusForbidden, response.ErrActionNotPermitted
 	}
 
 	return 0, nil
@@ -36,12 +36,12 @@ func Admin(claims jwt.MapClaims) (int, error) {
 	reqUserRole, ok := claims["Role"]
 	if !ok {
 		fmt.Println("Role can not be found in claims")
-		return http.StatusInternalServerError, fmt.Errorf(response.InternalServerErrMsg)
+		return http.StatusInternalServerError, response.ErrInternalServer
 	}
 
 	if reqUserRole.(string) != AdminRole {
 		fmt.Println("Action enabled only for admin")
-		return http.StatusForbidden, fmt.Errorf(response.ActionNotPermittedErrMsg)
+		return http.StatusForbidden, response.ErrActionNotPermitted
 	}
 
 	return 0, nil

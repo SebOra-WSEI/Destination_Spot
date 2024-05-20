@@ -19,31 +19,31 @@ func SignIn(c *gin.Context) {
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
 		body.Email, body.Password,
 	) {
-		c.JSON(http.StatusBadRequest, response.CreateError(response.EmptyFieldsErrMsg))
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrEmptyFields))
 		return
 	}
 
 	var user model.User
 	if err := database.Db.Where("email = ?", body.Email).First(&user).Error; err != nil {
 		fmt.Println("User not found:", err.Error())
-		c.JSON(http.StatusBadRequest, response.CreateError(response.InvalidLoginOrPasswordErrMsg))
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrInvalidLoginOrPassword))
 		return
 	}
 
 	if err := password.Validate(body.Password, ""); err != nil {
-		c.JSON(http.StatusBadRequest, response.CreateError(err.Error()))
+		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password)); err != nil {
 		fmt.Println("Wrong password:", err.Error())
-		c.JSON(http.StatusBadRequest, response.CreateError(response.InvalidLoginOrPasswordErrMsg))
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrInvalidLoginOrPassword))
 		return
 	}
 
 	jwt, err := token.Create(user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, response.CreateError(response.ErrorWhileCreatingTokenErrMsg))
+		c.JSON(http.StatusInternalServerError, response.CreateError(response.ErrWhileCreatingToken))
 		return
 	}
 

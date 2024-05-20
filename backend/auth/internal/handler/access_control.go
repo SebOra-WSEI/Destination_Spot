@@ -22,18 +22,18 @@ func AccessControl(c *gin.Context) {
 
 	t, err := token.Verify(c.GetHeader(AuthHeader))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, response.CreateError(err.Error()))
+		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
 	}
 
 	if code, err := permission.Admin(t.Claims.(jwt.MapClaims)); err != nil {
-		c.JSON(code, response.CreateError(err.Error()))
+		c.JSON(code, response.CreateError(err))
 		return
 	}
 
 	var user model.User
 	if err := database.Db.First(&user, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, response.CreateError(response.UserNotFoundErrMsg))
+		c.JSON(http.StatusNotFound, response.CreateError(response.ErrUserNotFound))
 		return
 	}
 
@@ -41,18 +41,18 @@ func AccessControl(c *gin.Context) {
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
 		body.NewPassword, body.ConfirmNewPassword,
 	) {
-		c.JSON(http.StatusBadRequest, response.CreateError(response.EmptyFieldsErrMsg))
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrEmptyFields))
 		return
 	}
 
 	if err := password.Validate(body.NewPassword, body.ConfirmNewPassword); err != nil {
-		c.JSON(http.StatusBadRequest, response.CreateError(err.Error()))
+		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
 	}
 
 	newPassword, err := password.Generate(body.NewPassword)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, response.CreateError(err.Error()))
+		c.JSON(http.StatusInternalServerError, response.CreateError(err))
 		return
 	}
 
@@ -60,7 +60,7 @@ func AccessControl(c *gin.Context) {
 
 	if err := database.Db.Save(&user).Error; err != nil {
 		fmt.Println("Problem saving user", err.Error())
-		c.JSON(http.StatusInternalServerError, response.CreateError(response.ErrorWhileCreatingUserErrMsg))
+		c.JSON(http.StatusInternalServerError, response.CreateError(response.ErrWhileCreatingUser))
 		return
 	}
 

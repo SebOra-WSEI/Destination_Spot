@@ -9,24 +9,24 @@ import (
 
 func Validate(password, confirmPassword string) error {
 	if len(password) < 8 {
-		return fmt.Errorf(response.MinCharacterLengthErrMsg)
+		return response.ErrMinCharacterLength
 	}
 
 	if !regexp.MustCompile("[A-Z]+").MatchString(password) {
-		return fmt.Errorf(response.UppercaseCharacterErrMsg)
+		return response.ErrUppercaseCharacter
 	}
 
 	if !regexp.MustCompile("[0-9]+").MatchString(password) {
-		return fmt.Errorf(response.MissingNumberErrMsg)
+		return response.ErrMissingNumber
 	}
 
 	specialChars := "[!@#$%^&*()_+\\-=\\[\\]{}|\\\\,.?/<>]"
 	if !regexp.MustCompile(specialChars).MatchString(password) {
-		return fmt.Errorf(response.MissingSpecialCharacterErrMsg)
+		return response.ErrMissingSpecialCharacter
 	}
 
 	if confirmPassword != "" && password != confirmPassword {
-		return fmt.Errorf(response.PasswordNotTheSameErrMsg)
+		return response.ErrPasswordNotTheSame
 	}
 
 	return nil
@@ -36,7 +36,7 @@ func Generate(password string) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 12)
 	if err != nil {
 		fmt.Println("Problem with hashing password", err.Error())
-		return "", fmt.Errorf(response.InternalServerErrMsg)
+		return "", response.ErrInternalServer
 	}
 
 	return string(hashedPassword), nil
