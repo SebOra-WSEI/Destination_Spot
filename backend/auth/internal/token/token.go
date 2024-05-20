@@ -34,17 +34,17 @@ func Create(user model.User) (string, error) {
 
 func Verify(authHeader string) (*jwt.Token, error) {
 	if authHeader == "" {
-		return nil, fmt.Errorf(response.AuthTokenNotFoundErrMsg)
+		return nil, response.ErrAuthTokenNotFound
 	}
 
 	tokenSlice := strings.Split(authHeader, " ")
 
 	if len(tokenSlice) != 2 {
-		return nil, fmt.Errorf(response.AuthTokenIncorrectFormatErrMsg)
+		return nil, response.ErrAuthTokenIncorrectFormat
 	}
 
 	if tokenSlice[0] != "Bearer" {
-		return nil, fmt.Errorf(response.AuthTokenIncorrectFormatErrMsg)
+		return nil, response.ErrAuthTokenIncorrectFormat
 	}
 
 	token, err := jwt.ParseWithClaims(
@@ -55,19 +55,19 @@ func Verify(authHeader string) (*jwt.Token, error) {
 
 	if err != nil {
 		fmt.Println("Parsing token error:", err.Error())
-		return nil, fmt.Errorf(response.AuthTokenIncorrectFormatErrMsg)
+		return nil, response.ErrAuthTokenIncorrectFormat
 	}
 
 	expTime, err := token.Claims.GetExpirationTime()
 	if err != nil {
 		fmt.Println("Problem with getting expiration time:", err.Error())
-		return nil, fmt.Errorf(response.InternalServerErrMsg)
+		return nil, response.ErrInternalServer
 	}
 
 	token.Valid = expTime.Unix()-time.Now().UnixMilli() > 0
 
 	if !token.Valid {
-		return nil, fmt.Errorf(response.TokenExpiredErrMsg)
+		return nil, response.ErrTokenExpired
 	}
 
 	return token, nil

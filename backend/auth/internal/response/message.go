@@ -1,28 +1,29 @@
 package response
 
-// Error messages
-const (
-	EmptyFieldsErrMsg              string = "Fields can not be empty"
-	UserAlreadyExistsErrMsg               = "User already exists"
-	UserNotFoundErrMsg                    = "User not found"
-	ErrorWhileCreatingUserErrMsg          = "Error while creating user"
-	InvalidEmailFormatErrMsg              = "Invalid email format"
-	InvalidDomainErrMsg                   = "Email should be a part of correct domain"
-	MinCharacterLengthErrMsg              = "Password must contains at least 8 characters"
-	UppercaseCharacterErrMsg              = "Password must contain at least 1 uppercase character"
-	MissingNumberErrMsg                   = "Password must contain at least 1 number"
-	MissingSpecialCharacterErrMsg         = "Password must contain at least 1 special character"
-	PasswordNotTheSameErrMsg              = "Provided passwords are not the same"
-	PasswordTheSameErrMsg                 = "New password cannot be the same as an actual one"
-	InvalidCurrentPasswordErrMsg          = "Invalid current password"
-	InternalServerErrMsg                  = "Internal server error"
-	ProblemWhileRegistrationErrMsg        = "Problem while registration"
-	InvalidLoginOrPasswordErrMsg          = "Invalid login or password"
-	ErrorWhileCreatingTokenErrMsg         = "Error while creating token"
-	AuthTokenNotFoundErrMsg               = "Authorization token not found"
-	AuthTokenIncorrectFormatErrMsg        = "Incorrect authorization token format"
-	TokenExpiredErrMsg                    = "Expired token. Please log in again"
-	ActionNotPermittedErrMsg              = "Action not permitted"
+import "errors"
+
+var (
+	ErrEmptyFields              = errors.New("Fields can not be empty")
+	ErrUserAlreadyExists        = errors.New("User already exists")
+	ErrUserNotFound             = errors.New("User not found")
+	ErrWhileCreatingUser        = errors.New("Error while creating user")
+	ErrInvalidEmailFormat       = errors.New("Invalid email format")
+	ErrInvalidDomain            = errors.New("Email should be a part of correct domain")
+	ErrMinCharacterLength       = errors.New("Password must contains at least 8 characters")
+	ErrUppercaseCharacter       = errors.New("Password must contain at least 1 uppercase character")
+	ErrMissingNumber            = errors.New("Password must contain at least 1 number")
+	ErrMissingSpecialCharacter  = errors.New("Password must contain at least 1 special character")
+	ErrPasswordNotTheSame       = errors.New("Provided passwords are not the same")
+	ErrPasswordTheSame          = errors.New("New password cannot be the same as an actual one")
+	ErrInvalidCurrentPassword   = errors.New("Invalid current password")
+	ErrInternalServer           = errors.New("Internal server error")
+	ErrProblemWhileRegistration = errors.New("Problem while registration")
+	ErrInvalidLoginOrPassword   = errors.New("Invalid login or password")
+	ErrWhileCreatingToken       = errors.New("Error while creating token")
+	ErrAuthTokenNotFound        = errors.New("Authorization token not found")
+	ErrAuthTokenIncorrectFormat = errors.New("Incorrect authorization token format")
+	ErrTokenExpired             = errors.New("Expired token. Please log in again")
+	ErrActionNotPermitted       = errors.New("Action not permitted")
 )
 
 const (

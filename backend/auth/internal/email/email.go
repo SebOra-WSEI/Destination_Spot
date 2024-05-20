@@ -1,7 +1,6 @@
 package email
 
 import (
-	"fmt"
 	"github.com/SebastianOraczek/auth/internal/env"
 	"github.com/SebastianOraczek/auth/internal/response"
 	"golang.org/x/text/cases"
@@ -12,12 +11,12 @@ import (
 
 func Validate(email string) error {
 	if _, err := mail.ParseAddress(email); err != nil {
-		return fmt.Errorf(response.InvalidEmailFormatErrMsg)
+		return response.ErrInvalidEmailFormat
 	}
 
 	domain := env.GetEnvVariableByName(env.Domain)
 	if len(email) < len(domain) || email[len(email)-len(domain):] != domain {
-		return fmt.Errorf(response.InvalidDomainErrMsg)
+		return response.ErrInvalidDomain
 	}
 
 	return nil

@@ -8,8 +8,8 @@ func createResponseObject(field string, res interface{}) gin.H {
 	return gin.H{field: res}
 }
 
-func CreateError(errMsg string) gin.H {
-	return createResponseObject("error", errMsg)
+func CreateError(err error) gin.H {
+	return createResponseObject("error", err.Error())
 }
 
 func Create(res interface{}) gin.H {
