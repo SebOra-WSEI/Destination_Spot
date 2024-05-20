@@ -9,12 +9,12 @@ import (
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/token"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/golang-jwt/jwt/v5"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
 
-const AuthHeader string = "Authorization"
-
-func AccessControl(c *gin.Context) {
+func ResetPassword(c *gin.Context) {
 	id := c.Param("id")
 
 	t, err := token.Verify(c.GetHeader(AuthHeader))
@@ -23,22 +23,32 @@ func AccessControl(c *gin.Context) {
 		return
 	}
 
-	if code, err := permission.Admin(t.Claims.(jwt.MapClaims)); err != nil {
+	var user model.User
+	if err := user.FindById(id, &user); err != nil {
+		c.JSON(http.StatusNotFound, response.CreateError(response.ErrUserNotFound))
+		return
+	}
+
+	if code, err := permission.User(user.Id, t.Claims.(jwt.MapClaims)); err != nil {
 		c.JSON(code, response.CreateError(err))
 		return
 	}
 
-	var user model.User
-	if err := user.FindById(id, &user); err != nil {
-		c.JSON(http.StatusNotFound, response.CreateError(err))
+	var body model.ResetPasswordBody
+	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
+		body.CurrentPassword, body.NewPassword, body.ConfirmNewPassword,
+	) {
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrEmptyFields))
 		return
 	}
 
-	var body model.ActionControlBody
-	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
-		body.NewPassword, body.ConfirmNewPassword,
-	) {
-		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrEmptyFields))
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.CurrentPassword)); err != nil {
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrInvalidCurrentPassword))
+		return
+	}
+
+	if body.CurrentPassword == body.NewPassword {
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrPasswordTheSame))
 		return
 	}
 

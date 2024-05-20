@@ -5,6 +5,7 @@ import (
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/env"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/model"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/response"
+	"github.com/golang-jwt/jwt/v5"
 	"strings"
 	"time"
 )
