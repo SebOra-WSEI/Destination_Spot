@@ -2,7 +2,7 @@ package password
 
 import (
 	"fmt"
-	"github.com/SebastianOraczek/auth/internal/response"
+	"github.com/SebOra-WSEI/Destination_spot/internal/response"
 	"golang.org/x/crypto/bcrypt"
 	"regexp"
 )

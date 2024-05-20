@@ -1,8 +1,8 @@
 package email
 
 import (
-	"github.com/SebastianOraczek/auth/internal/env"
-	"github.com/SebastianOraczek/auth/internal/response"
+	"github.com/SebOra-WSEI/Destination_spot/internal/env"
+	"github.com/SebOra-WSEI/Destination_spot/internal/response"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 	"net/mail"

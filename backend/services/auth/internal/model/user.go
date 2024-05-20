@@ -2,8 +2,8 @@ package model
 
 import (
 	"fmt"
-	"github.com/SebastianOraczek/auth/database"
-	"github.com/SebastianOraczek/auth/internal/response"
+	"github.com/SebOra-WSEI/Destination_spot/database"
+	"github.com/SebOra-WSEI/Destination_spot/internal/response"
 )
 
 type User struct {
