@@ -25,7 +25,7 @@ func User(id uint, claims jwt.MapClaims) (int, error) {
 	}
 
 	if reqUser.Id != id {
-		fmt.Println("Password must be changed owner")
+		fmt.Println("Password must be changed by owner")
 		return http.StatusForbidden, response.ErrActionNotPermitted
 	}
 
