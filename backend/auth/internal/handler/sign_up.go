@@ -64,13 +64,7 @@ func SignUp(c *gin.Context) {
 
 	res := model.UserResponse{
 		Message: response.UserCreatedMsg,
-		User: model.NoPasswordUser{
-			ID:      newUser.Id,
-			Email:   newUser.Email,
-			Name:    newUser.Name,
-			Surname: newUser.Surname,
-			Role:    newUser.Role,
-		},
+		User:    newUser.GetWithNoPassword(),
 	}
 
 	c.JSON(http.StatusCreated, response.Create(res))

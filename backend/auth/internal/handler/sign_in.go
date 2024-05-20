@@ -2,7 +2,6 @@ package handler
 
 import (
 	"fmt"
-	"github.com/SebastianOraczek/auth/database"
 	"github.com/SebastianOraczek/auth/internal/model"
 	"github.com/SebastianOraczek/auth/internal/password"
 	"github.com/SebastianOraczek/auth/internal/request"
@@ -24,9 +23,8 @@ func SignIn(c *gin.Context) {
 	}
 
 	var user model.User
-	if err := database.Db.Where("email = ?", body.Email).First(&user).Error; err != nil {
-		fmt.Println("User not found:", err.Error())
-		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrInvalidLoginOrPassword))
+	if err := user.FindByEmail(body.Email, &user); err != nil {
+		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
 	}
 
@@ -49,13 +47,7 @@ func SignIn(c *gin.Context) {
 
 	res := model.LoggedUserResponse{
 		Token: jwt,
-		User: model.NoPasswordUser{
-			ID:      user.Id,
-			Email:   user.Email,
-			Name:    user.Name,
-			Surname: user.Surname,
-			Role:    user.Role,
-		},
+		User:  user.GetWithNoPassword(),
 	}
 
 	c.JSON(http.StatusOK, response.Create(res))

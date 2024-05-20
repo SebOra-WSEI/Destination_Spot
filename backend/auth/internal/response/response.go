@@ -21,7 +21,7 @@ var (
 	ErrEmptyFields              = errors.New("Fields can not be empty")
 	ErrUserAlreadyExists        = errors.New("User already exists")
 	ErrUserNotFound             = errors.New("User not found")
-	ErrWhileCreatingUser        = errors.New("Error while creating user")
+	ErrWhileUpdatingUser        = errors.New("Error while updating user")
 	ErrInvalidEmailFormat       = errors.New("Invalid email format")
 	ErrInvalidDomain            = errors.New("Email should be a part of correct domain")
 	ErrMinCharacterLength       = errors.New("Password must contains at least 8 characters")
