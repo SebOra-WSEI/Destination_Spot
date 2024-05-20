@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"fmt"
-	"github.com/SebastianOraczek/auth/database"
 	"github.com/SebastianOraczek/auth/internal/model"
 	"github.com/SebastianOraczek/auth/internal/password"
 	"github.com/SebastianOraczek/auth/internal/permission"
@@ -32,8 +30,8 @@ func AccessControl(c *gin.Context) {
 	}
 
 	var user model.User
-	if err := database.Db.First(&user, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, response.CreateError(response.ErrUserNotFound))
+	if err := user.FindById(id, &user); err != nil {
+		c.JSON(http.StatusNotFound, response.CreateError(err))
 		return
 	}
 
@@ -58,21 +56,14 @@ func AccessControl(c *gin.Context) {
 
 	user.Password = newPassword
 
-	if err := database.Db.Save(&user).Error; err != nil {
-		fmt.Println("Problem saving user", err.Error())
-		c.JSON(http.StatusInternalServerError, response.CreateError(response.ErrWhileCreatingUser))
+	if err := user.Update(&user); err != nil {
+		c.JSON(http.StatusInternalServerError, response.CreateError(err))
 		return
 	}
 
 	res := model.UserResponse{
 		Message: response.PasswordChangedMsg,
-		User: model.NoPasswordUser{
-			ID:      user.Id,
-			Email:   user.Email,
-			Name:    user.Name,
-			Surname: user.Surname,
-			Role:    user.Role,
-		},
+		User:    user.GetWithNoPassword(),
 	}
 
 	c.JSON(http.StatusOK, response.Create(res))
