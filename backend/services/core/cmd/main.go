@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/SebOra-WSEI/Destination_spot/shared/example"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 const Port = ":8080"
 
 func main() {
+	example.Example()
 	r := gin.Default()
 
 	r.GET(

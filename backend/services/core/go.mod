@@ -2,7 +2,12 @@ module github.com/SebOra-WSEI/Destination_spot/core
 
 go 1.21.5
 
-require github.com/gin-gonic/gin v1.10.0
+require (
+	github.com/gin-gonic/gin v1.10.0
+	github.com/SebOra-WSEI/Destination_spot/shared v0.0.0
+)
+
+replace github.com/SebOra-WSEI/Destination_spot/shared => ../../shared
 
 require (
 	github.com/bytedance/sonic v1.11.6 // indirect
