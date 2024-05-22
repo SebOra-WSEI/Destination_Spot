@@ -2,31 +2,31 @@ package password
 
 import (
 	"fmt"
-	 "github.com/SebOra-WSEI/Destination_spot/auth/internal/message"
+	"github.com/SebOra-WSEI/Destination_spot/shared/response"
 	"golang.org/x/crypto/bcrypt"
 	"regexp"
 )
 
 func Validate(password, confirmPassword string) error {
 	if len(password) < 8 {
-		return message.ErrMinCharacterLength
+		return response.ErrMinCharacterLength
 	}
 
 	if !regexp.MustCompile("[A-Z]+").MatchString(password) {
-		return message.ErrUppercaseCharacter
+		return response.ErrUppercaseCharacter
 	}
 
 	if !regexp.MustCompile("[0-9]+").MatchString(password) {
-		return message.ErrMissingNumber
+		return response.ErrMissingNumber
 	}
 
 	specialChars := "[!@#$%^&*()_+\\-=\\[\\]{}|\\\\,.?/<>]"
 	if !regexp.MustCompile(specialChars).MatchString(password) {
-		return message.ErrMissingSpecialCharacter
+		return response.ErrMissingSpecialCharacter
 	}
 
 	if confirmPassword != "" && password != confirmPassword {
-		return message.ErrPasswordNotTheSame
+		return response.ErrPasswordNotTheSame
 	}
 
 	return nil
@@ -36,7 +36,7 @@ func Generate(password string) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 12)
 	if err != nil {
 		fmt.Println("Problem with hashing password", err.Error())
-		return "", message.ErrInternalServer
+		return "", response.ErrInternalServer
 	}
 
 	return string(hashedPassword), nil

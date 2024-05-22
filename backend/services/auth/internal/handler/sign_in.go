@@ -2,10 +2,10 @@ package handler
 
 import (
 	"fmt"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/message"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/model"
+	"github.com/SebOra-WSEI/Destination_spot/auth/database"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/password"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/token"
+	"github.com/SebOra-WSEI/Destination_spot/shared/model"
 	"github.com/SebOra-WSEI/Destination_spot/shared/request"
 	"github.com/SebOra-WSEI/Destination_spot/shared/response"
 	"github.com/gin-gonic/gin"
@@ -14,17 +14,27 @@ import (
 	"net/http"
 )
 
+type LoginBody struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type LoggedUserResponse struct {
+	Token string               `json:"token"`
+	User  model.NoPasswordUser `json:"user"`
+}
+
 func SignIn(c *gin.Context) {
-	var body model.LoginBody
+	var body LoginBody
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
 		body.Email, body.Password,
 	) {
-		c.JSON(http.StatusBadRequest, response.CreateError(message.ErrEmptyFields))
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrEmptyFields))
 		return
 	}
 
 	var user model.User
-	if err := user.FindByEmail(body.Email, &user); err != nil {
+	if err := user.FindByEmail(database.Db, body.Email, &user); err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
 	}
@@ -36,17 +46,17 @@ func SignIn(c *gin.Context) {
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password)); err != nil {
 		fmt.Println("Wrong password:", err.Error())
-		c.JSON(http.StatusBadRequest, response.CreateError(message.ErrInvalidLoginOrPassword))
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrInvalidLoginOrPassword))
 		return
 	}
 
 	jwt, err := token.Create(user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, response.CreateError(message.ErrWhileCreatingToken))
+		c.JSON(http.StatusInternalServerError, response.CreateError(response.ErrWhileCreatingToken))
 		return
 	}
 
-	res := model.LoggedUserResponse{
+	res := LoggedUserResponse{
 		Token: jwt,
 		User:  user.GetWithNoPassword(),
 	}

@@ -2,9 +2,8 @@ package handler
 
 import (
 	"github.com/SebOra-WSEI/Destination_spot/auth/database"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/message"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/model"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/password"
+	"github.com/SebOra-WSEI/Destination_spot/shared/model"
 	"github.com/SebOra-WSEI/Destination_spot/shared/permission"
 	"github.com/SebOra-WSEI/Destination_spot/shared/request"
 	"github.com/SebOra-WSEI/Destination_spot/shared/response"
@@ -16,6 +15,12 @@ import (
 	"net/http"
 )
 
+type ResetPasswordBody struct {
+	CurrentPassword    string `json:"currentPassword"`
+	NewPassword        string `json:"newPassword"`
+	ConfirmNewPassword string `json:"confirmNewPassword"`
+}
+
 func ResetPassword(c *gin.Context) {
 	id := c.Param("id")
 	t, err := token.Verify(c.GetHeader(AuthHeader))
@@ -25,8 +30,8 @@ func ResetPassword(c *gin.Context) {
 	}
 
 	var user model.User
-	if err := user.FindById(id, &user); err != nil {
-		c.JSON(http.StatusNotFound, response.CreateError(message.ErrUserNotFound))
+	if err := user.FindById(database.Db, id, &user); err != nil {
+		c.JSON(http.StatusNotFound, response.CreateError(response.ErrUserNotFound))
 		return
 	}
 
@@ -35,21 +40,21 @@ func ResetPassword(c *gin.Context) {
 		return
 	}
 
-	var body model.ResetPasswordBody
+	var body ResetPasswordBody
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
 		body.CurrentPassword, body.NewPassword, body.ConfirmNewPassword,
 	) {
-		c.JSON(http.StatusBadRequest, response.CreateError(message.ErrEmptyFields))
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrEmptyFields))
 		return
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.CurrentPassword)); err != nil {
-		c.JSON(http.StatusBadRequest, response.CreateError(message.ErrInvalidCurrentPassword))
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrInvalidCurrentPassword))
 		return
 	}
 
 	if body.CurrentPassword == body.NewPassword {
-		c.JSON(http.StatusBadRequest, response.CreateError(message.ErrPasswordTheSame))
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrPasswordTheSame))
 		return
 	}
 
@@ -66,13 +71,13 @@ func ResetPassword(c *gin.Context) {
 
 	user.Password = newPassword
 
-	if err := user.Update(&user); err != nil {
+	if err := user.Update(database.Db, &user); err != nil {
 		c.JSON(http.StatusInternalServerError, response.CreateError(err))
 		return
 	}
 
 	res := model.UserResponse{
-		Message: message.PasswordChangedMsg,
+		Message: response.PasswordChangedMsg,
 		User:    user.GetWithNoPassword(),
 	}
 

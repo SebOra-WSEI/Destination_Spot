@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"github.com/SebOra-WSEI/Destination_spot/auth/database"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/email"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/message"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/model"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/password"
+	"github.com/SebOra-WSEI/Destination_spot/shared/model"
 	"github.com/SebOra-WSEI/Destination_spot/shared/request"
 	"github.com/SebOra-WSEI/Destination_spot/shared/response"
 	"github.com/gin-gonic/gin"
@@ -16,12 +15,18 @@ import (
 
 const UserRole string = "user"
 
+type AuthBody struct {
+	Email           string `json:"email"`
+	Password        string `json:"password"`
+	ConfirmPassword string `json:"confirmPassword"`
+}
+
 func SignUp(c *gin.Context) {
-	var body model.AuthBody
+	var body AuthBody
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
 		body.Email, body.Password, body.ConfirmPassword,
 	) {
-		c.JSON(http.StatusBadRequest, response.CreateError(message.ErrEmptyFields))
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrEmptyFields))
 		return
 	}
 
@@ -37,7 +42,7 @@ func SignUp(c *gin.Context) {
 
 	var user model.User
 	if err := database.Db.Where("email = ?", body.Email).First(&user).Error; err == nil {
-		c.JSON(http.StatusBadRequest, response.CreateError(message.ErrUserAlreadyExists))
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrUserAlreadyExists))
 		return
 	}
 
@@ -59,12 +64,12 @@ func SignUp(c *gin.Context) {
 
 	if err := database.Db.Create(&newUser).Error; err != nil {
 		fmt.Println("Problem creating new user", err.Error())
-		c.JSON(http.StatusInternalServerError, response.CreateError(message.ErrProblemWhileRegistration))
+		c.JSON(http.StatusInternalServerError, response.CreateError(response.ErrProblemWhileRegistration))
 		return
 	}
 
 	res := model.UserResponse{
-		Message: message.UserCreatedMsg,
+		Message: response.UserCreatedMsg,
 		User:    newUser.GetWithNoPassword(),
 	}
 
