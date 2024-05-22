@@ -1,12 +1,13 @@
 package handler
 
 import (
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/model"
+	"github.com/SebOra-WSEI/Destination_spot/auth/database"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/password"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/permission"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/request"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/response"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/token"
+	"github.com/SebOra-WSEI/Destination_spot/shared/model"
+	"github.com/SebOra-WSEI/Destination_spot/shared/permission"
+	"github.com/SebOra-WSEI/Destination_spot/shared/request"
+	"github.com/SebOra-WSEI/Destination_spot/shared/response"
+	"github.com/SebOra-WSEI/Destination_spot/shared/token"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/golang-jwt/jwt/v5"
@@ -14,6 +15,11 @@ import (
 )
 
 const AuthHeader string = "Authorization"
+
+type ActionControlBody struct {
+	NewPassword        string `json:"newPassword"`
+	ConfirmNewPassword string `json:"confirmNewPassword"`
+}
 
 func AccessControl(c *gin.Context) {
 	id := c.Param("id")
@@ -30,12 +36,12 @@ func AccessControl(c *gin.Context) {
 	}
 
 	var user model.User
-	if err := user.FindById(id, &user); err != nil {
+	if err := user.FindById(database.Db, id, &user); err != nil {
 		c.JSON(http.StatusNotFound, response.CreateError(err))
 		return
 	}
 
-	var body model.ActionControlBody
+	var body ActionControlBody
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
 		body.NewPassword, body.ConfirmNewPassword,
 	) {
@@ -56,7 +62,7 @@ func AccessControl(c *gin.Context) {
 
 	user.Password = newPassword
 
-	if err := user.Update(&user); err != nil {
+	if err := user.Update(database.Db, &user); err != nil {
 		c.JSON(http.StatusInternalServerError, response.CreateError(err))
 		return
 	}

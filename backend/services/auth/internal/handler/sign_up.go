@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"github.com/SebOra-WSEI/Destination_spot/auth/database"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/email"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/model"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/password"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/request"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/response"
+	"github.com/SebOra-WSEI/Destination_spot/shared/model"
+	"github.com/SebOra-WSEI/Destination_spot/shared/request"
+	"github.com/SebOra-WSEI/Destination_spot/shared/response"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"net/http"
@@ -15,8 +15,14 @@ import (
 
 const UserRole string = "user"
 
+type AuthBody struct {
+	Email           string `json:"email"`
+	Password        string `json:"password"`
+	ConfirmPassword string `json:"confirmPassword"`
+}
+
 func SignUp(c *gin.Context) {
-	var body model.AuthBody
+	var body AuthBody
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
 		body.Email, body.Password, body.ConfirmPassword,
 	) {

@@ -2,19 +2,30 @@ package handler
 
 import (
 	"fmt"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/model"
+	"github.com/SebOra-WSEI/Destination_spot/auth/database"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/password"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/request"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/response"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/token"
+	"github.com/SebOra-WSEI/Destination_spot/shared/model"
+	"github.com/SebOra-WSEI/Destination_spot/shared/request"
+	"github.com/SebOra-WSEI/Destination_spot/shared/response"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
 
+type LoginBody struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type LoggedUserResponse struct {
+	Token string               `json:"token"`
+	User  model.NoPasswordUser `json:"user"`
+}
+
 func SignIn(c *gin.Context) {
-	var body model.LoginBody
+	var body LoginBody
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
 		body.Email, body.Password,
 	) {
@@ -23,7 +34,7 @@ func SignIn(c *gin.Context) {
 	}
 
 	var user model.User
-	if err := user.FindByEmail(body.Email, &user); err != nil {
+	if err := user.FindByEmail(database.Db, body.Email, &user); err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
 	}
@@ -45,7 +56,7 @@ func SignIn(c *gin.Context) {
 		return
 	}
 
-	res := model.LoggedUserResponse{
+	res := LoggedUserResponse{
 		Token: jwt,
 		User:  user.GetWithNoPassword(),
 	}

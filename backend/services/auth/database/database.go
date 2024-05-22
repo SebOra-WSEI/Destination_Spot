@@ -2,9 +2,10 @@ package database
 
 import (
 	"fmt"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/env"
+	"github.com/SebOra-WSEI/Destination_spot/shared/env"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"log"
 )
 
 var Db *gorm.DB
@@ -12,7 +13,10 @@ var Db *gorm.DB
 func Start() {
 	var err error
 
-	connStr := env.GetEnvVariableByName(env.ConnectionString)
+	connStr, err := env.GetEnvVariableByName(env.ConnectionString)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 
 	Db, err = gorm.Open("mysql", connStr)
 	if err != nil {
