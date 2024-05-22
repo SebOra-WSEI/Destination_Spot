@@ -1,9 +1,9 @@
 package model
 
 import (
-	 "fmt"
-	 "github.com/SebOra-WSEI/Destination_spot/shared/response"
-	 "github.com/jinzhu/gorm"
+	"fmt"
+	"github.com/SebOra-WSEI/Destination_spot/shared/response"
+	"github.com/jinzhu/gorm"
 )
 
 type NoPasswordUser struct {
@@ -18,6 +18,7 @@ type UserResponse struct {
 	Message string         `json:"response"`
 	User    NoPasswordUser `json:"user"`
 }
+
 type User struct {
 	Id       uint
 	Email    string
