@@ -1,21 +1,8 @@
-package response
+package message
 
 import (
 	"errors"
-	"github.com/gin-gonic/gin"
 )
-
-func createResponseObject(field string, res interface{}) gin.H {
-	return gin.H{field: res}
-}
-
-func CreateError(err error) gin.H {
-	return createResponseObject("error", err.Error())
-}
-
-func Create(res interface{}) gin.H {
-	return createResponseObject("response", res)
-}
 
 var (
 	ErrEmptyFields              = errors.New("Fields can not be empty")
@@ -35,10 +22,6 @@ var (
 	ErrProblemWhileRegistration = errors.New("Problem while registration")
 	ErrInvalidLoginOrPassword   = errors.New("Invalid login or password")
 	ErrWhileCreatingToken       = errors.New("Error while creating token")
-	ErrAuthTokenNotFound        = errors.New("Authorization token not found")
-	ErrAuthTokenIncorrectFormat = errors.New("Incorrect authorization token format")
-	ErrTokenExpired             = errors.New("Expired token. Please log in again")
-	ErrActionNotPermitted       = errors.New("Action not permitted")
 )
 
 const (

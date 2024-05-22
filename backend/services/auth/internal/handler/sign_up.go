@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"github.com/SebOra-WSEI/Destination_spot/auth/database"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/email"
+	"github.com/SebOra-WSEI/Destination_spot/auth/internal/message"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/model"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/password"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/request"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/response"
+	"github.com/SebOra-WSEI/Destination_spot/shared/request"
+	"github.com/SebOra-WSEI/Destination_spot/shared/response"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"net/http"
@@ -20,7 +21,7 @@ func SignUp(c *gin.Context) {
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
 		body.Email, body.Password, body.ConfirmPassword,
 	) {
-		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrEmptyFields))
+		c.JSON(http.StatusBadRequest, response.CreateError(message.ErrEmptyFields))
 		return
 	}
 
@@ -36,7 +37,7 @@ func SignUp(c *gin.Context) {
 
 	var user model.User
 	if err := database.Db.Where("email = ?", body.Email).First(&user).Error; err == nil {
-		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrUserAlreadyExists))
+		c.JSON(http.StatusBadRequest, response.CreateError(message.ErrUserAlreadyExists))
 		return
 	}
 
@@ -58,12 +59,12 @@ func SignUp(c *gin.Context) {
 
 	if err := database.Db.Create(&newUser).Error; err != nil {
 		fmt.Println("Problem creating new user", err.Error())
-		c.JSON(http.StatusInternalServerError, response.CreateError(response.ErrProblemWhileRegistration))
+		c.JSON(http.StatusInternalServerError, response.CreateError(message.ErrProblemWhileRegistration))
 		return
 	}
 
 	res := model.UserResponse{
-		Message: response.UserCreatedMsg,
+		Message: message.UserCreatedMsg,
 		User:    newUser.GetWithNoPassword(),
 	}
 

@@ -3,7 +3,7 @@ package model
 import (
 	"fmt"
 	"github.com/SebOra-WSEI/Destination_spot/auth/database"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/response"
+	"github.com/SebOra-WSEI/Destination_spot/auth/internal/message"
 )
 
 type User struct {
@@ -18,7 +18,7 @@ type User struct {
 func (u User) FindByEmail(email string, user *User) error {
 	if err := database.Db.Where("email = ?", email).First(&user).Error; err != nil {
 		fmt.Println("User not found:", err.Error())
-		return response.ErrInvalidLoginOrPassword
+		return message.ErrInvalidLoginOrPassword
 	}
 
 	return nil
@@ -27,7 +27,7 @@ func (u User) FindByEmail(email string, user *User) error {
 func (u User) FindById(id string, user *User) error {
 	if err := database.Db.First(&user, id).Error; err != nil {
 		fmt.Println("User not found:", err.Error())
-		return response.ErrUserNotFound
+		return message.ErrUserNotFound
 	}
 
 	return nil
@@ -36,7 +36,7 @@ func (u User) FindById(id string, user *User) error {
 func (u User) Update(user *User) error {
 	if err := database.Db.Save(&user).Error; err != nil {
 		fmt.Println("Problem saving user", err.Error())
-		return response.ErrWhileUpdatingUser
+		return message.ErrWhileUpdatingUser
 	}
 
 	return nil
@@ -61,7 +61,7 @@ type NoPasswordUser struct {
 }
 
 type UserResponse struct {
-	Message string         `json:"message"`
+	Message string         `json:"response"`
 	User    NoPasswordUser `json:"user"`
 }
 

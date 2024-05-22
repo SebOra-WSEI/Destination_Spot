@@ -1,28 +1,24 @@
 package main
 
 import (
-	"fmt"
-	"github.com/SebOra-WSEI/Destination_spot/auth/database"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/route"
-	"github.com/SebOra-WSEI/Destination_spot/shared/example"
-	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
-	"log"
+	 "github.com/SebOra-WSEI/Destination_spot/auth/database"
+	 "github.com/SebOra-WSEI/Destination_spot/auth/internal/route"
+	 "github.com/SebOra-WSEI/Destination_spot/shared/env"
+	 "github.com/gin-gonic/gin"
+	 "log"
 )
 
 const Port = ":8081"
 
 func main() {
-	example.Example()
-	if err := godotenv.Load("../.env"); err != nil {
-		fmt.Println(err.Error())
-		log.Fatal("Error loading .env file")
-	}
+	 if err := env.Load("../.env"); err != nil {
+		  log.Fatal("Error loading .env file")
+	 }
 
-	database.Start()
+	 database.Start()
 
-	r := gin.Default()
-	route.Init(r)
+	 r := gin.Default()
+	 route.Init(r)
 
-	log.Fatal(r.Run(Port))
+	 log.Fatal(r.Run(Port))
 }

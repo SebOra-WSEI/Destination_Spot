@@ -2,11 +2,12 @@ package handler
 
 import (
 	"fmt"
+	"github.com/SebOra-WSEI/Destination_spot/auth/internal/message"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/model"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/password"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/request"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/response"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/token"
+	"github.com/SebOra-WSEI/Destination_spot/shared/request"
+	"github.com/SebOra-WSEI/Destination_spot/shared/response"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"golang.org/x/crypto/bcrypt"
@@ -18,7 +19,7 @@ func SignIn(c *gin.Context) {
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
 		body.Email, body.Password,
 	) {
-		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrEmptyFields))
+		c.JSON(http.StatusBadRequest, response.CreateError(message.ErrEmptyFields))
 		return
 	}
 
@@ -35,13 +36,13 @@ func SignIn(c *gin.Context) {
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password)); err != nil {
 		fmt.Println("Wrong password:", err.Error())
-		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrInvalidLoginOrPassword))
+		c.JSON(http.StatusBadRequest, response.CreateError(message.ErrInvalidLoginOrPassword))
 		return
 	}
 
 	jwt, err := token.Create(user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, response.CreateError(response.ErrWhileCreatingToken))
+		c.JSON(http.StatusInternalServerError, response.CreateError(message.ErrWhileCreatingToken))
 		return
 	}
 

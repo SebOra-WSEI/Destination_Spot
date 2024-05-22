@@ -1,22 +1,27 @@
 package email
 
 import (
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/env"
-	"github.com/SebOra-WSEI/Destination_spot/auth/internal/response"
+	 "github.com/SebOra-WSEI/Destination_spot/auth/internal/message"
+	"github.com/SebOra-WSEI/Destination_spot/shared/env"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
+	"log"
 	"net/mail"
 	"strings"
 )
 
 func Validate(email string) error {
 	if _, err := mail.ParseAddress(email); err != nil {
-		return response.ErrInvalidEmailFormat
+		return message.ErrInvalidEmailFormat
 	}
 
-	domain := env.GetEnvVariableByName(env.Domain)
+	domain, err := env.GetEnvVariableByName(env.Domain)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
 	if len(email) < len(domain) || email[len(email)-len(domain):] != domain {
-		return response.ErrInvalidDomain
+		return message.ErrInvalidDomain
 	}
 
 	return nil
