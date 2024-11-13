@@ -15,18 +15,18 @@ services:
 #    networks:
 #      - app-network
 #
-#  core:
-#    container_name: core
-#    restart: "always"
-#    build:
-#      context: ./backend
-#      dockerfile: ./services/core/Dockerfile
-#    ports:
-#      - "8080:8080"
+  core:
+    container_name: core
+    restart: "always"
+    build:
+      context: ./backend
+      dockerfile: ./services/core/Dockerfile
+    ports:
+      - "8080:8080"
 #    depends_on:
 #      - database
-#    networks:
-#      - app-network
+    networks:
+      - app-network
 
   auth:
     container_name: authorization

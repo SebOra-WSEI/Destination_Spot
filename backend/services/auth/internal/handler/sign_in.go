@@ -14,18 +14,8 @@ import (
 	"net/http"
 )
 
-type LoginBody struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
-type LoggedUserResponse struct {
-	Token string               `json:"token"`
-	User  model.NoPasswordUser `json:"user"`
-}
-
 func SignIn(c *gin.Context) {
-	var body LoginBody
+	var body model.LoginBody
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
 		body.Email, body.Password,
 	) {
@@ -56,7 +46,7 @@ func SignIn(c *gin.Context) {
 		return
 	}
 
-	res := LoggedUserResponse{
+	res := model.LoggedUserResponse{
 		Token: jwt,
 		User:  user.GetWithNoPassword(),
 	}
