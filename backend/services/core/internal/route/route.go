@@ -20,4 +20,5 @@ func Init(r *gin.Engine) {
 	r.GET("/spots", handler.GetAllSpots)
 	r.POST("/spots", handler.CreateSpot)
 	r.GET("/spots/:id", handler.GetSpot)
+	r.DELETE("/spots/:id", handler.DeleteSpot)
 }

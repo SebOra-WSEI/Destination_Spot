@@ -48,5 +48,6 @@ var (
 const (
 	UserCreatedMsg     string = "User created successfully!"
 	SpotCreatedMsg            = "Spot created successfully!"
+	SpotRemoveMsg             = "Spot removed successfully!"
 	PasswordChangedMsg        = "Password changed successfully!"
 )
