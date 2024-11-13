@@ -12,38 +12,38 @@ import (
 )
 
 const (
-	AuthServiceHost string = "http://host.docker.internal:8081"
-	AuthHeader             = "Authorization"
+	AuthServiceHost     string = "http://host.docker.internal:8081"
+	AuthorizationHeader        = "Authorization"
 )
 
 func SignIn(c *gin.Context) {
-	statusCode, res := makePostCall(c, "sign-in")
-	c.JSON(statusCode, res)
+	statusCode, res := makePostCall(c, "sign-in", model.LoggedUserResponse{})
+	c.JSON(statusCode, response.Create(res))
 }
 
 func SignUp(c *gin.Context) {
-	statusCode, res := makePostCall(c, "sign-up")
-	c.JSON(statusCode, res)
+	statusCode, res := makePostCall(c, "sign-up", model.NoPasswordUser{})
+	c.JSON(statusCode, response.Create(res))
 }
 
 func ResetPassword(c *gin.Context) {
 	statusCode, res := makePutCall(c, "reset-password")
-	c.JSON(statusCode, res)
+	c.JSON(statusCode, response.Create(res))
 }
 
 func AccessControl(c *gin.Context) {
 	statusCode, res := makePutCall(c, "access-control")
-	c.JSON(statusCode, res)
+	c.JSON(statusCode, response.Create(res))
 }
 
-func makePostCall(c *gin.Context, address string) (statusCode int, r interface{}) {
+func makePostCall(c *gin.Context, address string, t interface{}) (statusCode int, r interface{}) {
 	res, err := http.Post(AuthServiceHost+"/"+address, "application/json", c.Request.Body)
 	if err != nil {
 		fmt.Println(err)
 		return http.StatusInternalServerError, gin.H{"error": response.ErrRequestNotExecuted}
 	}
 
-	body, err := handleBody(res, model.LoggedUserResponse{})
+	body, err := handleBody(res, t)
 	if err != nil {
 		return http.StatusInternalServerError, gin.H{"error": err}
 	}
@@ -62,7 +62,7 @@ func makePutCall(c *gin.Context, address string) (statusCode int, r interface{})
 		return http.StatusInternalServerError, gin.H{"error": response.ErrRequestNotExecuted}
 	}
 
-	req.Header.Set(AuthHeader, c.GetHeader(AuthHeader))
+	req.Header.Set(AuthorizationHeader, c.GetHeader(AuthorizationHeader))
 
 	client := &http.Client{}
 	res, err := client.Do(req)
@@ -71,7 +71,7 @@ func makePutCall(c *gin.Context, address string) (statusCode int, r interface{})
 		return http.StatusInternalServerError, gin.H{"error": response.ErrRequestNotExecuted}
 	}
 
-	body, err := handleBody(res, model.UserResponse{})
+	body, err := handleBody(res, model.UserResponseWithAction{})
 	if err != nil {
 		return http.StatusInternalServerError, gin.H{"error": err}
 	}
