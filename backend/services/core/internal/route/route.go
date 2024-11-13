@@ -18,5 +18,6 @@ func Init(r *gin.Engine) {
 
 	// Spots endpoints
 	r.GET("/spots", handler.GetAllSpots)
+	r.POST("/spots", handler.CreateSpot)
 	r.GET("/spots/:id", handler.GetSpot)
 }
