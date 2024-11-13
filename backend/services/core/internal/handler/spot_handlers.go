@@ -32,3 +32,21 @@ func GetAllSpots(c *gin.Context) {
 
 	 c.JSON(http.StatusOK, response.Create(AllSpotsResponse{Spots: spots}))
 }
+
+func GetSpot(c *gin.Context) {
+	 id := c.Params.ByName("id")
+
+	 _, err := token.Verify(c.GetHeader(AuthorizationHeader))
+	 if err != nil {
+		  c.JSON(http.StatusBadRequest, response.CreateError(err))
+		  return
+	 }
+
+	 var spot Spot
+	 if err := database.Db.First(&spot, id).Error; err != nil {
+		  c.JSON(http.StatusNotFound, response.CreateError(response.ErrSpotNotFound))
+		  return
+	 }
+
+	 c.JSON(http.StatusOK, response.Create(spot))
+}

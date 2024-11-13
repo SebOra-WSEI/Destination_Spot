@@ -19,6 +19,7 @@ func Create(res interface{}) gin.H {
 
 var (
 	ErrUserNotFound             = errors.New("User not found")
+	ErrSpotNotFound             = errors.New("Spot not found")
 	ErrWhileUpdatingUser        = errors.New("Error while updating user")
 	ErrInternalServer           = errors.New("Internal server error")
 	ErrAuthTokenNotFound        = errors.New("Authorization token not found")
