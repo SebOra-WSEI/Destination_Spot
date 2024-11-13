@@ -39,6 +39,7 @@ var (
 	ErrProblemWhileRegistration = errors.New("Problem while registration")
 	ErrInvalidLoginOrPassword   = errors.New("Invalid login or password")
 	ErrWhileCreatingToken       = errors.New("Error while creating token")
+	ErrRequestNotExecuted       = errors.New("Request can not be executed")
 )
 
 const (
