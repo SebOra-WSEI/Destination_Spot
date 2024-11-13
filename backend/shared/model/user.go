@@ -14,9 +14,13 @@ type NoPasswordUser struct {
 	Role    string `json:"role"`
 }
 
-type UserResponse struct {
+type UserResponseWithAction struct {
 	Message string         `json:"message"`
 	User    NoPasswordUser `json:"user"`
+}
+
+type UserResponse struct {
+	User NoPasswordUser `json:"user"`
 }
 
 type UsersResponse struct {

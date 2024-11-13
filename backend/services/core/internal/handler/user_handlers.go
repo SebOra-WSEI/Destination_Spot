@@ -44,3 +44,41 @@ func GetAllUsers(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response.Create(model.UsersResponse{Users: noPasswordUsers}))
 }
+
+func GetUser(c *gin.Context) {
+	id := c.Params.ByName("id")
+
+	t, err := token.Verify(c.GetHeader(AuthorizationHeader))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, response.CreateError(err))
+		return
+	}
+
+	var user model.User
+	if err := database.Db.First(&user, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, response.CreateError(response.ErrUserNotFound))
+		return
+	}
+
+	noPasswordUser := model.UserResponse{
+		User: model.NoPasswordUser{
+			ID:      user.ID,
+			Email:   user.Email,
+			Name:    user.Name,
+			Surname: user.Surname,
+			Role:    user.Role,
+		},
+	}
+
+	if adminCode, err := permission.Admin(t.Claims.(jwt.MapClaims)); err != nil {
+		if _, err := permission.User(database.Db, user.ID, t.Claims.(jwt.MapClaims)); err == nil {
+			c.JSON(http.StatusOK, response.Create(noPasswordUser))
+			return
+		}
+
+		c.JSON(adminCode, response.CreateError(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, response.Create(noPasswordUser))
+}

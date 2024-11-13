@@ -71,7 +71,7 @@ func makePutCall(c *gin.Context, address string) (statusCode int, r interface{})
 		return http.StatusInternalServerError, gin.H{"error": response.ErrRequestNotExecuted}
 	}
 
-	body, err := handleBody(res, model.UserResponse{})
+	body, err := handleBody(res, model.UserResponseWithAction{})
 	if err != nil {
 		return http.StatusInternalServerError, gin.H{"error": err}
 	}

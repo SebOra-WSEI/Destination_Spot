@@ -76,7 +76,7 @@ func ResetPassword(c *gin.Context) {
 		return
 	}
 
-	res := model.UserResponse{
+	res := model.UserResponseWithAction{
 		Message: response.PasswordChangedMsg,
 		User:    user.GetWithNoPassword(),
 	}
