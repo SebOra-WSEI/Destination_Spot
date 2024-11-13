@@ -14,7 +14,7 @@ import (
 	"net/http"
 )
 
-const AuthHeader string = "Authorization"
+const AuthorizationHeader string = "Authorization"
 
 type ActionControlBody struct {
 	NewPassword        string `json:"newPassword"`
@@ -24,7 +24,7 @@ type ActionControlBody struct {
 func AccessControl(c *gin.Context) {
 	id := c.Param("id")
 
-	t, err := token.Verify(c.GetHeader(AuthHeader))
+	t, err := token.Verify(c.GetHeader(AuthorizationHeader))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return

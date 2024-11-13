@@ -24,7 +24,7 @@ func User(db *gorm.DB, id uint, claims jwt.MapClaims) (int, error) {
 		return http.StatusNotFound, response.ErrUserNotFound
 	}
 
-	if reqUser.Id != id {
+	if reqUser.ID != id {
 		fmt.Println("Password must be changed by owner")
 		return http.StatusForbidden, response.ErrActionNotPermitted
 	}

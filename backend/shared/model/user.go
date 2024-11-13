@@ -15,17 +15,21 @@ type NoPasswordUser struct {
 }
 
 type UserResponse struct {
-	Message string         `json:"response"`
+	Message string         `json:"message"`
 	User    NoPasswordUser `json:"user"`
 }
 
+type UsersResponse struct {
+	Users []NoPasswordUser `json:"users"`
+}
+
 type User struct {
-	Id       uint
-	Email    string
-	Password string
-	Role     string
-	Name     string
-	Surname  string
+	ID       uint   `json:"id"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Role     string `json:"role"`
+	Name     string `json:"name"`
+	Surname  string `json:"surname"`
 }
 
 func (u User) FindByEmail(db *gorm.DB, email string, user *User) error {
@@ -57,7 +61,7 @@ func (u User) Update(db *gorm.DB, user *User) error {
 
 func (u User) GetWithNoPassword() NoPasswordUser {
 	return NoPasswordUser{
-		ID:      u.Id,
+		ID:      u.ID,
 		Email:   u.Email,
 		Name:    u.Name,
 		Surname: u.Surname,

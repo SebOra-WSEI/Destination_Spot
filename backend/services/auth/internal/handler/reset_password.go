@@ -23,7 +23,7 @@ type ResetPasswordBody struct {
 
 func ResetPassword(c *gin.Context) {
 	id := c.Param("id")
-	t, err := token.Verify(c.GetHeader(AuthHeader))
+	t, err := token.Verify(c.GetHeader(AuthorizationHeader))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
@@ -35,7 +35,7 @@ func ResetPassword(c *gin.Context) {
 		return
 	}
 
-	if code, err := permission.User(database.Db, user.Id, t.Claims.(jwt.MapClaims)); err != nil {
+	if code, err := permission.User(database.Db, user.ID, t.Claims.(jwt.MapClaims)); err != nil {
 		c.JSON(code, response.CreateError(err))
 		return
 	}

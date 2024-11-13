@@ -5,6 +5,7 @@ go 1.21.5
 require (
 	github.com/SebOra-WSEI/Destination_spot/shared v0.0.0
 	github.com/gin-gonic/gin v1.10.0
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/jinzhu/gorm v1.9.16
 )
 
