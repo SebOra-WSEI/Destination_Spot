@@ -67,7 +67,7 @@ func AccessControl(c *gin.Context) {
 		return
 	}
 
-	res := model.UserResponseWithAction{
+	res := model.UserResponseWithMessage{
 		Message: response.PasswordChangedMsg,
 		User:    user.GetWithNoPassword(),
 	}
