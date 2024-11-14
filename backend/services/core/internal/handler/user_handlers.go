@@ -42,7 +42,7 @@ func GetAllUsers(c *gin.Context) {
 		)
 	}
 
-	c.JSON(http.StatusOK, response.Create(model.UsersResponse{Users: noPasswordUsers}))
+	c.JSON(http.StatusOK, response.Create(model.AllUsersResponse{Users: noPasswordUsers}))
 }
 
 func GetUser(c *gin.Context) {
@@ -55,19 +55,13 @@ func GetUser(c *gin.Context) {
 	}
 
 	var user model.User
-	if err := database.Db.First(&user, id).Error; err != nil {
+	if err := user.FindById(database.Db, id, &user); err != nil {
 		c.JSON(http.StatusNotFound, response.CreateError(response.ErrUserNotFound))
 		return
 	}
 
 	noPasswordUser := model.UserResponse{
-		User: model.NoPasswordUser{
-			ID:      user.ID,
-			Email:   user.Email,
-			Name:    user.Name,
-			Surname: user.Surname,
-			Role:    user.Role,
-		},
+		User: user.GetWithNoPassword(),
 	}
 
 	if adminCode, err := permission.Admin(t.Claims.(jwt.MapClaims)); err != nil {

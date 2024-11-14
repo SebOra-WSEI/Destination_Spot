@@ -1,32 +1,16 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/SebOra-WSEI/Destination_spot/core/database"
+	"github.com/SebOra-WSEI/Destination_spot/core/internal/model"
+	"github.com/SebOra-WSEI/Destination_spot/shared/permission"
 	"github.com/SebOra-WSEI/Destination_spot/shared/response"
 	"github.com/SebOra-WSEI/Destination_spot/shared/token"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/golang-jwt/jwt/v5"
 	"net/http"
 )
-
-type Spot struct {
-	ID       uint `json:"id"`
-	Location int  `json:"location"`
-}
-
-type SpotBody struct {
-	Location int `json:"location"`
-}
-
-type SpotResponse struct {
-	Message string `json:"message"`
-	Spot    Spot   `json:"spot"`
-}
-
-type AllSpotsResponse struct {
-	Spots []Spot `json:"spots"`
-}
 
 func GetAllSpots(c *gin.Context) {
 	_, err := token.Verify(c.GetHeader(AuthorizationHeader))
@@ -35,13 +19,13 @@ func GetAllSpots(c *gin.Context) {
 		return
 	}
 
-	var spots []Spot
+	var spots []model.Spot
 	if err := database.Db.Find(&spots).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, response.CreateError(err))
 		return
 	}
 
-	c.JSON(http.StatusOK, response.Create(AllSpotsResponse{Spots: spots}))
+	c.JSON(http.StatusOK, response.Create(model.AllSpotsResponse{Spots: spots}))
 }
 
 func GetSpot(c *gin.Context) {
@@ -53,45 +37,49 @@ func GetSpot(c *gin.Context) {
 		return
 	}
 
-	var spot Spot
-	if err := database.Db.First(&spot, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, response.CreateError(response.ErrSpotNotFound))
+	var spot model.Spot
+	if err := spot.FindById(database.Db, id, &spot); err != nil {
+		c.JSON(http.StatusNotFound, response.CreateError(err))
 		return
 	}
 
-	c.JSON(http.StatusOK, response.Create(spot))
+	c.JSON(http.StatusOK, response.Create(model.SpotResponse{Spot: spot}))
 }
 
 func CreateSpot(c *gin.Context) {
-	_, err := token.Verify(c.GetHeader(AuthorizationHeader))
+	t, err := token.Verify(c.GetHeader(AuthorizationHeader))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
 	}
 
-	var body SpotBody
+	if code, err := permission.Admin(t.Claims.(jwt.MapClaims)); err != nil {
+		c.JSON(code, response.CreateError(err))
+		return
+	}
+
+	var body model.SpotBody
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrEmptyFields))
 		return
 	}
 
-	var spot Spot
-	if err := database.Db.Where("location = ?", body.Location).First(&spot).Error; err == nil {
-		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrSpotAlreadyExists))
+	var spot model.Spot
+	if err := spot.FindByLocation(database.Db, body.Location, &spot); err != nil {
+		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
 	}
 
-	newSpot := Spot{
+	newSpot := model.Spot{
 		Location: body.Location,
 	}
 
-	if err := database.Db.Create(&newSpot).Error; err != nil {
-		fmt.Println("Problem while creating a new spot", err.Error())
-		c.JSON(http.StatusInternalServerError, response.CreateError(response.ErrProblemWhileCreatingNewSpot))
+	if err := newSpot.Create(database.Db, &newSpot); err != nil {
+		c.JSON(http.StatusInternalServerError, response.CreateError(err))
 		return
 	}
 
-	res := SpotResponse{
+	res := model.SpotResponseWithMessage{
 		Message: response.SpotCreatedMsg,
 		Spot:    newSpot,
 	}
@@ -102,18 +90,32 @@ func CreateSpot(c *gin.Context) {
 func DeleteSpot(c *gin.Context) {
 	id := c.Params.ByName("id")
 
-	_, err := token.Verify(c.GetHeader(AuthorizationHeader))
+	t, err := token.Verify(c.GetHeader(AuthorizationHeader))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
 	}
 
-	var spot Spot
-	if err := database.Db.First(&spot, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, response.CreateError(response.ErrSpotNotFound))
+	if code, err := permission.Admin(t.Claims.(jwt.MapClaims)); err != nil {
+		c.JSON(code, response.CreateError(err))
 		return
 	}
 
-	database.Db.Delete(&spot)
-	c.JSON(http.StatusOK, response.Create(response.SpotRemoveMsg))
+	var spot model.Spot
+	if err := spot.FindById(database.Db, id, &spot); err != nil {
+		c.JSON(http.StatusNotFound, response.CreateError(err))
+		return
+	}
+
+	if err := spot.Delete(database.Db, &spot); err != nil {
+		c.JSON(http.StatusInternalServerError, response.CreateError(err))
+		return
+	}
+
+	res := model.SpotResponseWithMessage{
+		Message: response.SpotRemoveMsg,
+		Spot:    spot,
+	}
+
+	c.JSON(http.StatusOK, response.Create(res))
 }

@@ -20,6 +20,7 @@ func Create(res interface{}) gin.H {
 var (
 	ErrUserNotFound                = errors.New("User not found")
 	ErrSpotNotFound                = errors.New("Spot not found")
+	ErrReservationNotFound         = errors.New("Reservation not found")
 	ErrWhileUpdatingUser           = errors.New("Error while updating user")
 	ErrInternalServer              = errors.New("Internal server error")
 	ErrAuthTokenNotFound           = errors.New("Authorization token not found")
@@ -40,14 +41,16 @@ var (
 	ErrInvalidCurrentPassword      = errors.New("Invalid current password")
 	ErrProblemWhileRegistration    = errors.New("Problem while registration")
 	ErrProblemWhileCreatingNewSpot = errors.New("Problem while creating a new spot")
+	ErrProblemWhileRemovingNewSpot = errors.New("Problem while removing the spot")
 	ErrInvalidLoginOrPassword      = errors.New("Invalid login or password")
 	ErrWhileCreatingToken          = errors.New("Error while creating token")
 	ErrRequestNotExecuted          = errors.New("Request can not be executed")
 )
 
 const (
-	UserCreatedMsg     string = "User created successfully!"
-	SpotCreatedMsg            = "Spot created successfully!"
-	SpotRemoveMsg             = "Spot removed successfully!"
-	PasswordChangedMsg        = "Password changed successfully!"
+	UserCreatedMsg       string = "User created successfully!"
+	SpotCreatedMsg              = "Spot created successfully!"
+	SpotRemoveMsg               = "Spot removed successfully!"
+	ReservationRemoveMsg        = "Reservation removed successfully!"
+	PasswordChangedMsg          = "Password changed successfully!"
 )

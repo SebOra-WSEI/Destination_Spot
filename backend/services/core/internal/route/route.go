@@ -21,4 +21,10 @@ func Init(r *gin.Engine) {
 	r.POST("/spots", handler.CreateSpot)
 	r.GET("/spots/:id", handler.GetSpot)
 	r.DELETE("/spots/:id", handler.DeleteSpot)
+
+	// Reservations endpoints
+	r.GET("/reservations", handler.GetAllReservations)
+	//r.POST("/reservations", handler.CreateReservation)
+	r.GET("/reservations/:id", handler.GetReservation)
+	r.DELETE("/reservations/:id", handler.DeleteReservation)
 }

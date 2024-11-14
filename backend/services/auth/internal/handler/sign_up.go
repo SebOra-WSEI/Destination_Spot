@@ -68,7 +68,7 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	res := model.UserResponseWithAction{
+	res := model.UserResponseWithMessage{
 		Message: response.UserCreatedMsg,
 		User:    newUser.GetWithNoPassword(),
 	}
