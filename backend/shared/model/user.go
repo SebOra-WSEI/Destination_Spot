@@ -1,74 +1,74 @@
 package model
 
 import (
-	 "fmt"
-	 "github.com/SebOra-WSEI/Destination_spot/shared/response"
-	 "github.com/jinzhu/gorm"
+	"fmt"
+	"github.com/SebOra-WSEI/Destination_spot/shared/response"
+	"github.com/jinzhu/gorm"
 )
 
 type User struct {
-	 ID       uint   `json:"id"`
-	 Email    string `json:"email"`
-	 Password string `json:"password"`
-	 Role     string `json:"role"`
-	 Name     string `json:"name"`
-	 Surname  string `json:"surname"`
+	ID       uint   `json:"id"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Role     string `json:"role"`
+	Name     string `json:"name"`
+	Surname  string `json:"surname"`
 }
 
 type NoPasswordUser struct {
-	 ID      uint   `json:"id"`
-	 Email   string `json:"email"`
-	 Name    string `json:"name"`
-	 Surname string `json:"surname"`
-	 Role    string `json:"role"`
+	ID      uint   `json:"id"`
+	Email   string `json:"email"`
+	Name    string `json:"name"`
+	Surname string `json:"surname"`
+	Role    string `json:"role"`
 }
 
 type UserResponseWithMessage struct {
-	 Message string         `json:"message"`
-	 User    NoPasswordUser `json:"user"`
+	Message string         `json:"message"`
+	User    NoPasswordUser `json:"user"`
 }
 
 type UserResponse struct {
-	 User NoPasswordUser `json:"user"`
+	User NoPasswordUser `json:"user"`
 }
 
 type AllUsersResponse struct {
-	 Users []NoPasswordUser `json:"users"`
+	Users []NoPasswordUser `json:"users"`
 }
 
 func (u User) FindByEmail(db *gorm.DB, email string, user *User) error {
-	 if err := db.Where("email = ?", email).First(&user).Error; err != nil {
-		  fmt.Println("User not found:", err.Error())
-		  return response.ErrUserNotFound
-	 }
+	if err := db.Where("email = ?", email).First(&user).Error; err != nil {
+		fmt.Println("User not found:", err.Error())
+		return response.ErrUserNotFound
+	}
 
-	 return nil
+	return nil
 }
 
 func (u User) FindById(db *gorm.DB, id string, user *User) error {
-	 if err := db.First(&user, id).Error; err != nil {
-		  fmt.Println("User not found:", err.Error())
-		  return response.ErrUserNotFound
-	 }
+	if err := db.First(&user, id).Error; err != nil {
+		fmt.Println("User not found:", err.Error())
+		return response.ErrUserNotFound
+	}
 
-	 return nil
+	return nil
 }
 
 func (u User) Update(db *gorm.DB, user *User) error {
-	 if err := db.Save(&user).Error; err != nil {
-		  fmt.Println("Problem saving user", err.Error())
-		  return response.ErrWhileUpdatingUser
-	 }
+	if err := db.Save(&user).Error; err != nil {
+		fmt.Println("Problem saving user", err.Error())
+		return response.ErrWhileUpdatingUser
+	}
 
-	 return nil
+	return nil
 }
 
 func (u User) GetWithNoPassword() NoPasswordUser {
-	 return NoPasswordUser{
-		  ID:      u.ID,
-		  Email:   u.Email,
-		  Name:    u.Name,
-		  Surname: u.Surname,
-		  Role:    u.Role,
-	 }
+	return NoPasswordUser{
+		ID:      u.ID,
+		Email:   u.Email,
+		Name:    u.Name,
+		Surname: u.Surname,
+		Role:    u.Role,
+	}
 }
