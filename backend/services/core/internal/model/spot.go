@@ -50,6 +50,21 @@ func (u Spot) Create(db *gorm.DB, newSpot *Spot) error {
 }
 
 func (u Spot) Delete(db *gorm.DB, spot *Spot) error {
+	var allReservations []Reservation
+	if err := db.Table("reservations").Select("reservations.*").
+		Where("spot_id = ?", spot.ID).
+		Find(&allReservations).Error; err != nil {
+	}
+
+	if len(allReservations) != 0 {
+		for _, r := range allReservations {
+			if err := r.Delete(db, &r); err != nil {
+				fmt.Println("Problem while deleting reservations during deleting spot", err.Error())
+				return response.ErrInternalServer
+			}
+		}
+	}
+
 	if err := db.Delete(&spot).Error; err != nil {
 		fmt.Println("Problem while deleting the spot", err.Error())
 		return response.ErrProblemWhileRemovingSpot
