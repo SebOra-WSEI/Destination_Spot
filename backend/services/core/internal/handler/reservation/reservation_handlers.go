@@ -32,7 +32,10 @@ func GetAll(c *gin.Context) {
 	}
 
 	var res model.Reservation
-	c.JSON(http.StatusOK, response.Create(res.GetAllWithDetails(reservations)))
+	c.JSON(
+		http.StatusOK,
+		response.Create(model.AllReservationsResponse{Reservations: res.GetAllWithDetails(reservations)}),
+	)
 }
 
 func GetById(c *gin.Context) {
@@ -61,12 +64,7 @@ func Create(c *gin.Context) {
 		return
 	}
 
-	var body struct {
-		UserID       uint `json:"userId"`
-		SpotID       uint `json:"spotId"`
-		ReservedFrom int  `json:"reservedFrom"`
-		ReservedTo   int  `json:"reservedTo"`
-	}
+	var body model.ReservationInputBody
 
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
 		strconv.Itoa(body.ReservedTo), strconv.Itoa(body.ReservedFrom),
@@ -113,6 +111,55 @@ func Create(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, response.Create(res))
+}
+
+func Update(c *gin.Context) {
+	id := c.Params.ByName("id")
+
+	t, err := token.Verify(c.GetHeader(auth.AuthorizationHeader))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, response.CreateError(err))
+		return
+	}
+
+	var body model.ReservationInputBody
+	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
+		strconv.Itoa(body.ReservedTo), strconv.Itoa(body.ReservedFrom),
+	) || body.SpotID == 0 || body.UserID == 0 {
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrEmptyFields))
+		return
+	}
+
+	var reservation model.Reservation
+	if err := reservation.FindById(database.Db, id, &reservation); err != nil {
+		c.JSON(http.StatusNotFound, response.CreateError(err))
+		return
+	}
+
+	if code, err := permission.User(database.Db, reservation.UserID, t.Claims.(jwt.MapClaims)); err != nil {
+		c.JSON(code, response.CreateError(err))
+		return
+	}
+
+	updatedReservation := model.Reservation{
+		ID:           reservation.ID,
+		UserID:       reservation.UserID,
+		SpotID:       body.SpotID,
+		ReservedFrom: body.ReservedFrom,
+		ReservedTo:   body.ReservedTo,
+	}
+
+	if err := updatedReservation.Update(database.Db, &updatedReservation); err != nil {
+		c.JSON(http.StatusInternalServerError, response.CreateError(err))
+		return
+	}
+
+	res := model.ReservationResponseWithMessage{
+		Message:     response.ReservationUpdatedMsg,
+		Reservation: updatedReservation,
+	}
+
+	c.JSON(http.StatusOK, response.Create(res))
 }
 
 func Delete(c *gin.Context) {

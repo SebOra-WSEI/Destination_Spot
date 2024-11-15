@@ -44,6 +44,13 @@ type ReservationDetails struct {
 	userModel.NoPasswordUser
 }
 
+type ReservationInputBody struct {
+	UserID       uint `json:"userId"`
+	SpotID       uint `json:"spotId"`
+	ReservedFrom int  `json:"reservedFrom"`
+	ReservedTo   int  `json:"reservedTo"`
+}
+
 func (r Reservation) FindById(db *gorm.DB, id string, reservation *Reservation) error {
 	if err := db.First(&reservation, id).Error; err != nil {
 		fmt.Println("Reservation not found:", err.Error())
@@ -101,6 +108,10 @@ func (r Reservation) FindByIdWithDetails(db *gorm.DB, id string) (ReservationRes
 func (r Reservation) GetAllWithDetails(reservations []ReservationDetails) []ReservationWithUserAndSpot {
 	var reservationsWithDetails []ReservationWithUserAndSpot
 
+	if len(reservations) == 0 {
+		return []ReservationWithUserAndSpot{}
+	}
+
 	for _, r := range reservations {
 		reservationsWithDetails = append(
 			reservationsWithDetails, ReservationWithUserAndSpot{
@@ -140,6 +151,15 @@ func (r Reservation) Create(db *gorm.DB, newReservation *Reservation) error {
 		fmt.Println("Problem while creating a new reservation", err.Error())
 		return response.ErrProblemWhileCreatingNewReservation
 	}
+	return nil
+}
+
+func (r Reservation) Update(db *gorm.DB, newReservation *Reservation) error {
+	if err := db.Save(&newReservation).Error; err != nil {
+		fmt.Println("Problem while updating a new reservation", err.Error())
+		return response.ErrProblemWhileCreatingNewReservation
+	}
+
 	return nil
 }
 
