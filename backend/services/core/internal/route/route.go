@@ -18,6 +18,7 @@ func Init(r *gin.Engine) {
 	// Users endpoints
 	r.GET("/users", user.GetAll)
 	r.GET("/users/:id", user.GetById)
+	r.DELETE("/users/:id", user.Delete)
 
 	// Spots endpoints
 	r.GET("/spots", spot.GetAll)

@@ -43,6 +43,7 @@ var (
 	 ErrProblemWhileCreatingNewSpot        = errors.New("Problem while creating a new spot")
 	 ErrProblemWhileCreatingNewReservation = errors.New("Problem while creating a new reservation")
 	 ErrProblemWhileRemovingSpot           = errors.New("Problem while removing the spot")
+	 ErrProblemWhileRemovingUser           = errors.New("Problem while removing the user")
 	 ErrProblemWhileRemovingReservation    = errors.New("Problem while removing the reservation")
 	 ErrInvalidLoginOrPassword             = errors.New("Invalid login or password")
 	 ErrWhileCreatingToken                 = errors.New("Error while creating token")
@@ -56,5 +57,6 @@ const (
 	 SpotCreatedMsg               = "Spot created successfully!"
 	 SpotRemoveMsg                = "Spot removed successfully!"
 	 ReservationRemoveMsg         = "Reservation removed successfully!"
+	 UserRemoveMsg                = "User and related reservations removed successfully!"
 	 PasswordChangedMsg           = "Password changed successfully!"
 )
