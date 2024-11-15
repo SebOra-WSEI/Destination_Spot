@@ -56,7 +56,7 @@ func (u User) FindById(db *gorm.DB, id string, user *User) error {
 
 func (u User) Update(db *gorm.DB, user *User) error {
 	if err := db.Save(&user).Error; err != nil {
-		fmt.Println("Problem saving user", err.Error())
+		fmt.Println("Problem while updating user", err.Error())
 		return response.ErrWhileUpdatingUser
 	}
 

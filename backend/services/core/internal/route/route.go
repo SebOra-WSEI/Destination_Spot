@@ -31,4 +31,5 @@ func Init(r *gin.Engine) {
 	r.POST("/reservations", reservation.Create)
 	r.GET("/reservations/:id", reservation.GetById)
 	r.DELETE("/reservations/:id", reservation.Delete)
+	r.PUT("/reservations/:id", reservation.Update)
 }
