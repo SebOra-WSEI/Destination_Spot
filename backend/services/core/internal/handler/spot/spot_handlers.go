@@ -1,7 +1,8 @@
-package handler
+package spot
 
 import (
 	"github.com/SebOra-WSEI/Destination_spot/core/database"
+	"github.com/SebOra-WSEI/Destination_spot/core/internal/handler/auth"
 	"github.com/SebOra-WSEI/Destination_spot/core/internal/model"
 	"github.com/SebOra-WSEI/Destination_spot/shared/permission"
 	"github.com/SebOra-WSEI/Destination_spot/shared/response"
@@ -12,8 +13,8 @@ import (
 	"net/http"
 )
 
-func GetAllSpots(c *gin.Context) {
-	_, err := token.Verify(c.GetHeader(AuthorizationHeader))
+func GetAll(c *gin.Context) {
+	_, err := token.Verify(c.GetHeader(auth.AuthorizationHeader))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
@@ -28,10 +29,10 @@ func GetAllSpots(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Create(model.AllSpotsResponse{Spots: spots}))
 }
 
-func GetSpot(c *gin.Context) {
+func GetById(c *gin.Context) {
 	id := c.Params.ByName("id")
 
-	_, err := token.Verify(c.GetHeader(AuthorizationHeader))
+	_, err := token.Verify(c.GetHeader(auth.AuthorizationHeader))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
@@ -46,8 +47,8 @@ func GetSpot(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Create(model.SpotResponse{Spot: spot}))
 }
 
-func CreateSpot(c *gin.Context) {
-	t, err := token.Verify(c.GetHeader(AuthorizationHeader))
+func Create(c *gin.Context) {
+	t, err := token.Verify(c.GetHeader(auth.AuthorizationHeader))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
@@ -90,10 +91,10 @@ func CreateSpot(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Create(res))
 }
 
-func DeleteSpot(c *gin.Context) {
+func Delete(c *gin.Context) {
 	id := c.Params.ByName("id")
 
-	t, err := token.Verify(c.GetHeader(AuthorizationHeader))
+	t, err := token.Verify(c.GetHeader(auth.AuthorizationHeader))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return

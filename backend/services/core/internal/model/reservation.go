@@ -6,6 +6,7 @@ import (
 	userModel "github.com/SebOra-WSEI/Destination_spot/shared/model"
 	"github.com/SebOra-WSEI/Destination_spot/shared/response"
 	"github.com/jinzhu/gorm"
+	"strconv"
 )
 
 type Reservation struct {
@@ -36,11 +37,18 @@ type AllReservationsResponse struct {
 }
 
 type ReservationDetails struct {
-	ReservationId uint `json:"reservationId"`
-	SpotId        uint `json:"spotId"`
+	ID     uint `json:"reservationId"`
+	SpotId uint `json:"spotId"`
 	Reservation
 	Spot
 	userModel.NoPasswordUser
+}
+
+type ReservationInputBody struct {
+	UserID       uint `json:"userId"`
+	SpotID       uint `json:"spotId"`
+	ReservedFrom int  `json:"reservedFrom"`
+	ReservedTo   int  `json:"reservedTo"`
 }
 
 func (r Reservation) FindById(db *gorm.DB, id string, reservation *Reservation) error {
@@ -100,11 +108,15 @@ func (r Reservation) FindByIdWithDetails(db *gorm.DB, id string) (ReservationRes
 func (r Reservation) GetAllWithDetails(reservations []ReservationDetails) []ReservationWithUserAndSpot {
 	var reservationsWithDetails []ReservationWithUserAndSpot
 
+	if len(reservations) == 0 {
+		return []ReservationWithUserAndSpot{}
+	}
+
 	for _, r := range reservations {
 		reservationsWithDetails = append(
 			reservationsWithDetails, ReservationWithUserAndSpot{
 				Details: Reservation{
-					ID:           r.ReservationId,
+					ID:           r.ID,
 					UserID:       r.UserID,
 					SpotID:       r.SpotID,
 					ReservedFrom: r.ReservedFrom,
@@ -125,15 +137,30 @@ func (r Reservation) GetAllWithDetails(reservations []ReservationDetails) []Rese
 		)
 	}
 
-	var resp []ReservationWithUserAndSpot
+	return reservationsWithDetails
+}
 
-	if len(resp) > 0 {
-		reservationsWithDetails = resp
-	} else {
-		resp = []ReservationWithUserAndSpot{}
+func (r Reservation) Create(db *gorm.DB, newReservation *Reservation) error {
+	var spot Spot
+	if err := spot.FindById(db, strconv.Itoa(int(newReservation.SpotID)), &spot); err != nil {
+		fmt.Println("Selected spot not found", err.Error())
+		return response.ErrSpotNotFound
 	}
 
-	return resp
+	if err := db.Create(&newReservation).Error; err != nil {
+		fmt.Println("Problem while creating a new reservation", err.Error())
+		return response.ErrProblemWhileCreatingNewReservation
+	}
+	return nil
+}
+
+func (r Reservation) Update(db *gorm.DB, newReservation *Reservation) error {
+	if err := db.Save(&newReservation).Error; err != nil {
+		fmt.Println("Problem while updating a new reservation", err.Error())
+		return response.ErrProblemWhileCreatingNewReservation
+	}
+
+	return nil
 }
 
 func (r Reservation) Delete(db *gorm.DB, reservation *Reservation) error {
