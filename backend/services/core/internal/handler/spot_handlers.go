@@ -58,7 +58,10 @@ func CreateSpot(c *gin.Context) {
 		return
 	}
 
-	var body model.SpotBody
+	var body struct {
+		Location int `json:"location"`
+	}
+
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrEmptyFields))
 		return

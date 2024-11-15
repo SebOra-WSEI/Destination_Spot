@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/SebOra-WSEI/Destination_spot/core/database"
-	"github.com/SebOra-WSEI/Destination_spot/shared/model"
+	userModel "github.com/SebOra-WSEI/Destination_spot/shared/model"
 	"github.com/SebOra-WSEI/Destination_spot/shared/permission"
 	"github.com/SebOra-WSEI/Destination_spot/shared/response"
 	"github.com/SebOra-WSEI/Destination_spot/shared/token"
@@ -23,26 +23,20 @@ func GetAllUsers(c *gin.Context) {
 		return
 	}
 
-	var users []model.User
+	var users []userModel.User
 	if err := database.Db.Find(&users).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, response.CreateError(err))
 		return
 	}
 
-	var noPasswordUsers []model.NoPasswordUser
+	var noPasswordUsers []userModel.NoPasswordUser
 	for _, user := range users {
 		noPasswordUsers = append(
-			noPasswordUsers, model.NoPasswordUser{
-				ID:      user.ID,
-				Email:   user.Email,
-				Name:    user.Name,
-				Surname: user.Surname,
-				Role:    user.Role,
-			},
+			noPasswordUsers, user.GetWithNoPassword(),
 		)
 	}
 
-	c.JSON(http.StatusOK, response.Create(model.AllUsersResponse{Users: noPasswordUsers}))
+	c.JSON(http.StatusOK, response.Create(userModel.AllUsersResponse{Users: noPasswordUsers}))
 }
 
 func GetUser(c *gin.Context) {
@@ -54,13 +48,13 @@ func GetUser(c *gin.Context) {
 		return
 	}
 
-	var user model.User
+	var user userModel.User
 	if err := user.FindById(database.Db, id, &user); err != nil {
 		c.JSON(http.StatusNotFound, response.CreateError(response.ErrUserNotFound))
 		return
 	}
 
-	noPasswordUser := model.UserResponse{
+	noPasswordUser := userModel.UserResponse{
 		User: user.GetWithNoPassword(),
 	}
 

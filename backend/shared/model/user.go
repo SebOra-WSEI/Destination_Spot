@@ -6,6 +6,15 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+type User struct {
+	ID       uint   `json:"id"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Role     string `json:"role"`
+	Name     string `json:"name"`
+	Surname  string `json:"surname"`
+}
+
 type NoPasswordUser struct {
 	ID      uint   `json:"id"`
 	Email   string `json:"email"`
@@ -25,15 +34,6 @@ type UserResponse struct {
 
 type AllUsersResponse struct {
 	Users []NoPasswordUser `json:"users"`
-}
-
-type User struct {
-	ID       uint   `json:"id"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Role     string `json:"role"`
-	Name     string `json:"name"`
-	Surname  string `json:"surname"`
 }
 
 func (u User) FindByEmail(db *gorm.DB, email string, user *User) error {
