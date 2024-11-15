@@ -1,29 +1,32 @@
 package route
 
 import (
-	"github.com/SebOra-WSEI/Destination_spot/core/internal/handler"
+	"github.com/SebOra-WSEI/Destination_spot/core/internal/handler/auth"
+	"github.com/SebOra-WSEI/Destination_spot/core/internal/handler/reservation"
+	"github.com/SebOra-WSEI/Destination_spot/core/internal/handler/spot"
+	"github.com/SebOra-WSEI/Destination_spot/core/internal/handler/user"
 	"github.com/gin-gonic/gin"
 )
 
 func Init(r *gin.Engine) {
 	// Auth service endpoints
-	r.POST("/sign-in", handler.SignIn)
-	r.POST("/sign-up", handler.SignUp)
-	r.PUT("/reset-password/:id", handler.ResetPassword)
-	r.PUT("/access-control/:id", handler.AccessControl)
+	r.POST("/sign-in", auth.SignIn)
+	r.POST("/sign-up", auth.SignUp)
+	r.PUT("/reset-password/:id", auth.ResetPassword)
+	r.PUT("/access-control/:id", auth.AccessControl)
 
 	// Users endpoints
-	r.GET("/users", handler.GetAllUsers)
-	r.GET("/users/:id", handler.GetUser)
+	r.GET("/users", user.GetAll)
+	r.GET("/users/:id", user.GetById)
 
 	// Spots endpoints
-	r.GET("/spots", handler.GetAllSpots)
-	r.POST("/spots", handler.CreateSpot)
-	r.GET("/spots/:id", handler.GetSpot)
-	r.DELETE("/spots/:id", handler.DeleteSpot)
+	r.GET("/spots", spot.GetAll)
+	r.POST("/spots", spot.Create)
+	r.GET("/spots/:id", spot.GetById)
+	r.DELETE("/spots/:id", spot.Delete)
 
 	// Reservations endpoints
-	r.GET("/reservations", handler.GetAllReservations)
-	r.GET("/reservations/:id", handler.GetReservation)
-	r.DELETE("/reservations/:id", handler.DeleteReservation)
+	r.GET("/reservations", reservation.GetAll)
+	r.GET("/reservations/:id", reservation.GetById)
+	r.DELETE("/reservations/:id", reservation.Delete)
 }

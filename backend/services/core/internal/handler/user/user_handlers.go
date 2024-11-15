@@ -1,7 +1,8 @@
-package handler
+package user
 
 import (
 	"github.com/SebOra-WSEI/Destination_spot/core/database"
+	"github.com/SebOra-WSEI/Destination_spot/core/internal/handler/auth"
 	userModel "github.com/SebOra-WSEI/Destination_spot/shared/model"
 	"github.com/SebOra-WSEI/Destination_spot/shared/permission"
 	"github.com/SebOra-WSEI/Destination_spot/shared/response"
@@ -11,8 +12,8 @@ import (
 	"net/http"
 )
 
-func GetAllUsers(c *gin.Context) {
-	t, err := token.Verify(c.GetHeader(AuthorizationHeader))
+func GetAll(c *gin.Context) {
+	t, err := token.Verify(c.GetHeader(auth.AuthorizationHeader))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
@@ -39,10 +40,10 @@ func GetAllUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Create(userModel.AllUsersResponse{Users: noPasswordUsers}))
 }
 
-func GetUser(c *gin.Context) {
+func GetById(c *gin.Context) {
 	id := c.Params.ByName("id")
 
-	t, err := token.Verify(c.GetHeader(AuthorizationHeader))
+	t, err := token.Verify(c.GetHeader(auth.AuthorizationHeader))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
