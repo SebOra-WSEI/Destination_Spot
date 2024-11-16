@@ -18,34 +18,34 @@ const (
 
 func SignIn(c *gin.Context) {
 	statusCode, res := makePostCall(c, "sign-in", model.LoggedUserResponse{})
-	c.JSON(statusCode, response.Create(res))
+	c.JSON(statusCode, res)
 }
 
 func SignUp(c *gin.Context) {
 	statusCode, res := makePostCall(c, "sign-up", model.NoPasswordUser{})
-	c.JSON(statusCode, response.Create(res))
+	c.JSON(statusCode, res)
 }
 
 func ResetPassword(c *gin.Context) {
 	statusCode, res := makePutCall(c, "reset-password")
-	c.JSON(statusCode, response.Create(res))
+	c.JSON(statusCode, res)
 }
 
 func AccessControl(c *gin.Context) {
 	statusCode, res := makePutCall(c, "access-control")
-	c.JSON(statusCode, response.Create(res))
+	c.JSON(statusCode, res)
 }
 
 func makePostCall(c *gin.Context, address string, t interface{}) (statusCode int, r interface{}) {
 	res, err := http.Post(AuthServiceHost+"/"+address, "application/json", c.Request.Body)
 	if err != nil {
 		fmt.Println(err)
-		return http.StatusInternalServerError, gin.H{"error": response.ErrRequestNotExecuted}
+		return http.StatusInternalServerError, response.CreateError(response.ErrRequestNotExecuted)
 	}
 
 	body, err := handleBody(res, t)
 	if err != nil {
-		return http.StatusInternalServerError, gin.H{"error": err}
+		return http.StatusInternalServerError, response.CreateError(err)
 	}
 
 	return res.StatusCode, body
@@ -59,7 +59,7 @@ func makePutCall(c *gin.Context, address string) (statusCode int, r interface{})
 	req, err := http.NewRequest(http.MethodPut, url, c.Request.Body)
 	if err != nil {
 		fmt.Println(err)
-		return http.StatusInternalServerError, gin.H{"error": response.ErrRequestNotExecuted}
+		return http.StatusInternalServerError, response.CreateError(response.ErrRequestNotExecuted)
 	}
 
 	req.Header.Set(AuthorizationHeader, c.GetHeader(AuthorizationHeader))
@@ -68,12 +68,12 @@ func makePutCall(c *gin.Context, address string) (statusCode int, r interface{})
 	res, err := client.Do(req)
 	if err != nil {
 		fmt.Println(err)
-		return http.StatusInternalServerError, gin.H{"error": response.ErrRequestNotExecuted}
+		return http.StatusInternalServerError, response.CreateError(response.ErrRequestNotExecuted)
 	}
 
 	body, err := handleBody(res, model.UserResponseWithMessage{})
 	if err != nil {
-		return http.StatusInternalServerError, gin.H{"error": err}
+		return http.StatusInternalServerError, response.CreateError(err)
 	}
 
 	return res.StatusCode, body
@@ -84,7 +84,7 @@ func handleBody[T any](res *http.Response, t T) (interface{}, error) {
 
 	if err != nil {
 		fmt.Printf(err.Error())
-		return t, fmt.Errorf("Problem with reading body")
+		return t, response.ErrReadingBody
 	}
 
 	var responseBody struct {
@@ -95,7 +95,7 @@ func handleBody[T any](res *http.Response, t T) (interface{}, error) {
 	unmarshalErr := json.Unmarshal(b, &responseBody)
 	if unmarshalErr != nil {
 		fmt.Printf(unmarshalErr.Error())
-		return t, fmt.Errorf("Problem with parsing body")
+		return t, response.ErrParsingMsg
 	}
 
 	if responseBody.Error != "" {
