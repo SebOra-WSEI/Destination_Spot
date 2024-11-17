@@ -12,7 +12,6 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/golang-jwt/jwt/v5"
 	"net/http"
-	"strconv"
 )
 
 func GetAll(c *gin.Context) {
@@ -67,7 +66,7 @@ func Create(c *gin.Context) {
 	var body model.ReservationInputBody
 
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
-		strconv.Itoa(body.ReservedTo), strconv.Itoa(body.ReservedFrom),
+		body.ReservedTo, body.ReservedFrom,
 	) || body.SpotID == 0 || body.UserID == 0 {
 		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrEmptyFields))
 		return
@@ -78,21 +77,6 @@ func Create(c *gin.Context) {
 		return
 	}
 
-	var allReservations []model.Reservation
-	if err := database.Db.Table("reservations").Select("reservations.*").
-		Where("spot_id = ?", body.SpotID).
-		Where("reserved_from >= ?", body.ReservedFrom).
-		Where("reserved_to <= ?", body.ReservedTo).
-		Find(&allReservations).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, response.CreateError(err))
-		return
-	}
-
-	if len(allReservations) != 0 {
-		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrSpotAlreadyReservedMsg))
-		return
-	}
-
 	reservation := model.Reservation{
 		UserID:       body.UserID,
 		SpotID:       body.SpotID,
@@ -100,8 +84,8 @@ func Create(c *gin.Context) {
 		ReservedTo:   body.ReservedTo,
 	}
 
-	if err := reservation.Create(database.Db, &reservation); err != nil {
-		c.JSON(http.StatusInternalServerError, response.CreateError(err))
+	if status, err := reservation.Create(database.Db, &reservation); err != nil {
+		c.JSON(status, response.CreateError(err))
 		return
 	}
 
@@ -124,7 +108,7 @@ func Update(c *gin.Context) {
 
 	var body model.ReservationInputBody
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
-		strconv.Itoa(body.ReservedTo), strconv.Itoa(body.ReservedFrom),
+		body.ReservedTo, body.ReservedFrom,
 	) || body.SpotID == 0 || body.UserID == 0 {
 		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrEmptyFields))
 		return
@@ -136,8 +120,8 @@ func Update(c *gin.Context) {
 		return
 	}
 
-	if code, err := permission.User(database.Db, reservation.UserID, t.Claims.(jwt.MapClaims)); err != nil {
-		c.JSON(code, response.CreateError(err))
+	if status, err := permission.User(database.Db, body.UserID, t.Claims.(jwt.MapClaims)); err != nil {
+		c.JSON(status, response.CreateError(err))
 		return
 	}
 
@@ -149,8 +133,8 @@ func Update(c *gin.Context) {
 		ReservedTo:   body.ReservedTo,
 	}
 
-	if err := updatedReservation.Update(database.Db, &updatedReservation); err != nil {
-		c.JSON(http.StatusInternalServerError, response.CreateError(err))
+	if status, err := updatedReservation.Update(database.Db, &updatedReservation); err != nil {
+		c.JSON(status, response.CreateError(err))
 		return
 	}
 
@@ -182,7 +166,7 @@ func Delete(c *gin.Context) {
 		Reservation: reservation,
 	}
 
-	if adminCode, err := permission.Admin(t.Claims.(jwt.MapClaims)); err != nil {
+	if status, err := permission.Admin(t.Claims.(jwt.MapClaims)); err != nil {
 		if _, err := permission.User(database.Db, reservation.UserID, t.Claims.(jwt.MapClaims)); err == nil {
 			database.Db.Delete(&reservation)
 			c.JSON(http.StatusOK, response.Create(res))
@@ -190,7 +174,7 @@ func Delete(c *gin.Context) {
 			return
 		}
 
-		c.JSON(adminCode, response.CreateError(err))
+		c.JSON(status, response.CreateError(err))
 		return
 	}
 

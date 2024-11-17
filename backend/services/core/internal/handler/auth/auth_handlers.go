@@ -17,26 +17,26 @@ const (
 )
 
 func SignIn(c *gin.Context) {
-	statusCode, res := makePostCall(c, "sign-in", model.LoggedUserResponse{})
-	c.JSON(statusCode, res)
+	status, res := makePostCall(c, "sign-in", model.LoggedUserResponse{})
+	c.JSON(status, res)
 }
 
 func SignUp(c *gin.Context) {
-	statusCode, res := makePostCall(c, "sign-up", model.NoPasswordUser{})
-	c.JSON(statusCode, res)
+	status, res := makePostCall(c, "sign-up", model.NoPasswordUser{})
+	c.JSON(status, res)
 }
 
 func ResetPassword(c *gin.Context) {
-	statusCode, res := makePutCall(c, "reset-password")
-	c.JSON(statusCode, res)
+	status, res := makePutCall(c, "reset-password")
+	c.JSON(status, res)
 }
 
 func AccessControl(c *gin.Context) {
-	statusCode, res := makePutCall(c, "access-control")
-	c.JSON(statusCode, res)
+	status, res := makePutCall(c, "access-control")
+	c.JSON(status, res)
 }
 
-func makePostCall(c *gin.Context, address string, t interface{}) (statusCode int, r interface{}) {
+func makePostCall(c *gin.Context, address string, t interface{}) (status int, r interface{}) {
 	res, err := http.Post(AuthServiceHost+"/"+address, "application/json", c.Request.Body)
 	if err != nil {
 		fmt.Println(err)
@@ -51,7 +51,7 @@ func makePostCall(c *gin.Context, address string, t interface{}) (statusCode int
 	return res.StatusCode, body
 }
 
-func makePutCall(c *gin.Context, address string) (statusCode int, r interface{}) {
+func makePutCall(c *gin.Context, address string) (status int, r interface{}) {
 	id := c.Param("id")
 
 	url := fmt.Sprintf("%s/%s/%s", AuthServiceHost, address, id)

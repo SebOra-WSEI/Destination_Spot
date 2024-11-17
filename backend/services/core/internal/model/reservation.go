@@ -6,15 +6,16 @@ import (
 	userModel "github.com/SebOra-WSEI/Destination_spot/shared/model"
 	"github.com/SebOra-WSEI/Destination_spot/shared/response"
 	"github.com/jinzhu/gorm"
+	"net/http"
 	"strconv"
 )
 
 type Reservation struct {
-	ID           uint `json:"id"`
-	UserID       uint `json:"userId"`
-	SpotID       uint `json:"spotId"`
-	ReservedFrom int  `json:"reservedFrom"`
-	ReservedTo   int  `json:"reservedTo"`
+	ID           uint   `json:"id"`
+	UserID       uint   `json:"userId"`
+	SpotID       uint   `json:"spotId"`
+	ReservedFrom string `json:"reservedFrom"`
+	ReservedTo   string `json:"reservedTo"`
 }
 
 type ReservationResponseWithMessage struct {
@@ -45,10 +46,10 @@ type ReservationDetails struct {
 }
 
 type ReservationInputBody struct {
-	UserID       uint `json:"userId"`
-	SpotID       uint `json:"spotId"`
-	ReservedFrom int  `json:"reservedFrom"`
-	ReservedTo   int  `json:"reservedTo"`
+	UserID       uint   `json:"userId"`
+	SpotID       uint   `json:"spotId"`
+	ReservedFrom string `json:"reservedFrom"`
+	ReservedTo   string `json:"reservedTo"`
 }
 
 func (r Reservation) FindById(db *gorm.DB, id string, reservation *Reservation) error {
@@ -140,27 +141,37 @@ func (r Reservation) GetAllWithDetails(reservations []ReservationDetails) []Rese
 	return reservationsWithDetails
 }
 
-func (r Reservation) Create(db *gorm.DB, newReservation *Reservation) error {
+func (r Reservation) Create(db *gorm.DB, newReservation *Reservation) (int, error) {
 	var spot Spot
 	if err := spot.FindById(db, strconv.Itoa(int(newReservation.SpotID)), &spot); err != nil {
 		fmt.Println("Selected spot not found", err.Error())
-		return response.ErrSpotNotFound
+		return http.StatusBadRequest, response.ErrSpotNotFound
+	}
+
+	if status, err := handleExistingReservation(db, *newReservation); err != nil {
+		fmt.Println(err)
+		return status, err
 	}
 
 	if err := db.Create(&newReservation).Error; err != nil {
 		fmt.Println("Problem while creating a new reservation", err.Error())
-		return response.ErrProblemWhileCreatingNewReservation
+		return http.StatusInternalServerError, response.ErrProblemWhileCreatingNewReservation
 	}
-	return nil
+	return 0, nil
 }
 
-func (r Reservation) Update(db *gorm.DB, newReservation *Reservation) error {
-	if err := db.Save(&newReservation).Error; err != nil {
-		fmt.Println("Problem while updating a new reservation", err.Error())
-		return response.ErrWhileUpdatingReservation
+func (r Reservation) Update(db *gorm.DB, newReservation *Reservation) (int, error) {
+	if status, err := handleExistingReservation(db, *newReservation); err != nil {
+		fmt.Println(err)
+		return status, err
 	}
 
-	return nil
+	if err := db.Save(&newReservation).Error; err != nil {
+		fmt.Println("Problem while updating a new reservation", err.Error())
+		return http.StatusInternalServerError, response.ErrWhileUpdatingReservation
+	}
+
+	return 0, nil
 }
 
 func (r Reservation) Delete(db *gorm.DB, reservation *Reservation) error {
@@ -169,4 +180,22 @@ func (r Reservation) Delete(db *gorm.DB, reservation *Reservation) error {
 		return response.ErrProblemWhileRemovingReservation
 	}
 	return nil
+}
+
+func handleExistingReservation(db *gorm.DB, newReservation Reservation) (int, error) {
+	var allReservations []Reservation
+	if err := db.Table("reservations").Select("reservations.*").
+		Where("spot_id = ?", newReservation.SpotID).
+		Where("reserved_from >= ?", newReservation.ReservedFrom).
+		Where("reserved_to <= ?", newReservation.ReservedTo).
+		Find(&allReservations).Error; err != nil {
+
+		return http.StatusInternalServerError, err
+	}
+
+	if len(allReservations) != 0 {
+		return http.StatusBadRequest, response.ErrSpotAlreadyReservedMsg
+	}
+
+	return 0, nil
 }
