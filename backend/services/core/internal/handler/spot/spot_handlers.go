@@ -54,8 +54,8 @@ func Create(c *gin.Context) {
 		return
 	}
 
-	if code, err := permission.Admin(t.Claims.(jwt.MapClaims)); err != nil {
-		c.JSON(code, response.CreateError(err))
+	if status, err := permission.Admin(t.Claims.(jwt.MapClaims)); err != nil {
+		c.JSON(status, response.CreateError(err))
 		return
 	}
 
@@ -100,8 +100,8 @@ func Delete(c *gin.Context) {
 		return
 	}
 
-	if code, err := permission.Admin(t.Claims.(jwt.MapClaims)); err != nil {
-		c.JSON(code, response.CreateError(err))
+	if status, err := permission.Admin(t.Claims.(jwt.MapClaims)); err != nil {
+		c.JSON(status, response.CreateError(err))
 		return
 	}
 

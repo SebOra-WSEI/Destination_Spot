@@ -1,7 +1,8 @@
-package handler
+package resetPassword
 
 import (
 	"github.com/SebOra-WSEI/Destination_spot/auth/database"
+	"github.com/SebOra-WSEI/Destination_spot/auth/internal/handler/accessControl"
 	"github.com/SebOra-WSEI/Destination_spot/auth/internal/password"
 	"github.com/SebOra-WSEI/Destination_spot/shared/model"
 	"github.com/SebOra-WSEI/Destination_spot/shared/permission"
@@ -11,41 +12,49 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/golang-jwt/jwt/v5"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
 
-const AuthorizationHeader string = "Authorization"
-
-type ActionControlBody struct {
-	NewPassword        string `json:"newPassword"`
-	ConfirmNewPassword string `json:"confirmNewPassword"`
-}
-
-func AccessControl(c *gin.Context) {
+func ResetPassword(c *gin.Context) {
 	id := c.Param("id")
-
-	t, err := token.Verify(c.GetHeader(AuthorizationHeader))
+	t, err := token.Verify(c.GetHeader(accessControl.AuthorizationHeader))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
 	}
 
-	if code, err := permission.Admin(t.Claims.(jwt.MapClaims)); err != nil {
-		c.JSON(code, response.CreateError(err))
-		return
-	}
-
 	var user model.User
 	if err := user.FindById(database.Db, id, &user); err != nil {
-		c.JSON(http.StatusNotFound, response.CreateError(err))
+		c.JSON(http.StatusNotFound, response.CreateError(response.ErrUserNotFound))
 		return
 	}
 
-	var body ActionControlBody
+	if status, err := permission.User(database.Db, user.ID, t.Claims.(jwt.MapClaims)); err != nil {
+		c.JSON(status, response.CreateError(err))
+		return
+	}
+
+	var body struct {
+		CurrentPassword    string `json:"currentPassword"`
+		NewPassword        string `json:"newPassword"`
+		ConfirmNewPassword string `json:"confirmNewPassword"`
+	}
+
 	if err := c.ShouldBindBodyWith(&body, binding.JSON); err != nil || request.HandleEmptyBodyFields(
-		body.NewPassword, body.ConfirmNewPassword,
+		body.CurrentPassword, body.NewPassword, body.ConfirmNewPassword,
 	) {
 		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrEmptyFields))
+		return
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.CurrentPassword)); err != nil {
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrInvalidCurrentPassword))
+		return
+	}
+
+	if body.CurrentPassword == body.NewPassword {
+		c.JSON(http.StatusBadRequest, response.CreateError(response.ErrPasswordTheSame))
 		return
 	}
 

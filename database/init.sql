@@ -20,8 +20,8 @@ CREATE TABLE reservations (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
     spot_id INT NOT NULL,
-    reserved_from INT NOT NULL,
-    reserved_to INT NOT NULL,
+    reserved_from VARCHAR(255) NOT NULL,
+    reserved_to VARCHAR(255) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (spot_id) REFERENCES spots(id)
 );
