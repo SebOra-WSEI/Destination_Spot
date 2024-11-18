@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAppContextProvider } from '../../../AppProvider';
 import {
   AuthErrorResponse,
-  AuthorizationBody,
+  AuthBody,
   AuthResponse,
 } from '../../../types/authorization';
 import { AuthorizationForm } from '../Form/AuthorizationForm';
@@ -10,9 +10,10 @@ import axios from 'axios';
 import { endpoints, routeBuilder } from '../../../utils/routes';
 import { SeverityOption } from '../../../types/severity';
 import { useAuth } from '../../../utils/authorization';
+import { CreateAccountButton } from '../Form/CreateAccountButton';
 
 export const Login: React.FC = () => {
-  const [body, setBody] = useState<AuthorizationBody>({
+  const [body, setBody] = useState<AuthBody>({
     email: '',
     password: '',
   });
@@ -52,6 +53,7 @@ export const Login: React.FC = () => {
       setBody={setBody}
       handleSubmit={handleSubmit}
       header='Login'
+      footer={<CreateAccountButton />}
     />
   );
 };

@@ -8,17 +8,19 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { FONT_FAMILY, MARGIN_TOP_CONTENT } from '../../../utils/consts';
-import { AuthorizationBody } from '../../../types/authorization';
+import { AuthBody } from '../../../types/authorization';
 import { PasswordInput } from './PasswordInput';
 import { useLocation } from 'react-router';
 import { routeBuilder } from '../../../utils/routes';
-import { CreateAccountButton } from './CreateAccountButton';
+import { PasswordCheckList } from '../PasswordValidation/PasswordCheckList';
+import { getPasswordValidationRules } from '../../../utils/getPasswordValidationRules';
 
 interface AuthorizationFormProps {
-  body: AuthorizationBody;
-  setBody: (body: AuthorizationBody) => void;
+  body: AuthBody;
+  setBody: (body: AuthBody) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
   header: string;
+  footer: React.ReactNode
 }
 
 export const AuthorizationForm: React.FC<AuthorizationFormProps> = ({
@@ -26,12 +28,12 @@ export const AuthorizationForm: React.FC<AuthorizationFormProps> = ({
   setBody,
   handleSubmit,
   header,
+  footer
 }) => {
   const { pathname } = useLocation();
-  const { email, password } = body;
+  const { email, password, confirmPassword } = body;
 
-  const isLoginView =
-    pathname === routeBuilder.login || pathname === routeBuilder.default;
+  const isRegisterView = pathname === routeBuilder.register
 
   const handlePasswordChange = (
     evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -67,6 +69,26 @@ export const AuthorizationForm: React.FC<AuthorizationFormProps> = ({
             password={password}
             handlePasswordChange={handlePasswordChange}
           />
+          {isRegisterView && (
+            <TextField
+              required
+              label='Confirm Password'
+              variant='standard'
+              type='password'
+              autoComplete='password'
+              value={confirmPassword}
+              fullWidth
+              onChange={(evt) =>
+                setBody({
+                  ...body,
+                  confirmPassword: evt.target.value,
+                })
+              }
+            />
+          )}
+          {isRegisterView && Boolean(password) && (
+            <PasswordCheckList rules={getPasswordValidationRules(password, confirmPassword)} />
+          )}
         </CardContent>
         <CardActions>
           <Button
@@ -78,7 +100,7 @@ export const AuthorizationForm: React.FC<AuthorizationFormProps> = ({
             {header}
           </Button>
         </CardActions>
-        {isLoginView && <CreateAccountButton />}
+        {footer}
       </Card>
     </Box>
   );

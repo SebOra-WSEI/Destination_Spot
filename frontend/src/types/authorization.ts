@@ -1,8 +1,9 @@
 import { User } from './user';
 
-export interface AuthorizationBody {
+export interface AuthBody {
   email: string;
   password: string;
+  confirmPassword?: string;
 }
 
 interface ErrorData {
