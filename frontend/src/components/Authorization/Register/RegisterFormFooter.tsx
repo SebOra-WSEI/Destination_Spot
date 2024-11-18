@@ -4,11 +4,10 @@ import { useHistory } from 'react-router';
 import { routeBuilder } from '../../../utils/routes';
 import { FONT_FAMILY } from '../../../utils/consts';
 
-
 export const RegisterFormFooter: React.FC = () => {
-  const history = useHistory()
+  const history = useHistory();
 
-  const handleClick = (): void => history.push(routeBuilder.login)
+  const handleClick = (): void => history.push(routeBuilder.login);
 
   return (
     <>
@@ -27,7 +26,7 @@ export const RegisterFormFooter: React.FC = () => {
       </CardActions>
     </>
   );
-}
+};
 
 const styles = {
   divider: {
@@ -43,4 +42,4 @@ const styles = {
     fontSize: '0.9rem',
     padding: 0,
   },
-}
+};

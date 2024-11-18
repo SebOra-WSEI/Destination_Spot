@@ -20,7 +20,7 @@ interface AuthorizationFormProps {
   setBody: (body: AuthBody) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
   header: string;
-  footer: React.ReactNode
+  footer: React.ReactNode;
 }
 
 export const AuthorizationForm: React.FC<AuthorizationFormProps> = ({
@@ -28,12 +28,12 @@ export const AuthorizationForm: React.FC<AuthorizationFormProps> = ({
   setBody,
   handleSubmit,
   header,
-  footer
+  footer,
 }) => {
   const { pathname } = useLocation();
   const { email, password, confirmPassword } = body;
 
-  const isRegisterView = pathname === routeBuilder.register
+  const isRegisterView = pathname === routeBuilder.register;
 
   const handlePasswordChange = (
     evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -87,7 +87,9 @@ export const AuthorizationForm: React.FC<AuthorizationFormProps> = ({
             />
           )}
           {isRegisterView && Boolean(password) && (
-            <PasswordCheckList rules={getPasswordValidationRules(password, confirmPassword)} />
+            <PasswordCheckList
+              rules={getPasswordValidationRules(password, confirmPassword)}
+            />
           )}
         </CardContent>
         <CardActions>

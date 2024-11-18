@@ -32,16 +32,20 @@ export const Login: React.FC = () => {
     axios
       .post(endpoints.login, body)
       .then(({ data, status }: AuthResponse<LoggedUserData>) => {
-        if (status === StatusCode.OK) {
-          const { token, user } = data;
-
-          signIn({
-            url: routeBuilder.parking,
-            token,
-            role: user.role,
-            userId: user.id,
-          });
+        if (status !== StatusCode.OK) {
+          setSeverity(SeverityOption.Error);
+          setSeverityText('Internal Server Error');
+          return;
         }
+
+        const { token, user } = data;
+
+        signIn({
+          url: routeBuilder.parking,
+          token,
+          role: user.role,
+          userId: user.id,
+        });
       })
       .catch(({ response }: ErrorResponse) => {
         setSeverity(SeverityOption.Error);

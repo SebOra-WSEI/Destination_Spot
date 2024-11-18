@@ -19,4 +19,4 @@ const styles = {
   grid: {
     marginTop: '0.8rem',
   },
-}
+};
