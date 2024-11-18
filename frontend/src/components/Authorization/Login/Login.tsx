@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useAppContextProvider } from '../../../AppProvider';
 import {
-  AuthErrorResponse,
   AuthBody,
   AuthResponse,
+  LoggedUserData,
 } from '../../../types/authorization';
 import { AuthorizationForm } from '../Form/AuthorizationForm';
 import axios from 'axios';
@@ -11,6 +11,8 @@ import { endpoints, routeBuilder } from '../../../utils/routes';
 import { SeverityOption } from '../../../types/severity';
 import { useAuth } from '../../../utils/authorization';
 import { CreateAccountButton } from '../Form/CreateAccountButton';
+import { ErrorResponse } from '../../../types/response';
+import { StatusCode } from '../../../types/statusCode';
 
 export const Login: React.FC = () => {
   const [body, setBody] = useState<AuthBody>({
@@ -29,9 +31,9 @@ export const Login: React.FC = () => {
 
     axios
       .post(endpoints.login, body)
-      .then((res: AuthResponse) => {
-        if (res.status === 200) {
-          const { token, user } = res.data;
+      .then(({ data, status }: AuthResponse<LoggedUserData>) => {
+        if (status === StatusCode.OK) {
+          const { token, user } = data;
 
           signIn({
             url: routeBuilder.parking,
@@ -41,7 +43,7 @@ export const Login: React.FC = () => {
           });
         }
       })
-      .catch(({ response }: AuthErrorResponse) => {
+      .catch(({ response }: ErrorResponse) => {
         setSeverity(SeverityOption.Error);
         setSeverityText(response.data.error);
       });

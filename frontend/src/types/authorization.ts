@@ -6,23 +6,17 @@ export interface AuthBody {
   confirmPassword?: string;
 }
 
-interface ErrorData {
-  error: string;
-}
-
-export interface AuthErrorResponse {
-  response: {
-    status: number;
-    data: ErrorData;
-  };
-}
-
-interface LoggedUserData {
+export interface LoggedUserData {
   token: string;
   user: User;
 }
 
-export interface AuthResponse {
+export interface RegisteredUserData {
+  message: string;
+  user: User;
+}
+
+export interface AuthResponse<T> {
   status: number;
-  data: LoggedUserData;
+  data: T;
 }

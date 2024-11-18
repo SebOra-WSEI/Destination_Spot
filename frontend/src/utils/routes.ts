@@ -9,6 +9,7 @@ interface Route {
 
 export const endpoints = {
   login: `${HOST}/sign-in`,
+  register: `${HOST}/sign-up`,
 };
 
 export const routeBuilder: Route = {
