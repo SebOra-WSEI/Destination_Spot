@@ -28,9 +28,11 @@ export const useAppContextProvider = (): AppContextState =>
 export const AppContextProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
-  const [severityText, setSeverityText] = useState<string>('');
+  const [severityText, setSeverityText] = useState<string>(
+    defaultAppState.severityText
+  );
   const [severity, setSeverity] = useState<SeverityOption>(
-    SeverityOption.Error
+    defaultAppState.severity
   );
 
   return (

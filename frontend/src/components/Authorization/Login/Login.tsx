@@ -1,18 +1,11 @@
 import React, { useState } from 'react';
-import { useAppContextProvider } from '../../../AppProvider';
-import {
-  AuthBody,
-  AuthResponse,
-  LoggedUserData,
-} from '../../../types/authorization';
+import { AuthBody } from '../../../types/authorization';
 import { AuthorizationForm } from '../Form/AuthorizationForm';
-import axios from 'axios';
-import { endpoints, routeBuilder } from '../../../utils/routes';
-import { SeverityOption } from '../../../types/severity';
-import { useAuth } from '../../../utils/authorization';
 import { CreateAccountButton } from '../Form/CreateAccountButton';
-import { ErrorResponse } from '../../../types/response';
-import { StatusCode } from '../../../types/statusCode';
+import { useGetCurrentUser } from '../../../queries/user/getCurrentUser';
+import { UserAlreadyLogged } from '../../Error/UserAlreadyLogged';
+import { CookieName, getCookieValueByName } from '../../../utils/cookies';
+import { useLogin } from '../../../queries/user/useLogin';
 
 export const Login: React.FC = () => {
   const [body, setBody] = useState<AuthBody>({
@@ -20,38 +13,21 @@ export const Login: React.FC = () => {
     password: '',
   });
 
-  const { setSeverityText, setSeverity } = useAppContextProvider();
-
-  const { signIn } = useAuth();
+  const { data } = useGetCurrentUser({
+    skip: !getCookieValueByName(CookieName.UserId),
+  });
+  const { login } = useLogin();
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault();
-
-    axios
-      .post(endpoints.login, body)
-      .then(({ data, status }: AuthResponse<LoggedUserData>) => {
-        if (status !== StatusCode.OK) {
-          setSeverity(SeverityOption.Error);
-          setSeverityText('Internal Server Error');
-          return;
-        }
-
-        const { token, user } = data;
-
-        signIn({
-          url: routeBuilder.parking,
-          token,
-          role: user.role,
-          userId: user.id,
-        });
-      })
-      .catch(({ response }: ErrorResponse) => {
-        setSeverity(SeverityOption.Error);
-        setSeverityText(response.data.error);
-      });
+    login(body);
   };
+
+  if (data?.id) {
+    return <UserAlreadyLogged />;
+  }
 
   return (
     <AuthorizationForm

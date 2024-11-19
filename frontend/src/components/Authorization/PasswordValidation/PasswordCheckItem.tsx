@@ -17,19 +17,14 @@ export const PasswordCheckItem: React.FC<PasswordChecksProps> = ({
   label,
 }) => (
   <Grid item container style={styles.gridItem}>
-    <ValidIcons isValid={isValid} />
+    {isValid ? (
+      <CheckCircleIcon style={styles.checkIcon} />
+    ) : (
+      <CancelIcon style={styles.cancelIcon} />
+    )}
     <label style={styles.label}>{label}</label>
   </Grid>
 );
-
-const ValidIcons: React.FC<Pick<PasswordChecksProps, 'isValid'>> = ({
-  isValid,
-}) =>
-  isValid ? (
-    <CheckCircleIcon style={styles.checkIcon} />
-  ) : (
-    <CancelIcon style={styles.cancelIcon} />
-  );
 
 const styles = {
   grid: {
