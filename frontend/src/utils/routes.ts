@@ -3,18 +3,19 @@ const HOST = 'http://localhost:8080';
 interface Route {
   default: string;
   login: string;
-  parking: string;
+  profile: string;
   register: string;
 }
 
 export const endpoints = {
   login: `${HOST}/sign-in`,
   register: `${HOST}/sign-up`,
+  user: (id: string) => `${HOST}/users/${id}`,
 };
 
 export const routeBuilder: Route = {
   default: '/',
   login: '/login',
-  parking: '/parking',
+  profile: '/profile',
   register: '/register',
 };
