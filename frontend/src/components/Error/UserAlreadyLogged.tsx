@@ -1,9 +1,10 @@
 import React from 'react';
-import { Box, Button, Card, CardActions, CardContent } from '@mui/material';
+import { Button, CardActions, CardContent } from '@mui/material';
 import { useHistory } from 'react-router';
 import { routeBuilder } from '../../utils/routes';
-import { TOKEN_KEY } from '../../utils/consts';
-import { CookieName, eraseCookie } from '../../utils/cookies';
+import { BUTTON_RADIUS, FONT_FAMILY } from '../../utils/consts';
+import { CenteredCard } from '../Card/CenteredCard';
+import { signOut } from '../../utils/signOut';
 
 export const UserAlreadyLogged: React.FC = () => {
   const history = useHistory();
@@ -11,32 +12,47 @@ export const UserAlreadyLogged: React.FC = () => {
   const handleClick = (): void => history.push(routeBuilder.profile);
 
   return (
-    <Box sx={{}}>
-      <Card>
-        <CardContent>
-          <h3 style={{}}>User already logged in</h3>
-        </CardContent>
-        <CardActions>
-          <Button
-            variant='contained'
-            color='error'
-            size='small'
-            sx={{}}
-            onClick={signOut}
-          >
-            Log out
-          </Button>
-          <Button variant='outlined' size='small' sx={{}} onClick={handleClick}>
-            Move to profile page
-          </Button>
-        </CardActions>
-      </Card>
-    </Box>
+    <CenteredCard isErrorCard>
+      <CardContent>
+        <h3 style={styles.header}>User already logged in</h3>
+      </CardContent>
+      <CardActions>
+        <Button
+          variant='contained'
+          color='error'
+          size='small'
+          // sx={styles.button}
+          onClick={signOut}
+        >
+          Log out
+        </Button>
+        <Button
+          variant='outlined'
+          size='small'
+          // sx={styles.redirectButton}
+          onClick={handleClick}
+        >
+          Move to profile page
+        </Button>
+      </CardActions>
+    </CenteredCard>
   );
 };
 
-const signOut = (): void => {
-  window.localStorage.removeItem(TOKEN_KEY);
-  Object.values(CookieName).forEach((val) => eraseCookie(val));
-  window.location.replace(routeBuilder.login);
-};
+const styles = {
+  button: {
+    borderRadius: BUTTON_RADIUS,
+    fontFamily: FONT_FAMILY,
+    marginLeft: 'auto'
+
+  },
+  header: {
+    fontSize: '1.5rem',
+    marginBottom: '-0.5rem',
+    marginTop: '-0.5rem',
+    fontFamily: FONT_FAMILY,
+    color: '#757575',
+    display: 'flex',
+    justifyContent: 'center'
+  },
+}
