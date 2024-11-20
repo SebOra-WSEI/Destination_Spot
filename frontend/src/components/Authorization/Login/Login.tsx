@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { AuthBody } from '../../../types/authorization';
 import { AuthorizationForm } from '../Form/AuthorizationForm';
 import { CreateAccountButton } from '../Form/CreateAccountButton';
-import { useGetCurrentUser } from '../../../queries/user/getCurrentUser';
 import { UserAlreadyLogged } from '../../Error/UserAlreadyLogged';
 import { CookieName, getCookieValueByName } from '../../../utils/cookies';
 import { useLogin } from '../../../queries/user/useLogin';
@@ -13,10 +12,9 @@ export const Login: React.FC = () => {
     password: '',
   });
 
-  const { data } = useGetCurrentUser({
-    skip: !getCookieValueByName(CookieName.UserId),
-  });
   const { login } = useLogin();
+
+  const userId = getCookieValueByName(CookieName.UserId)
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
@@ -25,7 +23,7 @@ export const Login: React.FC = () => {
     login(body);
   };
 
-  if (data?.id) {
+  if (userId) {
     return <UserAlreadyLogged />;
   }
 
