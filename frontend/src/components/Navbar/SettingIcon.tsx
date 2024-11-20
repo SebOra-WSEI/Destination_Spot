@@ -27,13 +27,13 @@ export const SettingIcon: React.FC = () => {
     <Box>
       <Tooltip title="Settings">
         <IconButton onClick={handleOpen}>
-          <Avatar sx={styles.avatar}>
+          <Avatar style={styles.avatar}>
             <PersonIcon />
           </Avatar>
         </IconButton>
       </Tooltip>
       <Menu
-        sx={styles.menu}
+        style={styles.menu}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right',
@@ -43,11 +43,11 @@ export const SettingIcon: React.FC = () => {
         onClose={handleClose}
       >
         <MenuItem onClick={() => console.log('reset')}>
-          <Typography sx={styles.text}>Reset Password</Typography>
+          <Typography style={styles.text}>Reset Password</Typography>
         </MenuItem>
         <Divider />
         <MenuItem onClick={signOut}>
-          <Typography sx={styles.logout}>Sign out</Typography>
+          <Typography style={styles.logout}>Sign out</Typography>
         </MenuItem>
       </Menu>
     </Box >

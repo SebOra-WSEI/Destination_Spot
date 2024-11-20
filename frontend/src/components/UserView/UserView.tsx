@@ -48,13 +48,13 @@ export const UserView: React.FC = () => {
       <CardContent>
         <Box sx={styles.initials}>
           <Avatar sx={styles.avatar}>{userInitials}</Avatar>
-          <Typography sx={styles.name}>{name + ' ' + surname}</Typography>
+          <Typography style={styles.name}>{name + ' ' + surname}</Typography>
         </Box>
-        <Box sx={styles.email}>
+        <Box style={styles.email}>
           <EmailIcon />
           <Typography>{email}</Typography>
         </Box>
-        <Box sx={styles.role}>
+        <Box style={styles.role}>
           <ManageAccountsIcon />
           <Typography>{role?.toUpperCase()}</Typography>
         </Box>

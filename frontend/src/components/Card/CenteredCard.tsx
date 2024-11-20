@@ -7,12 +7,9 @@ interface CenteredCardProps extends PropsWithChildren {
 }
 
 export const CenteredCard: React.FC<CenteredCardProps> = ({ children, isErrorCard }) => (
-  <Box sx={styles.box}>
+  <Box style={styles.box}>
     <Card style={{
-      ...styles.card,
-      ...(isErrorCard ? {
-        width: '30rem'
-      } : {})
+      ...styles.card(isErrorCard),
     }}>
       {children}
     </Card >
@@ -20,11 +17,14 @@ export const CenteredCard: React.FC<CenteredCardProps> = ({ children, isErrorCar
 )
 
 const styles = {
-  card: {
+  card: (isErrorCard: boolean | undefined) => ({
     bgcolor: 'background.paper',
     padding: '1.5rem',
     borderRadius: '1.5rem',
-  },
+    ...(isErrorCard ? {
+      width: '30rem'
+    } : {})
+  }),
   box: {
     display: 'flex',
     justifyContent: 'center',
