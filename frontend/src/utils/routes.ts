@@ -11,6 +11,7 @@ interface Route {
 export const endpoints = {
   login: `${HOST}/sign-in`,
   register: `${HOST}/sign-up`,
+  reservations: `${HOST}/reservations`,
   user: (id: string) => `${HOST}/users/${id}`,
 };
 

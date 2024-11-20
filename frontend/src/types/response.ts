@@ -1,3 +1,4 @@
+import { Reservation } from './reservation';
 import { User } from './user';
 
 interface ErrorData {
@@ -14,5 +15,11 @@ export interface ErrorResponse {
 export interface UserResponse {
   response: {
     user: User;
+  };
+}
+
+export interface ReservationResponse {
+  response: {
+    reservations: Array<Reservation>;
   };
 }
