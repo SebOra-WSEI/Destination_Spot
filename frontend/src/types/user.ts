@@ -6,7 +6,7 @@ export interface User {
   role: Role;
 }
 
-enum Role {
+export enum Role {
   Admin = 'admin',
   User = 'user',
 }

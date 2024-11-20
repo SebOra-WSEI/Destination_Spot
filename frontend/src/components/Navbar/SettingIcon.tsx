@@ -55,7 +55,9 @@ export const SettingIcon: React.FC = () => {
 
 const styles = {
   avatar: {
-    width: '2rem', height: '2rem'
+    width: '2rem',
+    height: '2rem',
+    marginRight: '1rem'
   },
   menu: {
     marginTop: '2.5rem'

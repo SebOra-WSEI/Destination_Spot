@@ -15,7 +15,7 @@ export const NavbarElements: React.FC<{ pages: Array<string> }> = ({ pages }) =>
           <Button
             key={page}
             onClick={() => history.push(page)}
-            sx={styles.button}
+            sx={styles.button(pages.length)}
           >
             {page}
           </Button>
@@ -38,8 +38,14 @@ const styles = {
   box: {
     flexGrow: 1
   },
-  button: {
-    color: 'white',
-    fontFamily: FONT_FAMILY
+  button: (pageCount: number) => {
+    return {
+      color: 'white',
+      fontFamily: FONT_FAMILY,
+      ...(pageCount === 1 ? {
+        marginLeft: 'auto',
+        marginRight: '1.5rem'
+      } : {})
+    }
   }
 }
