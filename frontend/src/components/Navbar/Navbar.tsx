@@ -12,14 +12,14 @@ import { Role } from '../../types/user';
 export const Navbar: React.FC = () => {
   const location = useLocation();
 
-  const role = getCookieValueByName(CookieName.Role)
+  const role = getCookieValueByName(CookieName.Role);
 
   const pages = role
     ? loggedUserPages(role as Role)
-    : getNotLoggedUserPages(location.pathname)
+    : getNotLoggedUserPages(location.pathname);
 
   return (
-    <AppBar position="static">
+    <AppBar position='static'>
       <Toolbar disableGutters>
         <SmallNavbar pages={pages} />
         <NavbarElements pages={pages} />
@@ -36,18 +36,18 @@ function loggedUserPages(role: Role) {
   ]);
 
   if (role === Role.User) {
-    return loggedUserPages
+    return loggedUserPages;
   }
-  return [...loggedUserPages]
+  return [...loggedUserPages];
 }
 
 function getNotLoggedUserPages(path: string): Array<string> {
   if (path === routeBuilder.login) {
-    return mapPageName([routeBuilder.register])
+    return mapPageName([routeBuilder.register]);
   }
-  return mapPageName([routeBuilder.login])
+  return mapPageName([routeBuilder.login]);
 }
 
 function mapPageName(pages: Array<string>): Array<string> {
-  return pages.map((page) => page.slice(1))
+  return pages.map((page) => page.slice(1));
 }

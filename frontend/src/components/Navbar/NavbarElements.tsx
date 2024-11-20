@@ -4,7 +4,9 @@ import { Box, Button } from '@mui/material';
 import { FONT_FAMILY } from '../../utils/consts';
 import { useHistory } from 'react-router';
 
-export const NavbarElements: React.FC<{ pages: Array<string> }> = ({ pages }) => {
+export const NavbarElements: React.FC<{ pages: Array<string> }> = ({
+  pages,
+}) => {
   const history = useHistory();
 
   return (
@@ -15,37 +17,37 @@ export const NavbarElements: React.FC<{ pages: Array<string> }> = ({ pages }) =>
           <Button
             key={page}
             onClick={() => history.push(page)}
-            sx={styles.button(pages.length)}
+            style={styles.button(pages.length)}
           >
             {page}
           </Button>
         ))}
-      </Box >
+      </Box>
     </>
-  )
-}
+  );
+};
 
 const styles = {
   bigScreen: {
     display: {
       xs: 'none',
-      md: 'flex'
-    }
+      md: 'flex',
+    },
   },
   icon: {
-    margin: '0 1rem 0 1rem'
+    margin: '0 1rem 0 1rem',
   },
   box: {
-    flexGrow: 1
+    flexGrow: 1,
   },
-  button: (pageCount: number) => {
-    return {
-      color: 'white',
-      fontFamily: FONT_FAMILY,
-      ...(pageCount === 1 ? {
-        marginLeft: 'auto',
-        marginRight: '1.5rem'
-      } : {})
-    }
-  }
-}
+  button: (pageCount: number) => ({
+    color: 'white',
+    fontFamily: FONT_FAMILY,
+    ...(pageCount === 1
+      ? {
+          marginLeft: 'auto',
+          marginRight: '1.5rem',
+        }
+      : {}),
+  }),
+};

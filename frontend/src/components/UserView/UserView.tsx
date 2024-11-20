@@ -6,7 +6,7 @@ import {
   Button,
   CardActions,
   CardContent,
-  Typography
+  Typography,
 } from '@mui/material';
 import { FONT_FAMILY } from '../../utils/consts';
 import EmailIcon from '@mui/icons-material/Email';
@@ -21,10 +21,10 @@ import { UserNotLogged } from '../Error/UserNotLogged';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 
 export const UserView: React.FC = () => {
-  const userId = getCookieValueByName(CookieName.UserId)
+  const userId = getCookieValueByName(CookieName.UserId);
 
   const { data, loading, error } = useGetCurrentUser({
-    skip: !userId
+    skip: !userId,
   });
 
   const { name, surname, email, role, id } = data ?? {};
@@ -36,11 +36,11 @@ export const UserView: React.FC = () => {
   }
 
   if (loading) {
-    return <Loader />
+    return <Loader />;
   }
 
   if (error) {
-    return <UnknownError link={routeBuilder.profile} />
+    return <UnknownError link={routeBuilder.profile} />;
   }
 
   return (
@@ -48,29 +48,22 @@ export const UserView: React.FC = () => {
       <CardContent>
         <Box sx={styles.initials}>
           <Avatar sx={styles.avatar}>{userInitials}</Avatar>
-          <Typography sx={styles.name}>{name + ' ' + surname}</Typography>
+          <Typography style={styles.name}>{name + ' ' + surname}</Typography>
         </Box>
-        <Box sx={styles.email}>
+        <Box style={styles.email}>
           <EmailIcon />
           <Typography>{email}</Typography>
         </Box>
-        <Box sx={styles.role}>
+        <Box style={styles.role}>
           <ManageAccountsIcon />
           <Typography>{role?.toUpperCase()}</Typography>
         </Box>
       </CardContent>
       <CardActions>
-        <Button
-          size='small'
-          style={styles.resetButton}
-        >
+        <Button size='small' style={styles.resetButton}>
           Reset Password
         </Button>
-        <Button
-          size='small'
-          onClick={signOut}
-          style={styles.signOutButton}
-        >
+        <Button size='small' onClick={signOut} style={styles.signOutButton}>
           Sign out
         </Button>
       </CardActions>
@@ -111,14 +104,14 @@ const styles = {
     color: '#757575',
     display: 'flex',
     gap: '0.4rem',
-    marginTop: '0.3rem'
+    marginTop: '0.3rem',
   },
   signOutButton: {
     fontFamily: FONT_FAMILY,
     marginLeft: 'auto',
-    color: red[700]
+    color: red[700],
   },
   resetButton: {
     fontFamily: FONT_FAMILY,
   },
-}
+};

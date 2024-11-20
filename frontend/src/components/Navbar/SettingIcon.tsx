@@ -7,7 +7,7 @@ import {
   Menu,
   MenuItem,
   Tooltip,
-  Typography
+  Typography,
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { FONT_FAMILY } from '../../utils/consts';
@@ -20,20 +20,19 @@ export const SettingIcon: React.FC = () => {
   const handleOpen = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget);
 
-  const handleClose = () =>
-    setAnchorEl(null);
+  const handleClose = () => setAnchorEl(null);
 
   return (
     <Box>
-      <Tooltip title="Settings">
+      <Tooltip title='Settings'>
         <IconButton onClick={handleOpen}>
-          <Avatar sx={styles.avatar}>
+          <Avatar style={styles.avatar}>
             <PersonIcon />
           </Avatar>
         </IconButton>
       </Tooltip>
       <Menu
-        sx={styles.menu}
+        style={styles.menu}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right',
@@ -43,31 +42,31 @@ export const SettingIcon: React.FC = () => {
         onClose={handleClose}
       >
         <MenuItem onClick={() => console.log('reset')}>
-          <Typography sx={styles.text}>Reset Password</Typography>
+          <Typography style={styles.text}>Reset Password</Typography>
         </MenuItem>
         <Divider />
         <MenuItem onClick={signOut}>
-          <Typography sx={styles.logout}>Sign out</Typography>
+          <Typography style={styles.logout}>Sign out</Typography>
         </MenuItem>
       </Menu>
-    </Box >
-  )
-}
+    </Box>
+  );
+};
 
 const styles = {
   avatar: {
     width: '2rem',
     height: '2rem',
-    marginRight: '1rem'
+    marginRight: '1rem',
   },
   menu: {
-    marginTop: '2.5rem'
+    marginTop: '2.5rem',
   },
   text: {
-    fontFamily: FONT_FAMILY
+    fontFamily: FONT_FAMILY,
   },
   logout: {
     fontFamily: FONT_FAMILY,
-    color: red[700]
-  }
-}
+    color: red[700],
+  },
+};

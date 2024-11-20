@@ -14,7 +14,7 @@ export const Login: React.FC = () => {
 
   const { login } = useLogin();
 
-  const userId = getCookieValueByName(CookieName.UserId)
+  const userId = getCookieValueByName(CookieName.UserId);
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>

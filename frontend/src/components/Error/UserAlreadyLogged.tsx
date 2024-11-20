@@ -18,21 +18,21 @@ export const UserAlreadyLogged: React.FC = () => {
       </CardContent>
       <CardActions>
         <Button
-          variant='contained'
-          color='error'
-          size='small'
-          // sx={styles.button}
-          onClick={signOut}
-        >
-          Log out
-        </Button>
-        <Button
           variant='outlined'
           size='small'
-          // sx={styles.redirectButton}
+          style={styles.button()}
           onClick={handleClick}
         >
           Move to profile page
+        </Button>
+        <Button
+          variant='contained'
+          color='error'
+          size='small'
+          style={styles.button(true)}
+          onClick={signOut}
+        >
+          Sign out
         </Button>
       </CardActions>
     </CenteredCard>
@@ -40,12 +40,11 @@ export const UserAlreadyLogged: React.FC = () => {
 };
 
 const styles = {
-  button: {
+  button: (isLastButton?: boolean) => ({
     borderRadius: BUTTON_RADIUS,
     fontFamily: FONT_FAMILY,
-    marginLeft: 'auto'
-
-  },
+    ...(isLastButton ? { marginLeft: 'auto' } : {}),
+  }),
   header: {
     fontSize: '1.5rem',
     marginBottom: '-0.5rem',
@@ -53,6 +52,6 @@ const styles = {
     fontFamily: FONT_FAMILY,
     color: '#757575',
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
-}
+};
