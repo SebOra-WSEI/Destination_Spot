@@ -8,29 +8,28 @@ import { useHistory } from 'react-router';
 export const SmallNavbar: React.FC<{ pages: Array<string> }> = ({ pages }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
-  const history = useHistory()
+  const history = useHistory();
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget);
 
   const handleClose = () => {
     setAnchorEl(null);
-  }
+  };
 
   const handleOnClick = (page: string) => {
-    history.push(page.toLocaleLowerCase())
-    handleClose()
-  }
+    history.push(page.toLocaleLowerCase());
+    handleClose();
+  };
 
-  const mappedPagesNames = pages.map((page) => page[0].toUpperCase() + page.slice(1))
+  const mappedPagesNames = pages.map(
+    (page) => page[0].toUpperCase() + page.slice(1)
+  );
 
   return (
     <>
       <Box sx={sxStyles.box}>
-        <IconButton
-          onClick={handleOpen}
-          style={styles.menuIcon}
-        >
+        <IconButton onClick={handleOpen} style={styles.menuIcon}>
           <MenuIcon />
         </IconButton>
         <Menu
@@ -51,37 +50,34 @@ export const SmallNavbar: React.FC<{ pages: Array<string> }> = ({ pages }) => {
         </Menu>
       </Box>
       <DirectionsCarIcon sx={sxStyles.carIcon} />
-      <Typography
-        variant="h6"
-        sx={sxStyles.header}
-      >
+      <Typography variant='h6' sx={sxStyles.header}>
         Destination Spot
       </Typography>
     </>
-  )
-}
+  );
+};
 
 const sxStyles = {
   box: {
     flexGrow: 1,
     display: {
       xs: 'flex',
-      md: 'none'
-    }
+      md: 'none',
+    },
   },
   menu: {
     display: {
       xs: 'block',
-      md: 'none'
+      md: 'none',
     },
-    marginTop: '2rem'
+    marginTop: '2rem',
   },
   carIcon: {
     display: {
       xs: 'flex',
-      md: 'none'
+      md: 'none',
     },
-    marginRight: '1rem'
+    marginRight: '1rem',
   },
   header: {
     display: { xs: 'flex', md: 'none' },
@@ -90,15 +86,15 @@ const sxStyles = {
     fontWeight: 700,
     letterSpacing: '0.1rem',
     color: 'inherit',
-  }
-}
+  },
+};
 
 const styles = {
   menuIcon: {
     marginLeft: '1rem',
-    color: 'inherit'
+    color: 'inherit',
   },
   text: {
-    fontFamily: FONT_FAMILY
-  }
-}
+    fontFamily: FONT_FAMILY,
+  },
+};

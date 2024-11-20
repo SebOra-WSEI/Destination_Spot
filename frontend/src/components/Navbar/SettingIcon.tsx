@@ -7,7 +7,7 @@ import {
   Menu,
   MenuItem,
   Tooltip,
-  Typography
+  Typography,
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { FONT_FAMILY } from '../../utils/consts';
@@ -20,12 +20,11 @@ export const SettingIcon: React.FC = () => {
   const handleOpen = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget);
 
-  const handleClose = () =>
-    setAnchorEl(null);
+  const handleClose = () => setAnchorEl(null);
 
   return (
     <Box>
-      <Tooltip title="Settings">
+      <Tooltip title='Settings'>
         <IconButton onClick={handleOpen}>
           <Avatar style={styles.avatar}>
             <PersonIcon />
@@ -50,24 +49,24 @@ export const SettingIcon: React.FC = () => {
           <Typography style={styles.logout}>Sign out</Typography>
         </MenuItem>
       </Menu>
-    </Box >
-  )
-}
+    </Box>
+  );
+};
 
 const styles = {
   avatar: {
     width: '2rem',
     height: '2rem',
-    marginRight: '1rem'
+    marginRight: '1rem',
   },
   menu: {
-    marginTop: '2.5rem'
+    marginTop: '2.5rem',
   },
   text: {
-    fontFamily: FONT_FAMILY
+    fontFamily: FONT_FAMILY,
   },
   logout: {
     fontFamily: FONT_FAMILY,
-    color: red[700]
-  }
-}
+    color: red[700],
+  },
+};

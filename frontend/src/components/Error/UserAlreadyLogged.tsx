@@ -43,10 +43,7 @@ const styles = {
   button: (isLastButton?: boolean) => ({
     borderRadius: BUTTON_RADIUS,
     fontFamily: FONT_FAMILY,
-    ...(isLastButton
-      ? { marginLeft: 'auto' }
-      : {}
-    )
+    ...(isLastButton ? { marginLeft: 'auto' } : {}),
   }),
   header: {
     fontSize: '1.5rem',
@@ -55,6 +52,6 @@ const styles = {
     fontFamily: FONT_FAMILY,
     color: '#757575',
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
-}
+};

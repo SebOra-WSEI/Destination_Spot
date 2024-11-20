@@ -8,5 +8,5 @@ export const Loader: React.FC = () => {
 const sxStyles = {
   position: 'absolute',
   top: '50%',
-  left: '50%'
-}
+  left: '50%',
+};
