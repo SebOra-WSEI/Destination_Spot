@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useGetCurrentUser } from '../../queries/user/getCurrentUser';
 import {
   Avatar,
@@ -17,18 +17,23 @@ import { red } from '@mui/material/colors';
 import { Loader } from '../Loader/Loader';
 import { UnknownError } from '../Error/UnknownError';
 import { routeBuilder } from '../../utils/routes';
+import { UserNotLogged } from '../Error/UserNotLogged';
+import { CookieName, getCookieValueByName } from '../../utils/cookies';
 
 export const UserView: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const userId = getCookieValueByName(CookieName.UserId)
 
-  const { data, loading, error } = useGetCurrentUser();
+  const { data, loading, error } = useGetCurrentUser({
+    skip: !userId
+  });
 
-  const { name, surname, email, role } = data ?? {};
+  const { name, surname, email, role, id } = data ?? {};
 
   const userInitials = (name?.[0] ?? '') + (surname?.[0] ?? '');
-  const user = name + ' ' + surname
 
-  const openModal = (): void => setIsModalOpen(true);
+  if (!id) {
+    return <UserNotLogged />;
+  }
 
   if (loading) {
     return <Loader />
@@ -43,7 +48,7 @@ export const UserView: React.FC = () => {
       <CardContent>
         <Box sx={styles.initials}>
           <Avatar sx={styles.avatar}>{userInitials}</Avatar>
-          <Typography sx={styles.name}>{user}</Typography>
+          <Typography sx={styles.name}>{name + ' ' + surname}</Typography>
         </Box>
         <Box sx={styles.email}>
           <EmailIcon />
@@ -57,7 +62,6 @@ export const UserView: React.FC = () => {
       <CardActions>
         <Button
           size='small'
-          onClick={openModal}
           style={styles.resetButton}
         >
           Reset Password
@@ -71,13 +75,6 @@ export const UserView: React.FC = () => {
         </Button>
       </CardActions>
     </CenteredCard>
-    // <ResetPasswordModal
-    //   user={user}
-    //   isModalOpen={isModalOpen}
-    //   setIsModalOpen={setIsModalOpen}
-    //   setSeverity={setSeverity}
-    //   setSnackbarMessage={setSnackbarMessage}
-    // />
   );
 };
 
@@ -100,22 +97,20 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
-    margin: '2rem',
+    marginBottom: '1rem',
   },
   email: {
     fontFamily: FONT_FAMILY,
-    marginTop: '1rem',
     color: '#757575',
     display: 'flex',
-    gap: '0.2rem',
-    padding: '0.5rem',
+    gap: '0.4rem',
   },
   role: {
     fontFamily: FONT_FAMILY,
     color: '#757575',
     display: 'flex',
-    gap: '0.2rem',
-    padding: '0.5rem',
+    gap: '0.4rem',
+    marginTop: '0.3rem'
   },
   signOutButton: {
     fontFamily: FONT_FAMILY,

@@ -12,7 +12,7 @@ export const UserAlreadyLogged: React.FC = () => {
   const handleClick = (): void => history.push(routeBuilder.profile);
 
   return (
-    <CenteredCard>
+    <CenteredCard isErrorCard>
       <CardContent>
         <h3 style={styles.header}>User already logged in</h3>
       </CardContent>
@@ -21,7 +21,7 @@ export const UserAlreadyLogged: React.FC = () => {
           variant='contained'
           color='error'
           size='small'
-          sx={styles.button}
+          // sx={styles.button}
           onClick={signOut}
         >
           Log out
@@ -29,7 +29,7 @@ export const UserAlreadyLogged: React.FC = () => {
         <Button
           variant='outlined'
           size='small'
-          sx={styles.button}
+          // sx={styles.redirectButton}
           onClick={handleClick}
         >
           Move to profile page
@@ -43,12 +43,16 @@ const styles = {
   button: {
     borderRadius: BUTTON_RADIUS,
     fontFamily: FONT_FAMILY,
-    marginLeft: 'auto',
+    marginLeft: 'auto'
+
   },
   header: {
     fontSize: '1.5rem',
     marginBottom: '-0.5rem',
+    marginTop: '-0.5rem',
     fontFamily: FONT_FAMILY,
     color: '#757575',
+    display: 'flex',
+    justifyContent: 'center'
   },
 }
