@@ -12,7 +12,6 @@ import { ErrorResponse } from '../../types/response';
 import { jwtDecode } from 'jwt-decode';
 import { TOKEN_KEY } from '../../utils/consts';
 import { CookieName, setCookie } from '../../utils/cookies';
-import { useHistory } from 'react-router';
 
 interface UseLoginResult {
   login: (body: AuthBody) => void;
@@ -20,7 +19,6 @@ interface UseLoginResult {
 
 export const useLogin = (): UseLoginResult => {
   const { setSeverityText, setSeverity } = useAppContextProvider();
-  const history = useHistory();
 
   const login = (body: AuthBody) => {
     axios
@@ -47,7 +45,7 @@ export const useLogin = (): UseLoginResult => {
         setCookie(CookieName.Token, token);
         setCookie(CookieName.Expires, expireDate);
 
-        history.push(routeBuilder.profile);
+        window.location.replace(routeBuilder.profile);
       })
       .catch(({ response }: ErrorResponse) => {
         setSeverity(SeverityOption.Error);

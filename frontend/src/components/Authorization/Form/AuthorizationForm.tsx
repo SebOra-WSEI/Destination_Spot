@@ -113,7 +113,6 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     marginTop: MARGIN_TOP_CONTENT,
-    alignItems: 'center',
   },
   card: {
     width: '23rem',

@@ -5,6 +5,7 @@ interface Route {
   login: string;
   profile: string;
   register: string;
+  reservations: string;
 }
 
 export const endpoints = {
@@ -18,4 +19,5 @@ export const routeBuilder: Route = {
   login: '/login',
   profile: '/profile',
   register: '/register',
+  reservations: '/reservations',
 };

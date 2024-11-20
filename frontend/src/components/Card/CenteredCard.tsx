@@ -1,4 +1,4 @@
-import { Card } from '@mui/material';
+import { Box, Card } from '@mui/material';
 import React, { PropsWithChildren } from 'react';
 import { MARGIN_TOP_CONTENT } from '../../utils/consts';
 
@@ -7,14 +7,16 @@ interface CenteredCardProps extends PropsWithChildren {
 }
 
 export const CenteredCard: React.FC<CenteredCardProps> = ({ children, isErrorCard }) => (
-  <Card style={{
-    ...styles.card,
-    ...(isErrorCard ? {
-      width: '30rem'
-    } : {})
-  }}>
-    {children}
-  </Card >
+  <Box sx={styles.box}>
+    <Card style={{
+      ...styles.card,
+      ...(isErrorCard ? {
+        width: '30rem'
+      } : {})
+    }}>
+      {children}
+    </Card >
+  </Box>
 )
 
 const styles = {
@@ -22,6 +24,10 @@ const styles = {
     bgcolor: 'background.paper',
     padding: '1.5rem',
     borderRadius: '1.5rem',
-    marginTop: MARGIN_TOP_CONTENT
+  },
+  box: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: MARGIN_TOP_CONTENT,
   },
 };
