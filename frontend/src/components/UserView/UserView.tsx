@@ -94,6 +94,7 @@ const styles = {
     marginTop: '1rem',
   },
   initials: {
+    fontFamily: FONT_FAMILY,
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
