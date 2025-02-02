@@ -24,10 +24,7 @@ export const CalendarBadge: React.FC<CalendarBadgeProps> = ({
 }) => {
   const date = dayProps.day.toDate().toDateString();
 
-  const enabledSpots = spots?.filter(
-    (spot) =>
-      !getSpotsIdsForEachDay(reservations)[date]?.includes(spot.id)
-  );
+  const enabledSpots = getEnabledSpots(date, reservations, spots);
 
   return (
     <Badge
@@ -41,20 +38,27 @@ export const CalendarBadge: React.FC<CalendarBadgeProps> = ({
   );
 }
 
-const getSpotsIdsForEachDay = (reservations?: Array<Reservation>): ReservationsGroupedByDay => {
+const getEnabledSpots = (
+  date: string,
+  reservations?: Array<Reservation>,
+  spots?: Array<Spot>,
+): Array<Spot> => {
   const reservationsGroupedByDay: ReservationsGroupedByDay = {};
 
   reservations?.forEach((reservation) => {
-    const date = new Date(
+    const reservationDate = new Date(
       Number(reservation.details.reservedFrom) * 1000
     ).toDateString();
 
-    if (!reservationsGroupedByDay[date]) {
-      reservationsGroupedByDay[date] = [];
+    if (!reservationsGroupedByDay[reservationDate]) {
+      reservationsGroupedByDay[reservationDate] = [];
     }
 
-    reservationsGroupedByDay[date].push(reservation.spot.id);
+    reservationsGroupedByDay[reservationDate].push(reservation.spot.id);
   });
 
-  return reservationsGroupedByDay;
+  return spots?.filter(
+    (spot) =>
+      !reservationsGroupedByDay[date]?.includes(spot.id)
+  ) ?? [];
 };
