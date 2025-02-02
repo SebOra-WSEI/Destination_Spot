@@ -3,9 +3,9 @@ import { EmptyQueryVariables, Query } from '../../types/query';
 import axios from 'axios';
 import { endpoints } from '../../utils/routes';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
-import { ErrorResponse, ReservationResponse } from '../../types/response';
+import { ErrorResponse } from '../../types/response';
 import { StatusCode } from '../../types/statusCode';
-import { Reservation } from '../../types/reservation';
+import { Reservation, ReservationResponse } from '../../types/reservation';
 
 export const useGetAllReservations = ({
   skip = false,

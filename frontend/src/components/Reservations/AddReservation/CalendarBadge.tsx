@@ -23,15 +23,14 @@ export const CalendarBadge: React.FC<CalendarBadgeProps> = ({
   isDateDisabled
 }) => {
   const date = dayProps.day.toDate().toDateString();
-
-  const enabledSpots = getEnabledSpots(date, reservations, spots);
+  const enabledSpotsLength = getEnabledSpots(date, reservations, spots).length;
 
   return (
     <Badge
       key={date}
       overlap='circular'
-      color={enabledSpots?.length ? 'success' : 'error'}
-      badgeContent={isDateDisabled ? undefined : enabledSpots?.length.toString()}
+      color={enabledSpotsLength ? 'success' : 'error'}
+      badgeContent={isDateDisabled ? undefined : enabledSpotsLength.toString()}
     >
       <PickersDay {...dayProps} />
     </Badge>

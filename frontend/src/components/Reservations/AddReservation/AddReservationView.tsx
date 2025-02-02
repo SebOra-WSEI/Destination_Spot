@@ -13,6 +13,7 @@ import { useGetAllSpots } from '../../../queries/spots/useGetAllSpots';
 import { useGetAllReservations } from '../../../queries/reservation/useGetAllReservations';
 import { Loader } from '../../Loader/Loader';
 import { ErrorCard } from '../../Error/ErrorCard';
+import { ReservationModal } from './ReservationModal';
 
 export const AddReservationView: React.FC = () => {
   const userId = getCookieValueByName(CookieName.UserId);
@@ -54,24 +55,33 @@ export const AddReservationView: React.FC = () => {
   }
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateCalendar
-        sx={styles.calendar}
-        onChange={handleDateClick}
-        value={selectedDate}
-        shouldDisableDate={(date) => shouldDisableDate(date, today)}
-        slots={{
-          day: (props) => (
-            <CalendarBadge
-              dayProps={props}
-              spots={spots}
-              reservations={reservations}
-              isDateDisabled={shouldDisableDate(dayjs(props.day), today)}
-            />
-          )
-        }}
+    <>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DateCalendar
+          sx={styles.calendar}
+          onChange={handleDateClick}
+          value={selectedDate}
+          shouldDisableDate={(date) => shouldDisableDate(date, today)}
+          slots={{
+            day: (props) => (
+              <CalendarBadge
+                dayProps={props}
+                spots={spots}
+                reservations={reservations}
+                isDateDisabled={shouldDisableDate(dayjs(props.day), today)}
+              />
+            )
+          }}
+        />
+      </LocalizationProvider>
+      <ReservationModal
+        isModalOpen={isModalOpen}
+        setModalOpen={setModalOpen}
+        selectedDate={selectedDate}
+        reservations={reservations}
+        spots={spots}
       />
-    </LocalizationProvider>
+    </>
   )
 }
 

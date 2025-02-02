@@ -14,3 +14,23 @@ interface Details {
   reservedFrom: string;
   reservedTo: string;
 }
+
+export interface ReservationBody {
+  userId: number;
+  spotId: number;
+  reservedFrom: string;
+  reservedTo: string;
+}
+
+export interface ReservationResponse {
+  response: {
+    reservations: Array<Reservation>;
+  };
+}
+
+export interface CreatedReservationData {
+  response: {
+    message: string;
+    reservation: Reservation;
+  };
+}
