@@ -1,5 +1,5 @@
-import React from 'react';
-import { useGetCurrentUser } from '../../queries/user/getCurrentUser';
+import React, { useState } from 'react';
+import { useGetCurrentUser } from '../../queries/user/useGetCurrentUser';
 import {
   Avatar,
   Box,
@@ -19,8 +19,11 @@ import { UnknownError } from '../Error/UnknownError';
 import { routeBuilder } from '../../utils/routes';
 import { UserNotLogged } from '../Error/UserNotLogged';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
+import { ResetPasswordModal } from './ResetPasswordModal';
 
 export const UserView: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
   const userId = getCookieValueByName(CookieName.UserId);
 
   const { data, loading, error } = useGetCurrentUser({
@@ -43,6 +46,8 @@ export const UserView: React.FC = () => {
     return <UnknownError link={routeBuilder.profile} />;
   }
 
+  const onResetPasswordClick = () => setIsModalOpen(!isModalOpen);
+
   return (
     <CenteredCard>
       <CardContent>
@@ -60,13 +65,14 @@ export const UserView: React.FC = () => {
         </Box>
       </CardContent>
       <CardActions>
-        <Button size='small' style={styles.resetButton}>
+        <Button size='small' onClick={onResetPasswordClick} style={styles.resetButton}>
           Reset Password
         </Button>
         <Button size='small' onClick={signOut} style={styles.signOutButton}>
           Sign out
         </Button>
       </CardActions>
+      <ResetPasswordModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </CenteredCard>
   );
 };

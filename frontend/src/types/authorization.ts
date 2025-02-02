@@ -20,3 +20,11 @@ export interface AuthResponse<T> {
   status: number;
   data: T;
 }
+
+export interface ResetPasswordBody {
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
+
+export type ResetPasswordData = RegisteredUserData;

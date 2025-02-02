@@ -13,11 +13,13 @@ interface PasswordInputProps {
   handlePasswordChange: (
     evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+  label?: string;
 }
 
 export const PasswordInput: React.FC<PasswordInputProps> = ({
   password,
   handlePasswordChange,
+  label,
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -25,11 +27,11 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 
   return (
     <FormControl fullWidth variant='standard'>
-      <InputLabel htmlFor='standard-adornment-password'>Password *</InputLabel>
+      <InputLabel htmlFor={label ?? 'password'}>{label ?? 'Password'} *</InputLabel>
       <Input
         autoComplete='password'
         value={password}
-        id='standard-adornment-password'
+        id={label ?? 'password'}
         type={showPassword ? 'text' : 'password'}
         onChange={handlePasswordChange}
         endAdornment={
