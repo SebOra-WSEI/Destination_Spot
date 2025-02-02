@@ -27,6 +27,7 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
   const [selectedSpotId, setSelectedSpotId] = useState<string>('1');
 
   const date = selectedDate as dayjs.Dayjs;
+  const userId = getCookieValueByName(CookieName.UserId);
 
   const onCloseModal = (): void => setModalOpen(false);
 
@@ -40,6 +41,12 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
   const availableLocations = spots?.filter(
     (spot) => !reservationsForSelectedDay.map(r => r.spot.id)?.includes(spot.id)
   ).map((s) => s.location) ?? [];
+
+  const spotReservedByUser = reservationsForSelectedDay.find(
+    (reservation) => reservation.user.id.toString() === userId
+  )?.spot.location;
+
+  console.log(spotReservedByUser)
 
   const { reserve } = useCreateReservation(onCloseModal);
 
@@ -60,23 +67,36 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
     >
       <DialogContent>
         <h3 style={styles.header}>{date.format('dddd, D MMM YYYY').toString()}</h3>
-        <Select
-          label='Spot Number'
-          style={styles.label}
-          value={Number(selectedSpotId) > 0 ? selectedSpotId : availableLocations[0].toString()}
-          onChange={handleChange}
-          autoWidth
-        >
-          {availableLocations.map((location) => (
-            <MenuItem
-              key={location}
-              style={styles.label}
-              value={location}
-            >
-              {location}
-            </MenuItem>
-          ))}
-        </Select>
+        {availableLocations.length ? (
+          <>
+            {spotReservedByUser ? (
+              <p>
+                You have already reserved spot number{' '}
+                <strong>{spotReservedByUser}</strong>.
+              </p>
+            ) : (
+              <Select
+                label='Spot Number'
+                style={styles.label}
+                value={Number(selectedSpotId) > 0 ? selectedSpotId : availableLocations[0].toString()}
+                onChange={handleChange}
+                autoWidth
+              >
+                {availableLocations.map((location) => (
+                  <MenuItem
+                    key={location}
+                    style={styles.label}
+                    value={location}
+                  >
+                    {location}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          </>
+        ) : (
+          <p>All parking spots are already reserved.</p>
+        )}
       </DialogContent>
       <DialogActions>
         <Button
@@ -91,6 +111,7 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
           color='success'
           type='submit'
           style={styles.button}
+          disabled={!availableLocations.length || !!spotReservedByUser}
         >
           Reserve
         </Button>

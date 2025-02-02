@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 export const isSameDay = (reservedFrom: string, selectedDay: dayjs.Dayjs) => {
-  const unix = new Date(reservedFrom).getTime();
+  const unix = new Date(Number(reservedFrom)).getTime();
   const reservationDate = dayjs.unix(unix);
 
   return (
