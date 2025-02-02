@@ -5,6 +5,7 @@ import { Login } from './components/Authorization/Login/Login';
 import { Register } from './components/Authorization/Register/Register';
 import { UserView } from './components/UserView/UserView';
 import { ReservationsView } from './components/Reservations/ReservationsView';
+import { PageNotFound } from './components/Error/PageNotFound';
 
 export const AppNavigator: React.FC = () => (
   <Switch>
@@ -13,5 +14,6 @@ export const AppNavigator: React.FC = () => (
     <Route path={routeBuilder.register} component={Register} />
     <Route path={routeBuilder.profile} component={UserView} />
     <Route path={routeBuilder.reservations} component={ReservationsView} />
+    <Route component={PageNotFound} />
   </Switch>
 );
