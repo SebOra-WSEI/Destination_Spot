@@ -13,6 +13,7 @@ export const endpoints = {
   login: `${HOST}/sign-in`,
   register: `${HOST}/sign-up`,
   reservations: `${HOST}/reservations`,
+  spots: `${HOST}/spots`,
   user: (id: string) => `${HOST}/users/${id}`,
   resetPassword: (id: string) => `${HOST}/reset-password/${id}`,
 };
