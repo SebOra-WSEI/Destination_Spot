@@ -2,13 +2,9 @@ import axios from 'axios';
 import { useAppContextProvider } from '../../AppProvider';
 import { SeverityOption } from '../../types/severity';
 import { endpoints, routeBuilder } from '../../utils/routes';
-import {
-  AuthBody,
-  AuthResponse,
-  LoggedUserData,
-} from '../../types/authorization';
+import { AuthBody, LoggedUserData } from '../../types/authorization';
 import { StatusCode } from '../../types/statusCode';
-import { ErrorResponse } from '../../types/response';
+import { CommonResponse, ErrorResponse } from '../../types/response';
 import { jwtDecode } from 'jwt-decode';
 import { TOKEN_KEY } from '../../utils/consts';
 import { CookieName, setCookie } from '../../utils/cookies';
@@ -23,7 +19,7 @@ export const useLogin = (): UseLoginResult => {
   const login = (body: AuthBody) => {
     axios
       .post(endpoints.login, body)
-      .then(({ data, status }: AuthResponse<LoggedUserData>) => {
+      .then(({ data, status }: CommonResponse<LoggedUserData>) => {
         if (status !== StatusCode.OK) {
           setSeverity(SeverityOption.Error);
           setSeverityText('Internal Server Error');

@@ -33,6 +33,7 @@ function loggedUserPages(role: Role) {
   const loggedUserPages = mapPageName([
     routeBuilder.profile,
     routeBuilder.reservations,
+    routeBuilder.addReservations
   ]);
 
   if (role === Role.User) {

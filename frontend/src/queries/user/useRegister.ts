@@ -2,13 +2,9 @@ import axios from 'axios';
 import { useAppContextProvider } from '../../AppProvider';
 import { SeverityOption } from '../../types/severity';
 import { endpoints, routeBuilder } from '../../utils/routes';
-import {
-  AuthBody,
-  AuthResponse,
-  RegisteredUserData,
-} from '../../types/authorization';
+import { AuthBody, RegisteredUserData } from '../../types/authorization';
 import { StatusCode } from '../../types/statusCode';
-import { ErrorResponse } from '../../types/response';
+import { CommonResponse, ErrorResponse } from '../../types/response';
 import { useHistory } from 'react-router';
 
 interface UseRegisterResult {
@@ -23,7 +19,7 @@ export const useRegister = (): UseRegisterResult => {
   const register = (body: AuthBody) => {
     axios
       .post(endpoints.register, body)
-      .then(({ data, status }: AuthResponse<RegisteredUserData>) => {
+      .then(({ data, status }: CommonResponse<RegisteredUserData>) => {
         if (status !== StatusCode.Created) {
           setSeverity(SeverityOption.Error);
           setSeverityText('Internal Server Error');

@@ -18,7 +18,6 @@ export const UserAlreadyLogged: React.FC = () => {
       </CardContent>
       <CardActions>
         <Button
-          variant='outlined'
           size='small'
           style={styles.button()}
           onClick={handleClick}
@@ -26,7 +25,6 @@ export const UserAlreadyLogged: React.FC = () => {
           Move to profile page
         </Button>
         <Button
-          variant='contained'
           color='error'
           size='small'
           style={styles.button(true)}

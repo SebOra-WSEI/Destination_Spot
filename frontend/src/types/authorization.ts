@@ -16,11 +16,6 @@ export interface RegisteredUserData {
   user: User;
 }
 
-export interface AuthResponse<T> {
-  status: number;
-  data: T;
-}
-
 export interface ResetPasswordBody {
   currentPassword: string;
   newPassword: string;

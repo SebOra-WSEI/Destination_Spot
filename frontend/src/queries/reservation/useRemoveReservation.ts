@@ -1,34 +1,30 @@
 import axios from 'axios';
 import { useAppContextProvider } from '../../AppProvider';
-import {
-  ResetPasswordBody,
-  ResetPasswordData,
-} from '../../types/authorization';
-import { endpoints } from '../../utils/routes';
 import { SeverityOption } from '../../types/severity';
+import { endpoints } from '../../utils/routes';
 import { StatusCode } from '../../types/statusCode';
-import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { CommonResponse, ErrorResponse } from '../../types/response';
+import { CookieName, getCookieValueByName } from '../../utils/cookies';
+import { ReservationData } from '../../types/reservation';
+import { reloadPage } from '../../utils/reloadPage';
 
-interface UseResetPasswordResult {
-  resetPassword: (body: ResetPasswordBody) => void;
+interface UseRemoveReservationResult {
+  remove: (id: number) => void;
 }
 
-export const useResetPassword = (
-  onCloseModal: () => void
-): UseResetPasswordResult => {
+export const useRemoveReservation = (): UseRemoveReservationResult => {
   const { setSeverityText, setSeverity } = useAppContextProvider();
 
   const token = getCookieValueByName(CookieName.Token);
 
-  const resetPassword = async (body: ResetPasswordBody) => {
+  const remove = (id: number) => {
     axios
-      .put(endpoints.resetPassword('1'), body, {
+      .delete(endpoints.removeReservation(id.toString()), {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then(({ data, status }: CommonResponse<ResetPasswordData>) => {
+      .then(({ data, status }: CommonResponse<ReservationData>) => {
         if (status !== StatusCode.OK) {
           setSeverity(SeverityOption.Error);
           setSeverityText('Internal Server Error');
@@ -36,14 +32,14 @@ export const useResetPassword = (
         }
 
         setSeverity(SeverityOption.Success);
-        setSeverityText(data.message);
-        onCloseModal();
+        setSeverityText(data.response.message);
+        reloadPage();
       })
-      .catch((err: ErrorResponse) => {
+      .catch(({ response }: ErrorResponse) => {
         setSeverity(SeverityOption.Error);
-        setSeverityText(err.response.data.error);
+        setSeverityText(response.data.error);
       });
   };
 
-  return { resetPassword };
+  return { remove };
 };

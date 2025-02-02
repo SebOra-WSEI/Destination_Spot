@@ -27,7 +27,7 @@ export const ErrorCard: React.FC<ErrorProps> = ({
       {link && (
         <CardActions>
           <Button onClick={handleClick} style={styles.button} size='small'>
-            {link.slice(1)}
+            {link.slice(1).split('-').join(' ')}
           </Button>
         </CardActions>
       )}

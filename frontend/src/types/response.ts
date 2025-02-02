@@ -1,4 +1,3 @@
-import { Reservation } from './reservation';
 import { User } from './user';
 
 interface ErrorData {
@@ -18,8 +17,7 @@ export interface UserResponse {
   };
 }
 
-export interface ReservationResponse {
-  response: {
-    reservations: Array<Reservation>;
-  };
+export interface CommonResponse<T> {
+  status: number;
+  data: T;
 }
