@@ -27,7 +27,9 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 
   return (
     <FormControl fullWidth variant='standard'>
-      <InputLabel htmlFor={label ?? 'password'}>{label ?? 'Password'} *</InputLabel>
+      <InputLabel htmlFor={label ?? 'password'}>
+        {label ?? 'Password'} *
+      </InputLabel>
       <Input
         autoComplete='password'
         value={password}

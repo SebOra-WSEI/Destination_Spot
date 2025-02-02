@@ -1,4 +1,12 @@
-import { Box, Button, Card, DialogActions, DialogContent, Fade, Modal } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  DialogActions,
+  DialogContent,
+  Fade,
+  Modal,
+} from '@mui/material';
 import React, { useState } from 'react';
 import { PasswordInput } from '../Authorization/Form/PasswordInput';
 import { ResetPasswordBody } from '../../types/authorization';
@@ -8,13 +16,13 @@ import { getPasswordValidationRules } from '../../utils/getPasswordValidationRul
 import { useResetPassword } from '../../queries/user/useResetPassword';
 
 interface ResetPasswordModalProps {
-  isModalOpen: boolean
-  setIsModalOpen: (isModalOpen: boolean) => void
+  isModalOpen: boolean;
+  setIsModalOpen: (isModalOpen: boolean) => void;
 }
 
 export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
   isModalOpen,
-  setIsModalOpen
+  setIsModalOpen,
 }) => {
   const [body, setBody] = useState<ResetPasswordBody>({
     currentPassword: '',
@@ -28,12 +36,12 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
       currentPassword: '',
       newPassword: '',
       confirmNewPassword: '',
-    })
-  }
+    });
+  };
 
   const handlePasswordChange = (
     evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    field: keyof ResetPasswordBody,
+    field: keyof ResetPasswordBody
   ): void => {
     setBody({
       ...body,
@@ -46,7 +54,7 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     resetPassword(body);
-  }
+  };
 
   const { currentPassword, newPassword, confirmNewPassword } = body;
 
@@ -59,22 +67,31 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
               <h3 style={styles.header}>Reset Password</h3>
               <PasswordInput
                 password={currentPassword}
-                handlePasswordChange={(evt) => handlePasswordChange(evt, 'currentPassword')}
+                handlePasswordChange={(evt) =>
+                  handlePasswordChange(evt, 'currentPassword')
+                }
                 label='Current password'
               />
               <PasswordInput
                 password={newPassword}
-                handlePasswordChange={(evt) => handlePasswordChange(evt, 'newPassword')}
+                handlePasswordChange={(evt) =>
+                  handlePasswordChange(evt, 'newPassword')
+                }
                 label='New password'
               />
               <PasswordInput
                 password={confirmNewPassword}
-                handlePasswordChange={(evt) => handlePasswordChange(evt, 'confirmNewPassword')}
+                handlePasswordChange={(evt) =>
+                  handlePasswordChange(evt, 'confirmNewPassword')
+                }
                 label='Confirm password'
               />
               {Boolean(newPassword) && (
                 <PasswordCheckList
-                  rules={getPasswordValidationRules(newPassword, confirmNewPassword)}
+                  rules={getPasswordValidationRules(
+                    newPassword,
+                    confirmNewPassword
+                  )}
                 />
               )}
             </DialogContent>
@@ -100,8 +117,8 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
         </Box>
       </Fade>
     </Modal>
-  )
-}
+  );
+};
 
 const styles = {
   header: {

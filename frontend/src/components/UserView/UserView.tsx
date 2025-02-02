@@ -65,14 +65,21 @@ export const UserView: React.FC = () => {
         </Box>
       </CardContent>
       <CardActions>
-        <Button size='small' onClick={onResetPasswordClick} style={styles.resetButton}>
+        <Button
+          size='small'
+          onClick={onResetPasswordClick}
+          style={styles.resetButton}
+        >
           Reset Password
         </Button>
         <Button size='small' onClick={signOut} style={styles.signOutButton}>
           Sign out
         </Button>
       </CardActions>
-      <ResetPasswordModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <ResetPasswordModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </CenteredCard>
   );
 };
