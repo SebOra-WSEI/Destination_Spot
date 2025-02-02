@@ -13,14 +13,18 @@ import PersonIcon from '@mui/icons-material/Person';
 import { FONT_FAMILY } from '../../utils/consts';
 import { signOut } from '../../utils/signOut';
 import { red } from '@mui/material/colors';
+import { ResetPasswordModal } from '../UserView/ResetPasswordModal';
 
 export const SettingIcon: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget);
 
   const handleClose = () => setAnchorEl(null);
+
+  const onResetPasswordClick = () => setIsModalOpen(!isModalOpen);
 
   return (
     <Box>
@@ -41,7 +45,7 @@ export const SettingIcon: React.FC = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => console.log('reset')}>
+        <MenuItem onClick={onResetPasswordClick}>
           <Typography style={styles.text}>Reset Password</Typography>
         </MenuItem>
         <Divider />
@@ -49,6 +53,10 @@ export const SettingIcon: React.FC = () => {
           <Typography style={styles.logout}>Sign out</Typography>
         </MenuItem>
       </Menu>
+      <ResetPasswordModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </Box>
   );
 };

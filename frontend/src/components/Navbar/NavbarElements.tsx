@@ -19,7 +19,7 @@ export const NavbarElements: React.FC<{ pages: Array<string> }> = ({
             onClick={() => history.push(page)}
             style={styles.button(pages.length)}
           >
-            {page}
+            {page.split('-').join(' ')}
           </Button>
         ))}
       </Box>
@@ -45,9 +45,9 @@ const styles = {
     fontFamily: FONT_FAMILY,
     ...(pageCount === 1
       ? {
-          marginLeft: 'auto',
-          marginRight: '1.5rem',
-        }
+        marginLeft: 'auto',
+        marginRight: '1.5rem',
+      }
       : {}),
   }),
 };

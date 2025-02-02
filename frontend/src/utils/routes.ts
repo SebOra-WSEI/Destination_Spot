@@ -6,6 +6,7 @@ interface Route {
   profile: string;
   register: string;
   reservations: string;
+  addReservations: string;
 }
 
 export const endpoints = {
@@ -22,4 +23,5 @@ export const routeBuilder: Route = {
   profile: '/profile',
   register: '/register',
   reservations: '/reservations',
+  addReservations: '/add-reservations',
 };
