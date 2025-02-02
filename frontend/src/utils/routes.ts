@@ -13,6 +13,7 @@ export const endpoints = {
   register: `${HOST}/sign-up`,
   reservations: `${HOST}/reservations`,
   user: (id: string) => `${HOST}/users/${id}`,
+  resetPassword: (id: string) => `${HOST}/reset-password/${id}`,
 };
 
 export const routeBuilder: Route = {

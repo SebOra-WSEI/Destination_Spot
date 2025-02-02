@@ -1,7 +1,7 @@
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { User } from '../../types/user';
 import { EmptyQueryVariables, Query } from '../../types/query';
-import { useGetUserById } from './getUserById';
+import { useGetUserById } from './useGetUserById';
 
 export const useGetCurrentUser = ({
   skip = false,
