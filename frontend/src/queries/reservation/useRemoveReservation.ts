@@ -6,6 +6,7 @@ import { StatusCode } from '../../types/statusCode';
 import { CommonResponse, ErrorResponse } from '../../types/response';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { ReservationData } from '../../types/reservation';
+import { reloadPage } from '../../utils/reloadPage';
 
 interface UseRemoveReservationResult {
   remove: (id: number) => void;
@@ -32,10 +33,7 @@ export const useRemoveReservation = (): UseRemoveReservationResult => {
 
         setSeverity(SeverityOption.Success);
         setSeverityText(data.response.message);
-
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
+        reloadPage();
       })
       .catch(({ response }: ErrorResponse) => {
         setSeverity(SeverityOption.Error);

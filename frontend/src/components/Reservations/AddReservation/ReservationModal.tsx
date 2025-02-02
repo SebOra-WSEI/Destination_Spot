@@ -24,7 +24,7 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
   reservations,
   spots
 }) => {
-  const [selectedSpotId, setSelectedSpotId] = useState<string>('1');
+  const [selectedSpotId, setSelectedSpotId] = useState<string>('0');
 
   const date = selectedDate as dayjs.Dayjs;
   const userId = getCookieValueByName(CookieName.UserId);
@@ -46,22 +46,19 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
     (reservation) => reservation.user.id.toString() === userId
   )?.spot.location;
 
-  const { reserve } = useCreateReservation(onCloseModal);
+  const { reserve } = useCreateReservation();
+
+  const spotId = Number(selectedSpotId) > 0 ? selectedSpotId : availableLocations[0]
 
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>): void => {
     evt.preventDefault();
     reserve({
       userId: Number(getCookieValueByName(CookieName.UserId)),
-      spotId: Number(selectedSpotId),
+      spotId: Number(spotId),
       reservedFrom: String(createDate(date, 0, 0, 0)),
       reservedTo: String(createDate(date, 23, 59, 59)),
     });
-
-    setTimeout(() => {
-      window.location.reload();
-    }, 500);
   }
-
   return (
     <CenteredModal
       isModalOpen={isModalOpen}
@@ -84,7 +81,7 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
                 <Select
                   label='Spot Number'
                   style={styles.label}
-                  value={Number(selectedSpotId) > 0 ? selectedSpotId : availableLocations[0].toString()}
+                  value={spotId.toString()}
                   onChange={handleChange}
                 >
                   {availableLocations.map((location) => (

@@ -9,6 +9,8 @@ import dayjs from 'dayjs';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { useRemoveReservation } from '../../queries/reservation/useRemoveReservation';
+import { ErrorCard } from '../Error/ErrorCard';
+import { routeBuilder } from '../../utils/routes';
 
 interface ReservationsListProps {
   reservations: Array<Reservation> | undefined;
@@ -28,6 +30,10 @@ export const ReservationsList: React.FC<ReservationsListProps> = ({
   });
 
   const { remove } = useRemoveReservation();
+
+  if (!reservations?.length) {
+    return <ErrorCard isErrorCard text='There are no reservations yet' link={routeBuilder.addReservations} />
+  }
 
   return (
     <List sx={styles.list}>
@@ -63,5 +69,5 @@ const styles = {
   },
   icon: {
     marginLeft: 'auto'
-  }
+  },
 };

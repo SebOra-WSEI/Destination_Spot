@@ -101,7 +101,7 @@ const styles = {
     borderRadius: '1rem',
     padding: '2rem',
     width: '23rem',
-    marginTop: '3rem',
+    marginTop: '8rem',
     [`& .${pickersDayClasses.root}`]: {
       width: 40,
       height: 40,
