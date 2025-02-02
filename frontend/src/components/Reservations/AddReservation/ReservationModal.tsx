@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CenteredModal } from '../../Modal/CenteredModal';
 import dayjs from 'dayjs';
-import { Button, DialogActions, DialogContent, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { Button, DialogActions, DialogContent, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { FONT_FAMILY } from '../../../utils/consts';
 import { Reservation } from '../../../types/reservation';
 import { Spot } from '../../../types/spot';
@@ -46,8 +46,6 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
     (reservation) => reservation.user.id.toString() === userId
   )?.spot.location;
 
-  console.log(spotReservedByUser)
-
   const { reserve } = useCreateReservation(onCloseModal);
 
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>): void => {
@@ -58,6 +56,10 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
       reservedFrom: String(createDate(date, 0, 0, 0)),
       reservedTo: String(createDate(date, 23, 59, 59)),
     });
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   }
 
   return (
@@ -75,23 +77,27 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
                 <strong>{spotReservedByUser}</strong>.
               </p>
             ) : (
-              <Select
-                label='Spot Number'
-                style={styles.label}
-                value={Number(selectedSpotId) > 0 ? selectedSpotId : availableLocations[0].toString()}
-                onChange={handleChange}
-                autoWidth
-              >
-                {availableLocations.map((location) => (
-                  <MenuItem
-                    key={location}
-                    style={styles.label}
-                    value={location}
-                  >
-                    {location}
-                  </MenuItem>
-                ))}
-              </Select>
+              <FormControl fullWidth>
+                <InputLabel style={styles.label}>
+                  Spot Number
+                </InputLabel>
+                <Select
+                  label='Spot Number'
+                  style={styles.label}
+                  value={Number(selectedSpotId) > 0 ? selectedSpotId : availableLocations[0].toString()}
+                  onChange={handleChange}
+                >
+                  {availableLocations.map((location) => (
+                    <MenuItem
+                      key={location}
+                      style={styles.label}
+                      value={location}
+                    >
+                      {location}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             )}
           </>
         ) : (

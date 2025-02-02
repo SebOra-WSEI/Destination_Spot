@@ -5,28 +5,26 @@ import { endpoints } from '../../utils/routes';
 import { StatusCode } from '../../types/statusCode';
 import { CommonResponse, ErrorResponse } from '../../types/response';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
-import { ReservationData, ReservationBody } from '../../types/reservation';
+import { ReservationData } from '../../types/reservation';
 
-interface UseCreateReservationResult {
-  reserve: (body: ReservationBody) => void;
+interface UseRemoveReservationResult {
+  remove: (id: number) => void;
 }
 
-export const useCreateReservation = (
-  onCloseModal: () => void
-): UseCreateReservationResult => {
+export const useRemoveReservation = (): UseRemoveReservationResult => {
   const { setSeverityText, setSeverity } = useAppContextProvider();
 
   const token = getCookieValueByName(CookieName.Token);
 
-  const reserve = (body: ReservationBody) => {
+  const remove = (id: number) => {
     axios
-      .post(endpoints.reservations, body, {
+      .delete(endpoints.removeReservation(id.toString()), {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then(({ data, status }: CommonResponse<ReservationData>) => {
-        if (status !== StatusCode.Created) {
+        if (status !== StatusCode.OK) {
           setSeverity(SeverityOption.Error);
           setSeverityText('Internal Server Error');
           return;
@@ -34,7 +32,10 @@ export const useCreateReservation = (
 
         setSeverity(SeverityOption.Success);
         setSeverityText(data.response.message);
-        onCloseModal();
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       })
       .catch(({ response }: ErrorResponse) => {
         setSeverity(SeverityOption.Error);
@@ -42,5 +43,5 @@ export const useCreateReservation = (
       });
   };
 
-  return { reserve };
+  return { remove };
 };

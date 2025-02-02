@@ -15,6 +15,7 @@ export const endpoints = {
   reservations: `${HOST}/reservations`,
   spots: `${HOST}/spots`,
   user: (id: string) => `${HOST}/users/${id}`,
+  removeReservation: (id: string) => `${HOST}/reservations/${id}`,
   resetPassword: (id: string) => `${HOST}/reset-password/${id}`,
 };
 

@@ -28,7 +28,7 @@ export interface ReservationResponse {
   };
 }
 
-export interface CreatedReservationData {
+export interface ReservationData {
   response: {
     message: string;
     reservation: Reservation;

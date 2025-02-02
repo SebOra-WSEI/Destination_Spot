@@ -1,11 +1,14 @@
 import React from 'react';
-import { List } from '@mui/material';
+import { IconButton, List, Tooltip } from '@mui/material';
 import { Reservation } from '../../types/reservation';
 import { SpotChip } from './SpotChip/SpotChip';
 import { ReservationUserDetails } from './ReservationUserDetails/ReservationUserDetails';
 import { ReservationDate } from './ReservationDate/ReservationDate';
 import { ReservationListItem } from './ReservationListItem';
 import dayjs from 'dayjs';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { CookieName, getCookieValueByName } from '../../utils/cookies';
+import { useRemoveReservation } from '../../queries/reservation/useRemoveReservation';
 
 interface ReservationsListProps {
   reservations: Array<Reservation> | undefined;
@@ -14,6 +17,8 @@ interface ReservationsListProps {
 export const ReservationsList: React.FC<ReservationsListProps> = ({
   reservations,
 }) => {
+  const userId = getCookieValueByName(CookieName.UserId);
+
   const sortedCurrentReservations = reservations?.sort((a, b) => {
     if (isTheSameDay(a, b)) {
       return a.spot.id - b.spot.id;
@@ -22,14 +27,22 @@ export const ReservationsList: React.FC<ReservationsListProps> = ({
     return Number(a.details.reservedFrom) - Number(b.details.reservedTo);
   });
 
+  const { remove } = useRemoveReservation();
 
   return (
-    <List sx={sxStyles.list}>
+    <List sx={styles.list}>
       {sortedCurrentReservations?.map(({ details, spot, user }) => (
         <ReservationListItem key={details.id}>
           <ReservationDate reservedFrom={details.reservedFrom} />
           <SpotChip location={spot.location} />
           <ReservationUserDetails user={user} />
+          {user.id.toString() === userId && (
+            <Tooltip title="Remove reservation">
+              <IconButton sx={styles.icon} onClick={() => remove(details.id)}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          )}
         </ReservationListItem>
       ))}
     </List>
@@ -41,11 +54,14 @@ function isTheSameDay(a: Reservation, b: Reservation): boolean {
     dayjs.unix(Number(b.details.reservedFrom)).format('dddd, D MMM YYYY')
 }
 
-const sxStyles = {
+const styles = {
   list: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     marginTop: '2.5rem',
   },
+  icon: {
+    marginLeft: 'auto'
+  }
 };

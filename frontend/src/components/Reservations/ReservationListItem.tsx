@@ -29,7 +29,7 @@ const sxStyles = {
     display: 'flex',
     alignItems: 'center',
     flexWrap: 'wrap',
-    justifyContent: 'center',
     padding: '1px',
+    marginLeft: '1rem'
   },
 };
