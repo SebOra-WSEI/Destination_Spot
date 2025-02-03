@@ -9,7 +9,7 @@ import {
 import React, { useState } from 'react';
 
 interface PasswordInputProps {
-  password: string;
+  password?: string;
   handlePasswordChange: (
     evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;

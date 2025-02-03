@@ -11,6 +11,7 @@ import { PasswordCheckList } from '../Authorization/PasswordValidation/PasswordC
 import { getPasswordValidationRules } from '../../utils/getPasswordValidationRules';
 import { useResetPassword } from '../../queries/user/useResetPassword';
 import { CenteredModal } from '../Modal/CenteredModal';
+import { useParams } from 'react-router';
 
 interface ResetPasswordModalProps {
   isModalOpen: boolean;
@@ -21,6 +22,7 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
   isModalOpen,
   setIsModalOpen,
 }) => {
+  const { id: idParams } = useParams<{ id: string }>();
   const [body, setBody] = useState<ResetPasswordBody>({
     currentPassword: '',
     newPassword: '',
@@ -50,7 +52,13 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
 
   const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>): Promise<void> => {
     evt.preventDefault();
-    await resetPassword(body);
+    await resetPassword({
+      ...(body.currentPassword ? {
+        currentPassword: body.currentPassword,
+      } : {}),
+      newPassword: body.newPassword,
+      confirmNewPassword: body.confirmNewPassword,
+    });
   };
 
   const { currentPassword, newPassword, confirmNewPassword } = body;
@@ -60,13 +68,15 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
       <>
         <DialogContent>
           <h3 style={styles.header}>Reset Password</h3>
-          <PasswordInput
-            password={currentPassword}
-            handlePasswordChange={(evt) =>
-              handlePasswordChange(evt, 'currentPassword')
-            }
-            label='Current password'
-          />
+          {!idParams && (
+            <PasswordInput
+              password={currentPassword}
+              handlePasswordChange={(evt) =>
+                handlePasswordChange(evt, 'currentPassword')
+              }
+              label='Current password'
+            />
+          )}
           <PasswordInput
             password={newPassword}
             handlePasswordChange={(evt) =>
