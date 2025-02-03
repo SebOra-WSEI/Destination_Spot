@@ -9,6 +9,7 @@ import { SeverityOption } from '../../types/severity';
 import { StatusCode } from '../../types/statusCode';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { CommonResponse, ErrorResponse } from '../../types/response';
+import { useParams } from 'react-router';
 
 interface UseResetPasswordResult {
   resetPassword: (body: ResetPasswordBody) => Promise<void>;
@@ -18,12 +19,18 @@ export const useResetPassword = (
   osSuccess: () => void
 ): UseResetPasswordResult => {
   const { setSeverityText, setSeverity } = useAppContextProvider();
+  const { id: idParams } = useParams<{ id: string }>();
 
+  const userId = getCookieValueByName(CookieName.UserId);
   const token = getCookieValueByName(CookieName.Token);
+
+  const endpoint = idParams
+    ? endpoints.accessControl(idParams)
+    : endpoints.resetPassword(userId ?? '');
 
   const resetPassword = async (body: ResetPasswordBody) => {
     axios
-      .put(endpoints.resetPassword('1'), body, {
+      .put(endpoint, body, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

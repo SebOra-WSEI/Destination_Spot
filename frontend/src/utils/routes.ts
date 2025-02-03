@@ -13,6 +13,7 @@ interface Route {
 }
 
 export const endpoints = {
+  accessControl: (id: string) => `${HOST}/access-control/${id}`,
   login: `${HOST}/sign-in`,
   register: `${HOST}/sign-up`,
   reservation: (id: string) => `${HOST}/reservations/${id}`,

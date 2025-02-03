@@ -17,7 +17,7 @@ export interface RegisteredUserData {
 }
 
 export interface ResetPasswordBody {
-  currentPassword: string;
+  currentPassword?: string;
   newPassword: string;
   confirmNewPassword: string;
 }
