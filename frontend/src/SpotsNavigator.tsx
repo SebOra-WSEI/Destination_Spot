@@ -17,4 +17,4 @@ export const SpotsNavigator: React.FC = () => {
       <Route component={PermissionDenied} />
     </Switch>
   );
-}
+};

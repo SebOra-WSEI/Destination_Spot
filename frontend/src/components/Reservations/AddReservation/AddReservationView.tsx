@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { dayPickerClasses, LocalizationProvider, pickersDayClasses } from '@mui/x-date-pickers';
+import {
+  dayPickerClasses,
+  LocalizationProvider,
+  pickersDayClasses,
+} from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
-import { badgeClasses, } from '@mui/material';
+import { badgeClasses } from '@mui/material';
 import { pickersToolbarClasses } from '@mui/x-date-pickers/internals';
 import { FONT_FAMILY } from '../../../utils/consts';
 import { CookieName, getCookieValueByName } from '../../../utils/cookies';
@@ -25,14 +29,14 @@ export const AddReservationView: React.FC = () => {
   const {
     data: spots,
     error: spotsError,
-    loading: spotsLoading
-  } = useGetAllSpots()
+    loading: spotsLoading,
+  } = useGetAllSpots();
 
   const {
     data: reservations,
     error: reservationsError,
-    loading: reservationsLoading
-  } = useGetAllReservations()
+    loading: reservationsLoading,
+  } = useGetAllReservations();
 
   const handleDateClick = (newDate: dayjs.Dayjs | null) => {
     setSelectedDate(newDate);
@@ -47,7 +51,7 @@ export const AddReservationView: React.FC = () => {
   const isError = spotsError || reservationsError;
 
   if (isLoading) {
-    return <Loader />
+    return <Loader />;
   }
 
   if (isError) {
@@ -70,7 +74,7 @@ export const AddReservationView: React.FC = () => {
                 reservations={reservations}
                 isDateDisabled={shouldDisableDate(dayjs(props.day), today)}
               />
-            )
+            ),
           }}
         />
       </LocalizationProvider>
@@ -82,8 +86,8 @@ export const AddReservationView: React.FC = () => {
         spots={spots}
       />
     </>
-  )
-}
+  );
+};
 
 function shouldDisableDate(date: dayjs.Dayjs, today: dayjs.Dayjs): boolean {
   const dayOfWeek = date.day();
@@ -122,6 +126,6 @@ const styles = {
       fontFamily: FONT_FAMILY,
       textAlign: 'center',
       color: '#428bca',
-    }
+    },
   },
-}
+};

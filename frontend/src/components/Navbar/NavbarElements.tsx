@@ -45,9 +45,9 @@ const styles = {
     fontFamily: FONT_FAMILY,
     ...(pageCount === 1
       ? {
-        marginLeft: 'auto',
-        marginRight: '1.5rem',
-      }
+          marginLeft: 'auto',
+          marginRight: '1.5rem',
+        }
       : {}),
   }),
 };

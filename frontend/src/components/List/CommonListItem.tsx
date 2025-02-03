@@ -1,9 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { Box, ListItem } from '@mui/material';
 
-export const CommonListItem: React.FC<PropsWithChildren> = ({
-  children,
-}) => (
+export const CommonListItem: React.FC<PropsWithChildren> = ({ children }) => (
   <ListItem sx={sxStyles.listItem}>
     <Box sx={sxStyles.details}>{children}</Box>
   </ListItem>
@@ -30,6 +28,6 @@ const sxStyles = {
     alignItems: 'center',
     flexWrap: 'wrap',
     padding: '1px',
-    marginLeft: '1rem'
+    marginLeft: '1rem',
   },
 };

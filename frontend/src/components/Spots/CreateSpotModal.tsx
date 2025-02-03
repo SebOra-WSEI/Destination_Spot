@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { CenteredModal } from "../Modal/CenteredModal";
-import { Button, DialogActions, DialogContent, TextField } from "@mui/material";
-import { FONT_FAMILY } from "../../utils/consts";
-import { useCreateSpot } from "../../queries/spots/useCreateSpot";
+import React, { useState } from 'react';
+import { CenteredModal } from '../Modal/CenteredModal';
+import { Button, DialogActions, DialogContent, TextField } from '@mui/material';
+import { FONT_FAMILY } from '../../utils/consts';
+import { useCreateSpot } from '../../queries/spots/useCreateSpot';
 
 interface CreateLocationModalProps {
   isModalOpen: boolean;
@@ -18,20 +18,19 @@ export const CreateSpotModal: React.FC<CreateLocationModalProps> = ({
   const { create } = useCreateSpot();
 
   const onCloseModal = (): void => {
-    setLocation(undefined)
+    setLocation(undefined);
     setModalOpen(false);
   };
 
-  const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (
+    evt: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     evt.preventDefault();
-    await create(location as number)
-  }
+    await create(location as number);
+  };
 
   return (
-    <CenteredModal
-      isModalOpen={isModalOpen}
-      handleSubmit={handleSubmit}
-    >
+    <CenteredModal isModalOpen={isModalOpen} handleSubmit={handleSubmit}>
       <DialogContent>
         <h3 style={styles.header}>Create New Spot</h3>
         <TextField
@@ -47,11 +46,7 @@ export const CreateSpotModal: React.FC<CreateLocationModalProps> = ({
         />
       </DialogContent>
       <DialogActions>
-        <Button
-          variant='outlined'
-          onClick={onCloseModal}
-          style={styles.button}
-        >
+        <Button variant='outlined' onClick={onCloseModal} style={styles.button}>
           Close
         </Button>
         <Button
@@ -65,7 +60,7 @@ export const CreateSpotModal: React.FC<CreateLocationModalProps> = ({
         </Button>
       </DialogActions>
     </CenteredModal>
-  )
+  );
 };
 
 const styles = {

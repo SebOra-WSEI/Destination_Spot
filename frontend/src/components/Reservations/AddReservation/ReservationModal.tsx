@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { CenteredModal } from '../../Modal/CenteredModal';
 import dayjs from 'dayjs';
-import { Button, DialogActions, DialogContent, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import {
+  Button,
+  DialogActions,
+  DialogContent,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
 import { FONT_FAMILY } from '../../../utils/consts';
 import { Reservation } from '../../../types/reservation';
 import { Spot } from '../../../types/spot';
@@ -22,7 +31,7 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
   selectedDate,
   setModalOpen,
   reservations,
-  spots
+  spots,
 }) => {
   const [selectedSpotId, setSelectedSpotId] = useState<string>('0');
 
@@ -31,16 +40,21 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
 
   const onCloseModal = (): void => setModalOpen(false);
 
-  const handleChange = (evt: SelectChangeEvent) => setSelectedSpotId(evt.target.value);
+  const handleChange = (evt: SelectChangeEvent) =>
+    setSelectedSpotId(evt.target.value);
 
   const reservationsForSelectedDay = filterReservationsForSelectedDay(
     selectedDate,
     reservations
   );
 
-  const availableLocations = spots?.filter(
-    (spot) => !reservationsForSelectedDay.map(r => r.spot.id)?.includes(spot.id)
-  ).map((s) => s.location) ?? [];
+  const availableLocations =
+    spots
+      ?.filter(
+        (spot) =>
+          !reservationsForSelectedDay.map((r) => r.spot.id)?.includes(spot.id)
+      )
+      .map((s) => s.location) ?? [];
 
   const spotReservedByUser = reservationsForSelectedDay.find(
     (reservation) => reservation.user.id.toString() === userId
@@ -48,9 +62,12 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
 
   const { reserve } = useCreateReservation();
 
-  const spotId = Number(selectedSpotId) > 0 ? selectedSpotId : availableLocations[0]
+  const spotId =
+    Number(selectedSpotId) > 0 ? selectedSpotId : availableLocations[0];
 
-  const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (
+    evt: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     evt.preventDefault();
     await reserve({
       userId: Number(getCookieValueByName(CookieName.UserId)),
@@ -58,14 +75,13 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
       reservedFrom: String(createDate(date, 0, 0, 0)),
       reservedTo: String(createDate(date, 23, 59, 59)),
     });
-  }
+  };
   return (
-    <CenteredModal
-      isModalOpen={isModalOpen}
-      handleSubmit={handleSubmit}
-    >
+    <CenteredModal isModalOpen={isModalOpen} handleSubmit={handleSubmit}>
       <DialogContent>
-        <h3 style={styles.header}>{date.format('dddd, D MMM YYYY').toString()}</h3>
+        <h3 style={styles.header}>
+          {date.format('dddd, D MMM YYYY').toString()}
+        </h3>
         {availableLocations.length ? (
           <>
             {spotReservedByUser ? (
@@ -75,9 +91,7 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
               </p>
             ) : (
               <FormControl fullWidth>
-                <InputLabel style={styles.label}>
-                  Spot Number
-                </InputLabel>
+                <InputLabel style={styles.label}>Spot Number</InputLabel>
                 <Select
                   label='Spot Number'
                   style={styles.label}
@@ -102,11 +116,7 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
         )}
       </DialogContent>
       <DialogActions>
-        <Button
-          variant='outlined'
-          onClick={onCloseModal}
-          style={styles.button}
-        >
+        <Button variant='outlined' onClick={onCloseModal} style={styles.button}>
           Close
         </Button>
         <Button
@@ -120,8 +130,8 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
         </Button>
       </DialogActions>
     </CenteredModal>
-  )
-}
+  );
+};
 
 const filterReservationsForSelectedDay = (
   selectedDate: dayjs.Dayjs | null,

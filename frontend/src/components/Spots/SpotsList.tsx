@@ -13,7 +13,7 @@ export const SpotsList: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const { data, loading, error } = useGetAllSpots();
-  const { remove } = useRemoveSpot()
+  const { remove } = useRemoveSpot();
 
   if (loading) {
     return <Loader />;
@@ -40,7 +40,7 @@ export const SpotsList: React.FC = () => {
               }}
               primary={`Spot location: ${location}`}
             />
-            <Tooltip title="Remove location">
+            <Tooltip title='Remove location'>
               <IconButton onClick={() => handleRemove(id)}>
                 <DeleteOutlineIcon color='error' />
               </IconButton>
@@ -66,6 +66,6 @@ const styles = {
   button: {
     fontFamily: FONT_FAMILY,
     fontSize: 15,
-    marginBottom: '3rem'
+    marginBottom: '3rem',
   },
 };

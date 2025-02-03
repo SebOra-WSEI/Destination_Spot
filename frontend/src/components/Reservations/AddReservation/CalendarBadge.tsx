@@ -1,9 +1,9 @@
-import React from "react";
-import { Badge } from "@mui/material";
+import React from 'react';
+import { Badge } from '@mui/material';
 import { PickersDay, PickersDayProps } from '@mui/x-date-pickers';
-import { Dayjs } from "dayjs";
-import { Spot } from "../../../types/spot";
-import { Reservation } from "../../../types/reservation";
+import { Dayjs } from 'dayjs';
+import { Spot } from '../../../types/spot';
+import { Reservation } from '../../../types/reservation';
 
 interface ReservationsGroupedByDay {
   [day: string]: Array<number>;
@@ -13,14 +13,14 @@ interface CalendarBadgeProps {
   dayProps: PickersDayProps<Dayjs>;
   spots?: Array<Spot>;
   reservations?: Array<Reservation>;
-  isDateDisabled: boolean
+  isDateDisabled: boolean;
 }
 
 export const CalendarBadge: React.FC<CalendarBadgeProps> = ({
   dayProps,
   spots,
   reservations,
-  isDateDisabled
+  isDateDisabled,
 }) => {
   const date = dayProps.day.toDate().toDateString();
   const enabledSpotsLength = getEnabledSpots(date, reservations, spots).length;
@@ -35,12 +35,12 @@ export const CalendarBadge: React.FC<CalendarBadgeProps> = ({
       <PickersDay {...dayProps} />
     </Badge>
   );
-}
+};
 
 const getEnabledSpots = (
   date: string,
   reservations?: Array<Reservation>,
-  spots?: Array<Spot>,
+  spots?: Array<Spot>
 ): Array<Spot> => {
   const reservationsGroupedByDay: ReservationsGroupedByDay = {};
 
@@ -56,8 +56,9 @@ const getEnabledSpots = (
     reservationsGroupedByDay[reservationDate].push(reservation.spot.id);
   });
 
-  return spots?.filter(
-    (spot) =>
-      !reservationsGroupedByDay[date]?.includes(spot.id)
-  ) ?? [];
+  return (
+    spots?.filter(
+      (spot) => !reservationsGroupedByDay[date]?.includes(spot.id)
+    ) ?? []
+  );
 };

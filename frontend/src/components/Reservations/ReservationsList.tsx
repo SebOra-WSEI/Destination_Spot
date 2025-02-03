@@ -29,11 +29,17 @@ export const ReservationsList: React.FC<ReservationsListProps> = ({
   });
 
   if (!reservations?.length) {
-    return <ErrorCard isErrorCard text='There are no reservations yet' link={routes.createReservation} />
+    return (
+      <ErrorCard
+        isErrorCard
+        text='There are no reservations yet'
+        link={routes.createReservation}
+      />
+    );
   }
 
   const handleClick = (id: number): void =>
-    history.push(routeBuilder.reservationDetails(String(id)))
+    history.push(routeBuilder.reservationDetails(String(id)));
 
   return (
     <List sx={styles.list}>
@@ -42,8 +48,11 @@ export const ReservationsList: React.FC<ReservationsListProps> = ({
           <ReservationDate reservedFrom={details.reservedFrom} />
           <SpotChip location={spot.location} />
           <ReservationUserDetails user={user} />
-          <Tooltip title="Reservation details">
-            <IconButton sx={styles.icon} onClick={() => handleClick(details.id)}>
+          <Tooltip title='Reservation details'>
+            <IconButton
+              sx={styles.icon}
+              onClick={() => handleClick(details.id)}
+            >
               <InfoIcon />
             </IconButton>
           </Tooltip>
@@ -54,8 +63,10 @@ export const ReservationsList: React.FC<ReservationsListProps> = ({
 };
 
 function isTheSameDay(a: Reservation, b: Reservation): boolean {
-  return dayjs.unix(Number(a.details.reservedFrom)).format('dddd, D MMM YYYY') ===
+  return (
+    dayjs.unix(Number(a.details.reservedFrom)).format('dddd, D MMM YYYY') ===
     dayjs.unix(Number(b.details.reservedFrom)).format('dddd, D MMM YYYY')
+  );
 }
 
 const styles = {
@@ -66,6 +77,6 @@ const styles = {
     marginTop: '2.5rem',
   },
   icon: {
-    marginLeft: 'auto'
+    marginLeft: 'auto',
   },
 };

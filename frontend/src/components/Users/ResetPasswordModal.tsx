@@ -1,8 +1,4 @@
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-} from '@mui/material';
+import { Button, DialogActions, DialogContent } from '@mui/material';
 import React, { useState } from 'react';
 import { PasswordInput } from '../Authorization/Form/PasswordInput';
 import { ResetPasswordBody } from '../../types/authorization';
@@ -50,12 +46,16 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
 
   const { resetPassword } = useResetPassword(onCloseModal);
 
-  const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (
+    evt: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     evt.preventDefault();
     await resetPassword({
-      ...(body.currentPassword ? {
-        currentPassword: body.currentPassword,
-      } : {}),
+      ...(body.currentPassword
+        ? {
+            currentPassword: body.currentPassword,
+          }
+        : {}),
       newPassword: body.newPassword,
       confirmNewPassword: body.confirmNewPassword,
     });

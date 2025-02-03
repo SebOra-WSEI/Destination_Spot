@@ -13,21 +13,12 @@ export const AppNavigator: React.FC = () => (
     <Route exact path={routes.default} component={Login} />
     <Route path={routes.login} component={Login} />
     <Route path={routes.register} component={Register} />
-    <Route path={[
-      routes.profile,
-      routes.users
-    ]} component={UserNavigator} />
+    <Route path={[routes.profile, routes.users]} component={UserNavigator} />
     <Route
-      path={[
-        routes.reservations,
-        routes.createReservation
-      ]}
+      path={[routes.reservations, routes.createReservation]}
       component={ReservationNavigator}
     />
-    <Route
-      path={routes.spots}
-      component={SpotsNavigator}
-    />
+    <Route path={routes.spots} component={SpotsNavigator} />
     <Route component={PageNotFound} />
   </Switch>
 );
