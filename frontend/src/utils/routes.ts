@@ -9,6 +9,7 @@ interface Route {
   reservations: string;
   reservationDetails: string;
   users: string;
+  userDetails: string;
 }
 
 export const endpoints = {
@@ -32,9 +33,11 @@ export const routes: Route = {
   reservations: '/reservations',
   reservationDetails: '/reservations/:id',
   users: '/users',
+  userDetails: '/users/:id',
 };
 
 export const routeBuilder = {
   reservationDetails: (id: string) =>
     routes.reservationDetails.replace(':id', id),
+  userDetails: (id: string) => routes.userDetails.replace(':id', id),
 };

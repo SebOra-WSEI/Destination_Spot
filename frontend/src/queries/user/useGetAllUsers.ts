@@ -5,7 +5,7 @@ import { endpoints } from '../../utils/routes';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { ErrorResponse } from '../../types/response';
 import { StatusCode } from '../../types/statusCode';
-import { User, UserResponse } from '../../types/user';
+import { User, UsersResponse } from '../../types/user';
 
 export const useGetAllUsers = (): Query<Array<User>> => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -16,7 +16,7 @@ export const useGetAllUsers = (): Query<Array<User>> => {
 
   useEffect(() => {
     axios
-      .get<UserResponse>(endpoints.users, {
+      .get<UsersResponse>(endpoints.users, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
