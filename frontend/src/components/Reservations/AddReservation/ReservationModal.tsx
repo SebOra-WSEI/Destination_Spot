@@ -48,13 +48,11 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
     reservations
   );
 
-  const availableLocations =
-    spots
-      ?.filter(
-        (spot) =>
-          !reservationsForSelectedDay.map((r) => r.spot.id)?.includes(spot.id)
-      )
-      .map((s) => s.location) ?? [];
+  const availableSpots =
+    spots?.filter(
+      (spot) =>
+        !reservationsForSelectedDay.map((r) => r.spot.id)?.includes(spot.id)
+    ) ?? [];
 
   const spotReservedByUser = reservationsForSelectedDay.find(
     (reservation) => reservation.user.id.toString() === userId
@@ -63,7 +61,7 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
   const { reserve } = useCreateReservation();
 
   const spotId =
-    Number(selectedSpotId) > 0 ? selectedSpotId : availableLocations[0];
+    Number(selectedSpotId) > 0 ? selectedSpotId : availableSpots[0].id;
 
   const handleSubmit = async (
     evt: React.FormEvent<HTMLFormElement>
@@ -76,13 +74,14 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
       reservedTo: String(createDate(date, 23, 59, 59)),
     });
   };
+
   return (
     <CenteredModal isModalOpen={isModalOpen} handleSubmit={handleSubmit}>
       <DialogContent>
         <h3 style={styles.header}>
           {date.format('dddd, D MMM YYYY').toString()}
         </h3>
-        {availableLocations.length ? (
+        {availableSpots.length ? (
           <>
             {spotReservedByUser ? (
               <p>
@@ -98,12 +97,8 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
                   value={spotId.toString()}
                   onChange={handleChange}
                 >
-                  {availableLocations.map((location) => (
-                    <MenuItem
-                      key={location}
-                      style={styles.label}
-                      value={location}
-                    >
+                  {availableSpots.map(({ id, location }) => (
+                    <MenuItem key={id} style={styles.label} value={String(id)}>
                       {location}
                     </MenuItem>
                   ))}
@@ -124,7 +119,7 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
           color='success'
           type='submit'
           style={styles.button}
-          disabled={!availableLocations.length || !!spotReservedByUser}
+          disabled={!availableSpots.length || !!spotReservedByUser}
         >
           Reserve
         </Button>
