@@ -14,16 +14,20 @@ interface Route {
 }
 
 export const endpoints = {
+  // Authorization
   accessControl: (id: string) => `${HOST}/access-control/${id}`,
   login: `${HOST}/sign-in`,
   register: `${HOST}/sign-up`,
+  resetPassword: (id: string) => `${HOST}/reset-password/${id}`,
+  // Reservation
   reservation: (id: string) => `${HOST}/reservations/${id}`,
   reservations: `${HOST}/reservations`,
+  // Spot
+  spot: (id: string) => `${HOST}/spots/${id}`,
   spots: `${HOST}/spots`,
+  // User
   user: (id: string) => `${HOST}/users/${id}`,
   users: `${HOST}/users`,
-  removeReservation: (id: string) => `${HOST}/reservations/${id}`,
-  resetPassword: (id: string) => `${HOST}/reset-password/${id}`,
 };
 
 export const routes: Route = {

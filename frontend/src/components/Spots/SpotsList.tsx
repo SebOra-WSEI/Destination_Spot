@@ -7,11 +7,13 @@ import { CommonListItem } from '../List/CommonListItem';
 import { FONT_FAMILY } from '../../utils/consts';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { CreateSpotModal } from './CreateSpotModal';
+import { useRemoveSpot } from '../../queries/spots/useRemoveSpot';
 
 export const SpotsList: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const { data, loading, error } = useGetAllSpots();
+  const { remove } = useRemoveSpot()
 
   if (loading) {
     return <Loader />;
@@ -22,6 +24,7 @@ export const SpotsList: React.FC = () => {
   }
 
   const handleModalOpen = (): void => setIsModalOpen(true);
+  const handleRemove = async (id: number): Promise<void> => await remove(id);
 
   return (
     <>
@@ -38,7 +41,7 @@ export const SpotsList: React.FC = () => {
               primary={`Spot location: ${location}`}
             />
             <Tooltip title="Remove location">
-              <IconButton>
+              <IconButton onClick={() => handleRemove(id)}>
                 <DeleteOutlineIcon color='error' />
               </IconButton>
             </Tooltip>

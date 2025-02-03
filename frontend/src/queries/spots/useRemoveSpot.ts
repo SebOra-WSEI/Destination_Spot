@@ -1,31 +1,29 @@
 import axios from 'axios';
 import { useAppContextProvider } from '../../AppProvider';
 import { SeverityOption } from '../../types/severity';
-import { endpoints, routes } from '../../utils/routes';
+import { endpoints } from '../../utils/routes';
 import { StatusCode } from '../../types/statusCode';
 import { CommonResponse, ErrorResponse } from '../../types/response';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
-import { ReservationData } from '../../types/reservation';
-import { useHistory } from 'react-router';
+import { SpotData } from '../../types/spot';
 
-interface UseRemoveReservationResult {
-  remove: (id: string | undefined) => Promise<void>;
+interface UseRemoveSpotResult {
+  remove: (id: number) => Promise<void>;
 }
 
-export const useRemoveReservation = (): UseRemoveReservationResult => {
+export const useRemoveSpot = (): UseRemoveSpotResult => {
   const { setSeverityText, setSeverity } = useAppContextProvider();
-  const history = useHistory();
 
   const token = getCookieValueByName(CookieName.Token);
 
-  const remove = async (id: string | undefined) => {
+  const remove = async (id: number) => {
     axios
-      .delete(endpoints.reservation(id ?? ''), {
+      .delete(endpoints.spot(String(id)), {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then(({ data, status }: CommonResponse<ReservationData>) => {
+      .then(({ data, status }: CommonResponse<SpotData>) => {
         if (status !== StatusCode.OK) {
           setSeverity(SeverityOption.Error);
           setSeverityText('Internal Server Error');
@@ -36,7 +34,7 @@ export const useRemoveReservation = (): UseRemoveReservationResult => {
         setSeverityText(data.response.message);
 
         setTimeout(() => {
-          history.push(routes.reservations);
+          window.location.reload();
         }, 500);
       })
       .catch(({ response }: ErrorResponse) => {

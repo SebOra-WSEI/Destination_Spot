@@ -3,7 +3,7 @@ import { Query } from '../../types/query';
 import axios from 'axios';
 import { endpoints } from '../../utils/routes';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
-import { ErrorResponse, } from '../../types/response';
+import { ErrorResponse } from '../../types/response';
 import { StatusCode } from '../../types/statusCode';
 import { Spot, SpotResponse } from '../../types/spot';
 
