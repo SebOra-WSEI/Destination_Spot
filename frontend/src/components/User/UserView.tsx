@@ -23,6 +23,7 @@ import { ResetPasswordModal } from './ResetPasswordModal';
 import { useGetUserById } from '../../queries/user/useGetUserById';
 import { useHistory, useParams } from 'react-router';
 import { useRemoveUser } from '../../queries/user/useRemoveUser';
+import { Role } from '../../types/user';
 
 export const UserView: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -52,7 +53,6 @@ export const UserView: React.FC = () => {
   const { remove } = useRemoveUser(() => history.push(routes.users));
 
   const { name, surname, email, role, id } = (currentUserData ?? user) ?? {};
-
   const userInitials = (name?.[0] ?? '') + (surname?.[0] ?? '');
 
   if (!id) {
@@ -94,11 +94,12 @@ export const UserView: React.FC = () => {
         >
           Reset Password
         </Button>
-        {!idParams ? (
+        {!idParams && (
           <Button size='small' onClick={signOut} style={styles.signOutButton}>
             Sign out
           </Button>
-        ) : (
+        )}
+        {idParams && role !== Role.Admin && (
           <Button size='small' onClick={handleRemove} style={styles.signOutButton}>
             Remove
           </Button>
