@@ -29,7 +29,7 @@ export const ReservationsList: React.FC<ReservationsListProps> = ({
   });
 
   if (!reservations?.length) {
-    return <ErrorCard isErrorCard text='There are no reservations yet' link={routes.addReservations} />
+    return <ErrorCard isErrorCard text='There are no reservations yet' link={routes.createReservation} />
   }
 
   const handleClick = (id: number): void =>

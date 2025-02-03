@@ -20,14 +20,12 @@ export const AppNavigator: React.FC = () => (
     <Route
       path={[
         routes.reservations,
-        routes.addReservations
+        routes.createReservation
       ]}
       component={ReservationNavigator}
     />
     <Route
-      path={[
-        routes.spots,
-      ]}
+      path={routes.spots}
       component={SpotsNavigator}
     />
     <Route component={PageNotFound} />

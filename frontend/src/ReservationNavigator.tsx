@@ -9,6 +9,6 @@ export const ReservationNavigator: React.FC = () => (
   <Switch>
     <Route path={routes.reservationDetails} component={ReservationDetailsView} />
     <Route path={routes.reservations} component={ReservationsView} />
-    <Route path={routes.addReservations} component={AddReservationView} />
+    <Route path={routes.createReservation} component={AddReservationView} />
   </Switch>
 )

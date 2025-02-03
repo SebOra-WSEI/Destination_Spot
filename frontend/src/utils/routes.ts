@@ -5,7 +5,7 @@ interface Route {
   login: string;
   profile: string;
   register: string;
-  addReservations: string;
+  createReservation: string;
   reservations: string;
   reservationDetails: string;
   spots: string;
@@ -31,7 +31,7 @@ export const routes: Route = {
   login: '/login',
   profile: '/profile',
   register: '/register',
-  addReservations: '/add-reservations',
+  createReservation: '/add-reservation',
   reservations: '/reservations',
   reservationDetails: '/reservations/:id',
   spots: '/spots',
