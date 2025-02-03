@@ -36,10 +36,13 @@ function loggedUserPages(role: Role) {
     routes.addReservations
   ]);
 
+  const adminPages = mapPageName([routes.users]);
+
   if (role === Role.User) {
     return loggedUserPages;
   }
-  return [...loggedUserPages];
+
+  return [...loggedUserPages, ...adminPages];
 }
 
 function getNotLoggedUserPages(path: string): Array<string> {

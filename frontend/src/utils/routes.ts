@@ -8,6 +8,7 @@ interface Route {
   addReservations: string;
   reservations: string;
   reservationDetails: string;
+  users: string;
 }
 
 export const endpoints = {
@@ -17,6 +18,7 @@ export const endpoints = {
   reservations: `${HOST}/reservations`,
   spots: `${HOST}/spots`,
   user: (id: string) => `${HOST}/users/${id}`,
+  users: `${HOST}/users`,
   removeReservation: (id: string) => `${HOST}/reservations/${id}`,
   resetPassword: (id: string) => `${HOST}/reset-password/${id}`,
 };
@@ -29,6 +31,7 @@ export const routes: Route = {
   addReservations: '/add-reservations',
   reservations: '/reservations',
   reservationDetails: '/reservations/:id',
+  users: '/users',
 };
 
 export const routeBuilder = {

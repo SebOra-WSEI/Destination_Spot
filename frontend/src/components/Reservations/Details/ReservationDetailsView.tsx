@@ -77,22 +77,14 @@ export const ReservationDetailsView: React.FC = () => {
           </IconButton>
         </Tooltip>
         {isRemoveButtonEnabled && (
-          <>
-            <Button
-              size="small"
-              color='error'
-              style={styles.button}
-              onClick={() => handleRemove(String(details?.id))}
-            >
-              Remove
-            </Button>
-            <Button
-              size="small"
-              style={styles.button}
-            >
-              Edit
-            </Button>
-          </>
+          <Button
+            size="small"
+            color='error'
+            style={styles.button}
+            onClick={() => handleRemove(String(details?.id))}
+          >
+            Remove
+          </Button>
         )}
       </CardActions>
     </CenteredCard>

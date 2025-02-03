@@ -1,11 +1,11 @@
 import React, { PropsWithChildren } from 'react';
 import { Box, ListItem } from '@mui/material';
 
-export const ReservationListItem: React.FC<PropsWithChildren> = ({
+export const CommonListItem: React.FC<PropsWithChildren> = ({
   children,
 }) => (
   <ListItem sx={sxStyles.listItem}>
-    <Box sx={sxStyles.reservationsDetails}>{children}</Box>
+    <Box sx={sxStyles.details}>{children}</Box>
   </ListItem>
 );
 
@@ -23,7 +23,7 @@ const sxStyles = {
       backgroundColor: '#F3F3F3',
     },
   },
-  reservationsDetails: {
+  details: {
     fontWeight: 'bold',
     width: '100%',
     display: 'flex',
