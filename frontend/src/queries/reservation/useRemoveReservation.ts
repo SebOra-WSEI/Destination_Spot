@@ -6,10 +6,9 @@ import { StatusCode } from '../../types/statusCode';
 import { CommonResponse, ErrorResponse } from '../../types/response';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { ReservationData } from '../../types/reservation';
-import { reloadPage } from '../../utils/reloadPage';
 
 interface UseRemoveReservationResult {
-  remove: (id: number) => Promise<void>;
+  remove: (id: string | undefined) => Promise<void>;
 }
 
 export const useRemoveReservation = (): UseRemoveReservationResult => {
@@ -17,9 +16,9 @@ export const useRemoveReservation = (): UseRemoveReservationResult => {
 
   const token = getCookieValueByName(CookieName.Token);
 
-  const remove = async (id: number) => {
+  const remove = async (id: string | undefined) => {
     axios
-      .delete(endpoints.removeReservation(id.toString()), {
+      .delete(endpoints.removeReservation(id ?? ''), {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -33,7 +32,6 @@ export const useRemoveReservation = (): UseRemoveReservationResult => {
 
         setSeverity(SeverityOption.Success);
         setSeverityText(data.response.message);
-        reloadPage();
       })
       .catch(({ response }: ErrorResponse) => {
         setSeverity(SeverityOption.Error);

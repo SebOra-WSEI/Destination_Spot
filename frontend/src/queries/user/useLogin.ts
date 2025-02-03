@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useAppContextProvider } from '../../AppProvider';
 import { SeverityOption } from '../../types/severity';
-import { endpoints, routeBuilder } from '../../utils/routes';
+import { endpoints, routes } from '../../utils/routes';
 import { AuthBody, LoggedUserData } from '../../types/authorization';
 import { StatusCode } from '../../types/statusCode';
 import { CommonResponse, ErrorResponse } from '../../types/response';
@@ -41,7 +41,7 @@ export const useLogin = (): UseLoginResult => {
         setCookie(CookieName.Token, token);
         setCookie(CookieName.Expires, expireDate);
 
-        window.location.replace(routeBuilder.profile);
+        window.location.replace(routes.profile);
       })
       .catch(({ response }: ErrorResponse) => {
         setSeverity(SeverityOption.Error);

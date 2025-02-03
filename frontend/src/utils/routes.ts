@@ -21,7 +21,7 @@ export const endpoints = {
   resetPassword: (id: string) => `${HOST}/reset-password/${id}`,
 };
 
-export const routeBuilder: Route = {
+export const routes: Route = {
   default: '/',
   login: '/login',
   profile: '/profile',
@@ -29,4 +29,9 @@ export const routeBuilder: Route = {
   addReservations: '/add-reservations',
   reservations: '/reservations',
   reservationDetails: '/reservations/:id',
+};
+
+export const routeBuilder = {
+  reservationDetails: (id: string) =>
+    routes.reservationDetails.replace(':id', id),
 };

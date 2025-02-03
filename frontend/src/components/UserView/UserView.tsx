@@ -16,7 +16,7 @@ import { signOut } from '../../utils/signOut';
 import { red } from '@mui/material/colors';
 import { Loader } from '../Loader/Loader';
 import { UnknownError } from '../Error/UnknownError';
-import { routeBuilder } from '../../utils/routes';
+import { routes } from '../../utils/routes';
 import { UserNotLogged } from '../Error/UserNotLogged';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { ResetPasswordModal } from './ResetPasswordModal';
@@ -43,7 +43,7 @@ export const UserView: React.FC = () => {
   }
 
   if (error) {
-    return <UnknownError link={routeBuilder.profile} />;
+    return <UnknownError link={routes.profile} />;
   }
 
   const onResetPasswordClick = () => setIsModalOpen(!isModalOpen);

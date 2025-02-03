@@ -6,11 +6,10 @@ import { ReservationUserDetails } from './ReservationUserDetails/ReservationUser
 import { ReservationDate } from './ReservationDate/ReservationDate';
 import { ReservationListItem } from './ReservationListItem';
 import dayjs from 'dayjs';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { CookieName, getCookieValueByName } from '../../utils/cookies';
-import { useRemoveReservation } from '../../queries/reservation/useRemoveReservation';
+import InfoIcon from '@mui/icons-material/Info';
 import { ErrorCard } from '../Error/ErrorCard';
-import { routeBuilder } from '../../utils/routes';
+import { routeBuilder, routes } from '../../utils/routes';
+import { useHistory } from 'react-router';
 
 interface ReservationsListProps {
   reservations: Array<Reservation> | undefined;
@@ -19,7 +18,7 @@ interface ReservationsListProps {
 export const ReservationsList: React.FC<ReservationsListProps> = ({
   reservations,
 }) => {
-  const userId = getCookieValueByName(CookieName.UserId);
+  const history = useHistory();
 
   const sortedCurrentReservations = reservations?.sort((a, b) => {
     if (isTheSameDay(a, b)) {
@@ -29,14 +28,12 @@ export const ReservationsList: React.FC<ReservationsListProps> = ({
     return Number(a.details.reservedFrom) - Number(b.details.reservedTo);
   });
 
-  const { remove } = useRemoveReservation();
-
   if (!reservations?.length) {
-    return <ErrorCard isErrorCard text='There are no reservations yet' link={routeBuilder.addReservations} />
+    return <ErrorCard isErrorCard text='There are no reservations yet' link={routes.addReservations} />
   }
 
-  const handleRemove = async (id: number): Promise<void> =>
-    await remove(id)
+  const handleClick = (id: number): void =>
+    history.push(routeBuilder.reservationDetails(String(id)))
 
   return (
     <List sx={styles.list}>
@@ -45,13 +42,11 @@ export const ReservationsList: React.FC<ReservationsListProps> = ({
           <ReservationDate reservedFrom={details.reservedFrom} />
           <SpotChip location={spot.location} />
           <ReservationUserDetails user={user} />
-          {user.id.toString() === userId && (
-            <Tooltip title="Remove reservation">
-              <IconButton sx={styles.icon} onClick={() => handleRemove(details.id)}>
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          )}
+          <Tooltip title="Reservation details">
+            <IconButton sx={styles.icon} onClick={() => handleClick(details.id)}>
+              <InfoIcon />
+            </IconButton>
+          </Tooltip>
         </ReservationListItem>
       ))}
     </List>

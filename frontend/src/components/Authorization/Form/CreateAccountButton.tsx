@@ -1,13 +1,13 @@
 import { Button, CardActions, Divider } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router';
-import { routeBuilder } from '../../../utils/routes';
+import { routes } from '../../../utils/routes';
 import { FONT_FAMILY } from '../../../utils/consts';
 
 export const CreateAccountButton: React.FC = () => {
   const history = useHistory();
 
-  const handelClick = (): void => history.push(routeBuilder.register);
+  const handelClick = (): void => history.push(routes.register);
 
   return (
     <>

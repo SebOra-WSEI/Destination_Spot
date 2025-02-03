@@ -6,7 +6,6 @@ import { StatusCode } from '../../types/statusCode';
 import { CommonResponse, ErrorResponse } from '../../types/response';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { ReservationData, ReservationBody } from '../../types/reservation';
-import { reloadPage } from '../../utils/reloadPage';
 
 interface UseCreateReservationResult {
   reserve: (body: ReservationBody) => Promise<void>;
@@ -33,7 +32,10 @@ export const useCreateReservation = (): UseCreateReservationResult => {
 
         setSeverity(SeverityOption.Success);
         setSeverityText(data.response.message);
-        reloadPage();
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       })
       .catch(({ response }: ErrorResponse) => {
         setSeverity(SeverityOption.Error);
