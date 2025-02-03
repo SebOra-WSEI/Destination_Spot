@@ -11,7 +11,7 @@ interface UseRemoveUserResult {
   remove: (id: string | undefined) => Promise<void>;
 }
 
-export const useRemoveUser = (): UseRemoveUserResult => {
+export const useRemoveUser = (onSuccess?: () => void): UseRemoveUserResult => {
   const { setSeverityText, setSeverity } = useAppContextProvider();
 
   const token = getCookieValueByName(CookieName.Token);
@@ -34,7 +34,7 @@ export const useRemoveUser = (): UseRemoveUserResult => {
         setSeverityText(data.response.message);
 
         setTimeout(() => {
-          window.location.reload();
+          onSuccess?.() ?? window.location.reload();
         }, 500);
       })
       .catch(({ response }: ErrorResponse) => {
