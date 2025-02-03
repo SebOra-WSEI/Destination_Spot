@@ -4,12 +4,12 @@ import { Reservation } from '../../types/reservation';
 import { SpotChip } from './SpotChip/SpotChip';
 import { ReservationUserDetails } from './ReservationUserDetails/ReservationUserDetails';
 import { ReservationDate } from './ReservationDate/ReservationDate';
-import { ReservationListItem } from './ReservationListItem';
 import dayjs from 'dayjs';
 import InfoIcon from '@mui/icons-material/Info';
 import { ErrorCard } from '../Error/ErrorCard';
 import { routeBuilder, routes } from '../../utils/routes';
 import { useHistory } from 'react-router';
+import { CommonListItem } from '../List/CommonListItem';
 
 interface ReservationsListProps {
   reservations: Array<Reservation> | undefined;
@@ -38,7 +38,7 @@ export const ReservationsList: React.FC<ReservationsListProps> = ({
   return (
     <List sx={styles.list}>
       {sortedCurrentReservations?.map(({ details, spot, user }) => (
-        <ReservationListItem key={details.id}>
+        <CommonListItem key={details.id}>
           <ReservationDate reservedFrom={details.reservedFrom} />
           <SpotChip location={spot.location} />
           <ReservationUserDetails user={user} />
@@ -47,7 +47,7 @@ export const ReservationsList: React.FC<ReservationsListProps> = ({
               <InfoIcon />
             </IconButton>
           </Tooltip>
-        </ReservationListItem>
+        </CommonListItem>
       ))}
     </List>
   );

@@ -20,33 +20,55 @@ import { routes } from '../../utils/routes';
 import { UserNotLogged } from '../Error/UserNotLogged';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { ResetPasswordModal } from './ResetPasswordModal';
+import { useGetUserById } from '../../queries/user/useGetUserById';
+import { useHistory, useParams } from 'react-router';
+import { useRemoveUser } from '../../queries/user/useRemoveUser';
+import { Role } from '../../types/user';
 
 export const UserView: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const { id: idParams } = useParams<{ id: string }>();
+  const history = useHistory();
+
   const userId = getCookieValueByName(CookieName.UserId);
 
-  const { data, loading, error } = useGetCurrentUser({
-    skip: !userId,
+  const {
+    data: currentUserData,
+    loading: currentUserLoading,
+    error: currentUserError
+  } = useGetCurrentUser({
+    skip: !userId || !!idParams,
   });
 
-  const { name, surname, email, role, id } = data ?? {};
+  const {
+    data: user,
+    loading: userLoading,
+    error: userError
+  } = useGetUserById({
+    variables: { id: idParams },
+    skip: !idParams
+  });
 
+  const { remove } = useRemoveUser(() => history.push(routes.users));
+
+  const { name, surname, email, role, id } = (currentUserData ?? user) ?? {};
   const userInitials = (name?.[0] ?? '') + (surname?.[0] ?? '');
 
   if (!id) {
     return <UserNotLogged />;
   }
 
-  if (loading) {
+  if (currentUserLoading || userLoading) {
     return <Loader />;
   }
 
-  if (error) {
+  if (currentUserError || userError) {
     return <UnknownError link={routes.profile} />;
   }
 
-  const onResetPasswordClick = () => setIsModalOpen(!isModalOpen);
+  const onResetPasswordClick = (): void => setIsModalOpen(!isModalOpen);
+  const handleRemove = async (): Promise<void> => await remove(idParams);
 
   return (
     <CenteredCard>
@@ -72,9 +94,16 @@ export const UserView: React.FC = () => {
         >
           Reset Password
         </Button>
-        <Button size='small' onClick={signOut} style={styles.signOutButton}>
-          Sign out
-        </Button>
+        {!idParams && (
+          <Button size='small' onClick={signOut} style={styles.signOutButton}>
+            Sign out
+          </Button>
+        )}
+        {idParams && role !== Role.Admin && (
+          <Button size='small' onClick={handleRemove} style={styles.signOutButton}>
+            Remove
+          </Button>
+        )}
       </CardActions>
       <ResetPasswordModal
         isModalOpen={isModalOpen}

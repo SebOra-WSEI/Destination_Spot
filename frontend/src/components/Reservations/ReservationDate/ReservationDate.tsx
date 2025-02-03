@@ -1,7 +1,7 @@
-import { Box, ListItemText } from '@mui/material';
 import React from 'react';
-import { FONT_FAMILY } from '../../../utils/consts';
 import dayjs from 'dayjs';
+import { Box, ListItemText } from '@mui/material';
+import { FONT_FAMILY } from '../../../utils/consts';
 
 export const ReservationDate: React.FC<{ reservedFrom: string }> = ({
   reservedFrom,

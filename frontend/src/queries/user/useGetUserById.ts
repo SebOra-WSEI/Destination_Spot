@@ -41,6 +41,8 @@ export const useGetUserById = ({
             setIsLoading(false);
           }
         });
+    } else {
+      setIsLoading(false);
     }
   }, [token, variables.id, skip]);
 
