@@ -10,18 +10,16 @@ interface CenteredModalProps extends PropsWithChildren {
 export const CenteredModal: React.FC<CenteredModalProps> = ({
   children,
   isModalOpen,
-  handleSubmit
+  handleSubmit,
 }) => (
   <Modal open={isModalOpen}>
     <Fade in={isModalOpen}>
       <Box component='form' onSubmit={handleSubmit} style={styles.box}>
-        <Card style={styles.card}>
-          {children}
-        </Card>
+        <Card style={styles.card}>{children}</Card>
       </Box>
     </Fade>
   </Modal>
-)
+);
 
 const styles = {
   card: {

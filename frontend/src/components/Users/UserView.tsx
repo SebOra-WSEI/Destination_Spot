@@ -36,7 +36,7 @@ export const UserView: React.FC = () => {
   const {
     data: currentUserData,
     loading: currentUserLoading,
-    error: currentUserError
+    error: currentUserError,
   } = useGetCurrentUser({
     skip: !userId || !!idParams,
   });
@@ -44,15 +44,15 @@ export const UserView: React.FC = () => {
   const {
     data: user,
     loading: userLoading,
-    error: userError
+    error: userError,
   } = useGetUserById({
     variables: { id: idParams },
-    skip: !idParams
+    skip: !idParams,
   });
 
   const { remove } = useRemoveUser(() => history.push(routes.users));
 
-  const { name, surname, email, role, id } = (currentUserData ?? user) ?? {};
+  const { name, surname, email, role, id } = currentUserData ?? user ?? {};
   const userInitials = (name?.[0] ?? '') + (surname?.[0] ?? '');
 
   if (!id) {
@@ -100,7 +100,11 @@ export const UserView: React.FC = () => {
           </Button>
         )}
         {idParams && role !== Role.Admin && (
-          <Button size='small' onClick={handleRemove} style={styles.signOutButton}>
+          <Button
+            size='small'
+            onClick={handleRemove}
+            style={styles.signOutButton}
+          >
             Remove
           </Button>
         )}

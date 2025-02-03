@@ -17,11 +17,7 @@ export const UserAlreadyLogged: React.FC = () => {
         <h3 style={styles.header}>User already logged in</h3>
       </CardContent>
       <CardActions>
-        <Button
-          size='small'
-          style={styles.button()}
-          onClick={handleClick}
-        >
+        <Button size='small' style={styles.button()} onClick={handleClick}>
           Move to profile page
         </Button>
         <Button

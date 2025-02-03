@@ -5,7 +5,7 @@ import { ErrorCard } from '../Error/ErrorCard';
 import { IconButton, List, ListItemText, Tooltip } from '@mui/material';
 import { CommonListItem } from '../List/CommonListItem';
 import { FONT_FAMILY } from '../../utils/consts';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import PersonRemoveAlt1Icon from '@mui/icons-material/PersonRemoveAlt1';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { useHistory } from 'react-router';
 import { routeBuilder } from '../../utils/routes';
@@ -16,7 +16,7 @@ export const UsersList: React.FC = () => {
   const history = useHistory();
 
   const { data, loading, error } = useGetAllUsers();
-  const { remove } = useRemoveUser()
+  const { remove } = useRemoveUser();
 
   if (loading) {
     return <Loader />;
@@ -52,22 +52,24 @@ export const UsersList: React.FC = () => {
             secondary={email}
           />
           {role !== Role.Admin && (
-            <Tooltip title="Remove user">
+            <Tooltip title='Remove user'>
               <IconButton onClick={() => handleRemove(String(id))}>
-                <DeleteOutlineIcon color='error' />
+                <PersonRemoveAlt1Icon color='error' />
               </IconButton>
             </Tooltip>
           )}
-          <Tooltip title="View details">
-            <IconButton onClick={() => history.push(routeBuilder.userDetails(String(id)))}>
+          <Tooltip title='View details'>
+            <IconButton
+              onClick={() => history.push(routeBuilder.userDetails(String(id)))}
+            >
               <ManageAccountsIcon />
             </IconButton>
           </Tooltip>
         </CommonListItem>
       ))}
     </List>
-  )
-}
+  );
+};
 
 const styles = {
   list: {

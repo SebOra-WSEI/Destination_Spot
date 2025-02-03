@@ -33,10 +33,10 @@ function loggedUserPages(role: Role) {
   const loggedUserPages = mapPageName([
     routes.profile,
     routes.reservations,
-    routes.addReservations
+    routes.createReservation,
   ]);
 
-  const adminPages = mapPageName([routes.users]);
+  const adminPages = mapPageName([routes.spots, routes.users]);
 
   if (role === Role.User) {
     return loggedUserPages;

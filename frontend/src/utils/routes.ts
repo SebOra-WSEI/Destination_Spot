@@ -5,24 +5,29 @@ interface Route {
   login: string;
   profile: string;
   register: string;
-  addReservations: string;
+  createReservation: string;
   reservations: string;
   reservationDetails: string;
+  spots: string;
   users: string;
   userDetails: string;
 }
 
 export const endpoints = {
+  // Authorization
   accessControl: (id: string) => `${HOST}/access-control/${id}`,
   login: `${HOST}/sign-in`,
   register: `${HOST}/sign-up`,
+  resetPassword: (id: string) => `${HOST}/reset-password/${id}`,
+  // Reservation
   reservation: (id: string) => `${HOST}/reservations/${id}`,
   reservations: `${HOST}/reservations`,
+  // Spot
+  spot: (id: string) => `${HOST}/spots/${id}`,
   spots: `${HOST}/spots`,
+  // User
   user: (id: string) => `${HOST}/users/${id}`,
   users: `${HOST}/users`,
-  removeReservation: (id: string) => `${HOST}/reservations/${id}`,
-  resetPassword: (id: string) => `${HOST}/reset-password/${id}`,
 };
 
 export const routes: Route = {
@@ -30,9 +35,10 @@ export const routes: Route = {
   login: '/login',
   profile: '/profile',
   register: '/register',
-  addReservations: '/add-reservations',
+  createReservation: '/add-reservation',
   reservations: '/reservations',
   reservationDetails: '/reservations/:id',
+  spots: '/spots',
   users: '/users',
   userDetails: '/users/:id',
 };
