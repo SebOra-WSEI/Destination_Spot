@@ -17,8 +17,8 @@ import { ErrorCard } from '../../Error/ErrorCard';
 import { CardElement } from './CardElement';
 import { CookieName, getCookieValueByName } from '../../../utils/cookies';
 import { useRemoveReservation } from '../../../queries/reservation/useRemoveReservation';
-import { Role } from '../../../types/user';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Role } from '../../../utils/consts';
 
 export const ReservationDetailsView: React.FC = () => {
   const { id } = useParams<{ id: string }>();

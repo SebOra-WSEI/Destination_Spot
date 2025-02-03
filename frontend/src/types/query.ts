@@ -5,15 +5,9 @@ export interface Query<T> {
   message?: string;
 }
 
-export interface QueryVariables<T> {
-  variables: T;
+export interface QueryVariables {
+  variables: {
+    id: string;
+  };
   skip?: boolean;
-}
-
-export interface EmptyQueryVariables {
-  skip?: boolean;
-}
-
-export interface IdVariables {
-  id: string;
 }

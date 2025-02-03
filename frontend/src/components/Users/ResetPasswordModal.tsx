@@ -2,7 +2,7 @@ import { Button, DialogActions, DialogContent } from '@mui/material';
 import React, { useState } from 'react';
 import { PasswordInput } from '../Authorization/Form/PasswordInput';
 import { ResetPasswordBody } from '../../types/authorization';
-import { FONT_FAMILY } from '../../utils/consts';
+import { BUTTON_RADIUS, FONT_FAMILY } from '../../utils/consts';
 import { PasswordCheckList } from '../Authorization/PasswordValidation/PasswordCheckList';
 import { getPasswordValidationRules } from '../../utils/getPasswordValidationRules';
 import { useResetPassword } from '../../queries/user/useResetPassword';
@@ -130,6 +130,6 @@ const styles = {
   },
   button: {
     fontFamily: FONT_FAMILY,
-    borderRadius: '0.5rem',
+    borderRadius: BUTTON_RADIUS,
   },
 };

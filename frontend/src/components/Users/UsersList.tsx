@@ -4,13 +4,12 @@ import { Loader } from '../Loader/Loader';
 import { ErrorCard } from '../Error/ErrorCard';
 import { IconButton, List, ListItemText, Tooltip } from '@mui/material';
 import { CommonListItem } from '../List/CommonListItem';
-import { FONT_FAMILY } from '../../utils/consts';
+import { FONT_FAMILY, Role } from '../../utils/consts';
 import PersonRemoveAlt1Icon from '@mui/icons-material/PersonRemoveAlt1';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { useHistory } from 'react-router';
 import { routeBuilder } from '../../utils/routes';
 import { useRemoveUser } from '../../queries/user/useRemoveUser';
-import { Role } from '../../types/user';
 
 export const UsersList: React.FC = () => {
   const history = useHistory();

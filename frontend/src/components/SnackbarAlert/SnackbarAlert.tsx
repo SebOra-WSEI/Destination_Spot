@@ -1,7 +1,6 @@
 import React from 'react';
 import { Alert, IconButton, Snackbar } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { SNACKBAR_DURATION } from '../../utils/consts';
 import { useAppContextProvider } from '../../AppProvider';
 
 export const SnackbarAlert: React.FC = () => {
@@ -12,7 +11,7 @@ export const SnackbarAlert: React.FC = () => {
   return (
     <Snackbar
       open={!!severityText}
-      autoHideDuration={SNACKBAR_DURATION}
+      autoHideDuration={2500}
       onClose={handleAlertClose}
     >
       <Alert

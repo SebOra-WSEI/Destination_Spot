@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { useAppContextProvider } from '../../AppProvider';
-import { SeverityOption } from '../../types/severity';
 import { endpoints } from '../../utils/routes';
-import { StatusCode } from '../../types/statusCode';
 import { CommonResponse, ErrorResponse } from '../../types/response';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
-import { UserData } from '../../types/user';
+import { UserResponse } from '../../types/user';
+import { SeverityOption, StatusCode } from '../../utils/consts';
+import { reloadPage } from '../../utils/reloadPage';
 
 interface UseRemoveUserResult {
   remove: (id: string | undefined) => Promise<void>;
@@ -23,7 +23,7 @@ export const useRemoveUser = (onSuccess?: () => void): UseRemoveUserResult => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then(({ data, status }: CommonResponse<UserData>) => {
+      .then(({ data, status }: CommonResponse<UserResponse>) => {
         if (status !== StatusCode.OK) {
           setSeverity(SeverityOption.Error);
           setSeverityText('Internal Server Error');
@@ -33,9 +33,11 @@ export const useRemoveUser = (onSuccess?: () => void): UseRemoveUserResult => {
         setSeverity(SeverityOption.Success);
         setSeverityText(data.response.message);
 
-        setTimeout(() => {
-          onSuccess?.() ?? window.location.reload();
-        }, 500);
+        onSuccess
+          ? setTimeout(() => {
+              onSuccess();
+            }, 500)
+          : reloadPage();
       })
       .catch(({ response }: ErrorResponse) => {
         setSeverity(SeverityOption.Error);

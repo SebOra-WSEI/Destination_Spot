@@ -1,3 +1,5 @@
+import { Role } from '../utils/consts';
+
 export interface User {
   id: number;
   email: string;
@@ -6,20 +8,15 @@ export interface User {
   role: Role;
 }
 
-export enum Role {
-  Admin = 'admin',
-  User = 'user',
-}
-
 export interface UsersResponse {
   response: {
     users: Array<User>;
   };
 }
 
-export interface UserData {
+export interface UserResponse {
   response: {
     message: string;
-    reservation: User;
+    user: User;
   };
 }

@@ -2,14 +2,13 @@ import axios from 'axios';
 import { useAppContextProvider } from '../../AppProvider';
 import {
   ResetPasswordBody,
-  ResetPasswordData,
+  ResetPasswordResponse,
 } from '../../types/authorization';
 import { endpoints } from '../../utils/routes';
-import { SeverityOption } from '../../types/severity';
-import { StatusCode } from '../../types/statusCode';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { CommonResponse, ErrorResponse } from '../../types/response';
 import { useParams } from 'react-router';
+import { SeverityOption, StatusCode } from '../../utils/consts';
 
 interface UseResetPasswordResult {
   resetPassword: (body: ResetPasswordBody) => Promise<void>;
@@ -35,7 +34,7 @@ export const useResetPassword = (
           Authorization: `Bearer ${token}`,
         },
       })
-      .then(({ data, status }: CommonResponse<ResetPasswordData>) => {
+      .then(({ data, status }: CommonResponse<ResetPasswordResponse>) => {
         if (status !== StatusCode.OK) {
           setSeverity(SeverityOption.Error);
           setSeverityText('Internal Server Error');

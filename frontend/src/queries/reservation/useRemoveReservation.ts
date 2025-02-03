@@ -1,12 +1,11 @@
 import axios from 'axios';
 import { useAppContextProvider } from '../../AppProvider';
-import { SeverityOption } from '../../types/severity';
 import { endpoints, routes } from '../../utils/routes';
-import { StatusCode } from '../../types/statusCode';
 import { CommonResponse, ErrorResponse } from '../../types/response';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
-import { ReservationData } from '../../types/reservation';
+import { ReservationResponse } from '../../types/reservation';
 import { useHistory } from 'react-router';
+import { SeverityOption, StatusCode } from '../../utils/consts';
 
 interface UseRemoveReservationResult {
   remove: (id: string | undefined) => Promise<void>;
@@ -25,7 +24,7 @@ export const useRemoveReservation = (): UseRemoveReservationResult => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then(({ data, status }: CommonResponse<ReservationData>) => {
+      .then(({ data, status }: CommonResponse<ReservationResponse>) => {
         if (status !== StatusCode.OK) {
           setSeverity(SeverityOption.Error);
           setSeverityText('Internal Server Error');

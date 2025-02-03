@@ -1,12 +1,10 @@
 import axios from 'axios';
 import { useAppContextProvider } from '../../AppProvider';
-import { SeverityOption } from '../../types/severity';
 import { endpoints, routes } from '../../utils/routes';
 import { AuthBody, LoggedUserData } from '../../types/authorization';
-import { StatusCode } from '../../types/statusCode';
 import { CommonResponse, ErrorResponse } from '../../types/response';
 import { jwtDecode } from 'jwt-decode';
-import { TOKEN_KEY } from '../../utils/consts';
+import { SeverityOption, StatusCode, TOKEN_KEY } from '../../utils/consts';
 import { CookieName, setCookie } from '../../utils/cookies';
 
 interface UseLoginResult {

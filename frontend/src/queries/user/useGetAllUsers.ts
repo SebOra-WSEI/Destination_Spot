@@ -4,8 +4,8 @@ import axios from 'axios';
 import { endpoints } from '../../utils/routes';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { ErrorResponse } from '../../types/response';
-import { StatusCode } from '../../types/statusCode';
 import { User, UsersResponse } from '../../types/user';
+import { StatusCode } from '../../utils/consts';
 
 export const useGetAllUsers = (): Query<Array<User>> => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -23,6 +23,7 @@ export const useGetAllUsers = (): Query<Array<User>> => {
       })
       .then((res) => {
         const { status, data } = res;
+
         if (status === StatusCode.OK) {
           setIsLoading(false);
           setUsers(data.response.users);

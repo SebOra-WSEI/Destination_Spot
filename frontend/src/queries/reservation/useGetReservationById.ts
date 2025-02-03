@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
-import { IdVariables, Query, QueryVariables } from '../../types/query';
+import { Query, QueryVariables } from '../../types/query';
 import axios from 'axios';
 import { endpoints } from '../../utils/routes';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { ErrorResponse } from '../../types/response';
-import { StatusCode } from '../../types/statusCode';
 import { Reservation, ReservationResponse } from '../../types/reservation';
+import { StatusCode } from '../../utils/consts';
 
 export const useGetReservationById = ({
   variables,
-}: QueryVariables<IdVariables>): Query<Reservation> => {
+}: QueryVariables): Query<Reservation> => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const [reservation, setReservation] = useState<Reservation>();
