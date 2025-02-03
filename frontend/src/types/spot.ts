@@ -8,3 +8,10 @@ export interface SpotResponse {
     spots: Array<Spot>;
   };
 }
+
+export interface SpotData {
+  response: {
+    message: string;
+    spot: Spot;
+  };
+}

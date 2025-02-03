@@ -88,7 +88,7 @@ func Create(c *gin.Context) {
 		Spot:    newSpot,
 	}
 
-	c.JSON(http.StatusOK, response.Create(res))
+	c.JSON(http.StatusCreated, response.Create(res))
 }
 
 func Delete(c *gin.Context) {
