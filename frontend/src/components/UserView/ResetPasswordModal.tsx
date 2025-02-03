@@ -48,9 +48,9 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
 
   const { resetPassword } = useResetPassword(onCloseModal);
 
-  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>): Promise<void> => {
     evt.preventDefault();
-    resetPassword(body);
+    await resetPassword(body);
   };
 
   const { currentPassword, newPassword, confirmNewPassword } = body;

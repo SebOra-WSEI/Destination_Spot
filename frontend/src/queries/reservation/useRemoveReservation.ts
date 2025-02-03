@@ -9,7 +9,7 @@ import { ReservationData } from '../../types/reservation';
 import { reloadPage } from '../../utils/reloadPage';
 
 interface UseRemoveReservationResult {
-  remove: (id: number) => void;
+  remove: (id: number) => Promise<void>;
 }
 
 export const useRemoveReservation = (): UseRemoveReservationResult => {
@@ -17,7 +17,7 @@ export const useRemoveReservation = (): UseRemoveReservationResult => {
 
   const token = getCookieValueByName(CookieName.Token);
 
-  const remove = (id: number) => {
+  const remove = async (id: number) => {
     axios
       .delete(endpoints.removeReservation(id.toString()), {
         headers: {

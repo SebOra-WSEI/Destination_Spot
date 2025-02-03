@@ -10,13 +10,13 @@ import { TOKEN_KEY } from '../../utils/consts';
 import { CookieName, setCookie } from '../../utils/cookies';
 
 interface UseLoginResult {
-  login: (body: AuthBody) => void;
+  login: (body: AuthBody) => Promise<void>;
 }
 
 export const useLogin = (): UseLoginResult => {
   const { setSeverityText, setSeverity } = useAppContextProvider();
 
-  const login = (body: AuthBody) => {
+  const login = async (body: AuthBody) => {
     axios
       .post(endpoints.login, body)
       .then(({ data, status }: CommonResponse<LoggedUserData>) => {

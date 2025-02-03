@@ -20,7 +20,7 @@ export const Login: React.FC = () => {
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault();
-    login(body);
+    await login(body);
   };
 
   if (userId) {

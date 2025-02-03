@@ -18,7 +18,7 @@ export const SmallNavbar: React.FC<{ pages: Array<string> }> = ({ pages }) => {
   };
 
   const handleOnClick = (page: string) => {
-    history.push(page.toLocaleLowerCase());
+    history.push('/' + page.toLocaleLowerCase());
     handleClose();
   };
 

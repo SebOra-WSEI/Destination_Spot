@@ -8,7 +8,7 @@ import { CommonResponse, ErrorResponse } from '../../types/response';
 import { useHistory } from 'react-router';
 
 interface UseRegisterResult {
-  register: (body: AuthBody) => void;
+  register: (body: AuthBody) => Promise<void>;
 }
 
 export const useRegister = (): UseRegisterResult => {
@@ -16,7 +16,7 @@ export const useRegister = (): UseRegisterResult => {
 
   const history = useHistory();
 
-  const register = (body: AuthBody) => {
+  const register = async (body: AuthBody) => {
     axios
       .post(endpoints.register, body)
       .then(({ data, status }: CommonResponse<RegisteredUserData>) => {

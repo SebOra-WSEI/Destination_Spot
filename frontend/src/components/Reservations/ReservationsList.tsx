@@ -35,6 +35,9 @@ export const ReservationsList: React.FC<ReservationsListProps> = ({
     return <ErrorCard isErrorCard text='There are no reservations yet' link={routeBuilder.addReservations} />
   }
 
+  const handleRemove = async (id: number): Promise<void> =>
+    await remove(id)
+
   return (
     <List sx={styles.list}>
       {sortedCurrentReservations?.map(({ details, spot, user }) => (
@@ -44,7 +47,7 @@ export const ReservationsList: React.FC<ReservationsListProps> = ({
           <ReservationUserDetails user={user} />
           {user.id.toString() === userId && (
             <Tooltip title="Remove reservation">
-              <IconButton sx={styles.icon} onClick={() => remove(details.id)}>
+              <IconButton sx={styles.icon} onClick={() => handleRemove(details.id)}>
                 <DeleteIcon />
               </IconButton>
             </Tooltip>

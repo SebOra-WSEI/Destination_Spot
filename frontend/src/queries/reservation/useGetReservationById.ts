@@ -1,22 +1,24 @@
 import { useEffect, useState } from 'react';
-import { Query } from '../../types/query';
+import { IdVariables, Query, QueryVariables } from '../../types/query';
 import axios from 'axios';
 import { endpoints } from '../../utils/routes';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
-import { ErrorResponse, } from '../../types/response';
+import { ErrorResponse } from '../../types/response';
 import { StatusCode } from '../../types/statusCode';
-import { Spot, SpotResponse } from '../../types/spot';
+import { Reservation, ReservationResponse } from '../../types/reservation';
 
-export const useGetAllSpots = (): Query<Array<Spot>> => {
+export const useGetReservationById = ({
+  variables,
+}: QueryVariables<IdVariables>): Query<Reservation> => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const [spots, setSpots] = useState<Array<Spot>>();
+  const [reservation, setReservation] = useState<Reservation>();
 
   const token = getCookieValueByName(CookieName.Token);
 
   useEffect(() => {
     axios
-      .get<SpotResponse>(endpoints.spots, {
+      .get<ReservationResponse>(endpoints.reservation(variables.id), {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -25,7 +27,7 @@ export const useGetAllSpots = (): Query<Array<Spot>> => {
         const { status, data } = res;
         if (status === StatusCode.OK) {
           setIsLoading(false);
-          setSpots(data.response.spots);
+          setReservation(data.response.reservation);
         }
       })
       .catch((err: ErrorResponse) => {
@@ -36,10 +38,10 @@ export const useGetAllSpots = (): Query<Array<Spot>> => {
           setIsLoading(false);
         }
       });
-  }, [token]);
+  }, [token, variables.id]);
 
   return {
-    data: spots,
+    data: reservation,
     loading: isLoading,
     error,
   };

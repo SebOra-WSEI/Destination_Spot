@@ -4,9 +4,8 @@ import { routeBuilder } from './utils/routes';
 import { Login } from './components/Authorization/Login/Login';
 import { Register } from './components/Authorization/Register/Register';
 import { UserView } from './components/UserView/UserView';
-import { ReservationsView } from './components/Reservations/ReservationsView';
 import { PageNotFound } from './components/Error/PageNotFound';
-import { AddReservationView } from './components/Reservations/AddReservation/AddReservationView';
+import { ReservationNavigator } from './ReservationNavigator';
 
 export const AppNavigator: React.FC = () => (
   <Switch>
@@ -14,8 +13,13 @@ export const AppNavigator: React.FC = () => (
     <Route path={routeBuilder.login} component={Login} />
     <Route path={routeBuilder.register} component={Register} />
     <Route path={routeBuilder.profile} component={UserView} />
-    <Route path={routeBuilder.reservations} component={ReservationsView} />
-    <Route path={routeBuilder.addReservations} component={AddReservationView} />
+    <Route
+      path={[
+        routeBuilder.reservations,
+        routeBuilder.addReservations
+      ]}
+      component={ReservationNavigator}
+    />
     <Route component={PageNotFound} />
   </Switch>
 );

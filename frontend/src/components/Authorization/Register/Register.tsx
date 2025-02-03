@@ -17,7 +17,7 @@ export const Register: React.FC = () => {
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault();
-    register(body);
+    await register(body);
   };
 
   return (

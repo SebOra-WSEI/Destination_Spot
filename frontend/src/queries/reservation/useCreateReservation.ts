@@ -9,7 +9,7 @@ import { ReservationData, ReservationBody } from '../../types/reservation';
 import { reloadPage } from '../../utils/reloadPage';
 
 interface UseCreateReservationResult {
-  reserve: (body: ReservationBody) => void;
+  reserve: (body: ReservationBody) => Promise<void>;
 }
 
 export const useCreateReservation = (): UseCreateReservationResult => {
@@ -17,7 +17,7 @@ export const useCreateReservation = (): UseCreateReservationResult => {
 
   const token = getCookieValueByName(CookieName.Token);
 
-  const reserve = (body: ReservationBody) => {
+  const reserve = async (body: ReservationBody) => {
     axios
       .post(endpoints.reservations, body, {
         headers: {

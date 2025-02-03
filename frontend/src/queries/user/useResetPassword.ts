@@ -11,11 +11,11 @@ import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { CommonResponse, ErrorResponse } from '../../types/response';
 
 interface UseResetPasswordResult {
-  resetPassword: (body: ResetPasswordBody) => void;
+  resetPassword: (body: ResetPasswordBody) => Promise<void>;
 }
 
 export const useResetPassword = (
-  onCloseModal: () => void
+  osSuccess: () => void
 ): UseResetPasswordResult => {
   const { setSeverityText, setSeverity } = useAppContextProvider();
 
@@ -37,7 +37,7 @@ export const useResetPassword = (
 
         setSeverity(SeverityOption.Success);
         setSeverityText(data.message);
-        onCloseModal();
+        osSuccess();
       })
       .catch((err: ErrorResponse) => {
         setSeverity(SeverityOption.Error);
