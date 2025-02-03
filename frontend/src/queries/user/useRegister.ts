@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { useAppContextProvider } from '../../AppProvider';
 import { SeverityOption } from '../../types/severity';
-import { endpoints, routeBuilder } from '../../utils/routes';
+import { endpoints, routes } from '../../utils/routes';
 import { AuthBody, RegisteredUserData } from '../../types/authorization';
 import { StatusCode } from '../../types/statusCode';
 import { CommonResponse, ErrorResponse } from '../../types/response';
 import { useHistory } from 'react-router';
 
 interface UseRegisterResult {
-  register: (body: AuthBody) => void;
+  register: (body: AuthBody) => Promise<void>;
 }
 
 export const useRegister = (): UseRegisterResult => {
@@ -16,7 +16,7 @@ export const useRegister = (): UseRegisterResult => {
 
   const history = useHistory();
 
-  const register = (body: AuthBody) => {
+  const register = async (body: AuthBody) => {
     axios
       .post(endpoints.register, body)
       .then(({ data, status }: CommonResponse<RegisteredUserData>) => {
@@ -30,7 +30,7 @@ export const useRegister = (): UseRegisterResult => {
         setSeverityText(data.message);
 
         setTimeout(() => {
-          history.push(routeBuilder.login);
+          history.push(routes.login);
         }, 500);
       })
       .catch(({ response }: ErrorResponse) => {

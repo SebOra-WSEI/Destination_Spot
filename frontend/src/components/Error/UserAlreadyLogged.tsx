@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, CardActions, CardContent } from '@mui/material';
 import { useHistory } from 'react-router';
-import { routeBuilder } from '../../utils/routes';
+import { routes } from '../../utils/routes';
 import { BUTTON_RADIUS, FONT_FAMILY } from '../../utils/consts';
 import { CenteredCard } from '../Card/CenteredCard';
 import { signOut } from '../../utils/signOut';
@@ -9,7 +9,7 @@ import { signOut } from '../../utils/signOut';
 export const UserAlreadyLogged: React.FC = () => {
   const history = useHistory();
 
-  const handleClick = (): void => history.push(routeBuilder.profile);
+  const handleClick = (): void => history.push(routes.profile);
 
   return (
     <CenteredCard isErrorCard>

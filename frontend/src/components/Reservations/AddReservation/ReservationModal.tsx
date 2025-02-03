@@ -50,9 +50,9 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
 
   const spotId = Number(selectedSpotId) > 0 ? selectedSpotId : availableLocations[0]
 
-  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>): Promise<void> => {
     evt.preventDefault();
-    reserve({
+    await reserve({
       userId: Number(getCookieValueByName(CookieName.UserId)),
       spotId: Number(spotId),
       reservedFrom: String(createDate(date, 0, 0, 0)),

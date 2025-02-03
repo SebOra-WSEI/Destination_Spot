@@ -4,7 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import { SettingIcon } from './SettingIcon';
 import { NavbarElements } from './NavbarElements';
 import { SmallNavbar } from './SmallNavbar';
-import { routeBuilder } from '../../utils/routes';
+import { routes } from '../../utils/routes';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { useLocation } from 'react-router';
 import { Role } from '../../types/user';
@@ -31,9 +31,9 @@ export const Navbar: React.FC = () => {
 
 function loggedUserPages(role: Role) {
   const loggedUserPages = mapPageName([
-    routeBuilder.profile,
-    routeBuilder.reservations,
-    routeBuilder.addReservations
+    routes.profile,
+    routes.reservations,
+    routes.addReservations
   ]);
 
   if (role === Role.User) {
@@ -43,10 +43,10 @@ function loggedUserPages(role: Role) {
 }
 
 function getNotLoggedUserPages(path: string): Array<string> {
-  if (path === routeBuilder.login) {
-    return mapPageName([routeBuilder.register]);
+  if (path === routes.login) {
+    return mapPageName([routes.register]);
   }
-  return mapPageName([routeBuilder.login]);
+  return mapPageName([routes.login]);
 }
 
 function mapPageName(pages: Array<string>): Array<string> {

@@ -11,7 +11,7 @@ import { FONT_FAMILY, MARGIN_TOP_CONTENT } from '../../../utils/consts';
 import { AuthBody } from '../../../types/authorization';
 import { PasswordInput } from './PasswordInput';
 import { useLocation } from 'react-router';
-import { routeBuilder } from '../../../utils/routes';
+import { routes } from '../../../utils/routes';
 import { PasswordCheckList } from '../PasswordValidation/PasswordCheckList';
 import { getPasswordValidationRules } from '../../../utils/getPasswordValidationRules';
 
@@ -33,7 +33,7 @@ export const AuthorizationForm: React.FC<AuthorizationFormProps> = ({
   const { pathname } = useLocation();
   const { email, password, confirmPassword } = body;
 
-  const isRegisterView = pathname === routeBuilder.register;
+  const isRegisterView = pathname === routes.register;
 
   const handlePasswordChange = (
     evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

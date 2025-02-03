@@ -22,9 +22,15 @@ export interface ReservationBody {
   reservedTo: string;
 }
 
-export interface ReservationResponse {
+export interface ReservationsResponse {
   response: {
     reservations: Array<Reservation>;
+  };
+}
+
+export interface ReservationResponse {
+  response: {
+    reservation: Reservation;
   };
 }
 

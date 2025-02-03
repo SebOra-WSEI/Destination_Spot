@@ -1,13 +1,13 @@
 import { Button, CardActions, Divider, Typography } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router';
-import { routeBuilder } from '../../../utils/routes';
+import { routes } from '../../../utils/routes';
 import { FONT_FAMILY } from '../../../utils/consts';
 
 export const RegisterFormFooter: React.FC = () => {
   const history = useHistory();
 
-  const handleClick = (): void => history.push(routeBuilder.login);
+  const handleClick = (): void => history.push(routes.login);
 
   return (
     <>

@@ -5,12 +5,12 @@ import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { ErrorResponse, UserResponse } from '../../types/response';
 import { StatusCode } from '../../types/statusCode';
 import { User } from '../../types/user';
-import { Query, QueryVariables } from '../../types/query';
+import { IdVariables, Query, QueryVariables } from '../../types/query';
 
 export const useGetUserById = ({
   skip = false,
   variables,
-}: QueryVariables<{ id: string }>): Query<User> => {
+}: QueryVariables<IdVariables>): Query<User> => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const [user, setUser] = useState<User>();

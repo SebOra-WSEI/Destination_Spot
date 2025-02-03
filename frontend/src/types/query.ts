@@ -13,3 +13,7 @@ export interface QueryVariables<T> {
 export interface EmptyQueryVariables {
   skip?: boolean;
 }
+
+export interface IdVariables {
+  id: string;
+}

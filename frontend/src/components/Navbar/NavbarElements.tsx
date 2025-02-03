@@ -16,7 +16,7 @@ export const NavbarElements: React.FC<{ pages: Array<string> }> = ({
         {pages.map((page) => (
           <Button
             key={page}
-            onClick={() => history.push(page)}
+            onClick={() => history.push('/' + page)}
             style={styles.button(pages.length)}
           >
             {page.split('-').join(' ')}
