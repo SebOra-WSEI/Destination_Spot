@@ -6,6 +6,7 @@ import { Register } from './components/Authorization/Register/Register';
 import { PageNotFound } from './components/Error/PageNotFound';
 import { ReservationNavigator } from './ReservationNavigator';
 import { UserNavigator } from './UserNavigator';
+import { LocationsNavigator } from './LocationsNavigator';
 
 export const AppNavigator: React.FC = () => (
   <Switch>
@@ -22,6 +23,12 @@ export const AppNavigator: React.FC = () => (
         routes.addReservations
       ]}
       component={ReservationNavigator}
+    />
+    <Route
+      path={[
+        routes.locations,
+      ]}
+      component={LocationsNavigator}
     />
     <Route component={PageNotFound} />
   </Switch>

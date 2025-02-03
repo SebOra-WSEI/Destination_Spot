@@ -36,7 +36,10 @@ function loggedUserPages(role: Role) {
     routes.addReservations
   ]);
 
-  const adminPages = mapPageName([routes.users]);
+  const adminPages = mapPageName([
+    routes.locations,
+    routes.users,
+  ]);
 
   if (role === Role.User) {
     return loggedUserPages;

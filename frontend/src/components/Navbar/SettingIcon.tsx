@@ -13,7 +13,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { FONT_FAMILY } from '../../utils/consts';
 import { signOut } from '../../utils/signOut';
 import { red } from '@mui/material/colors';
-import { ResetPasswordModal } from '../User/ResetPasswordModal';
+import { ResetPasswordModal } from '../Users/ResetPasswordModal';
 
 export const SettingIcon: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

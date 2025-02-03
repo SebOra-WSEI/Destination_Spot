@@ -2,6 +2,7 @@ const HOST = 'http://localhost:8080';
 
 interface Route {
   default: string;
+  locations: string;
   login: string;
   profile: string;
   register: string;
@@ -27,6 +28,7 @@ export const endpoints = {
 
 export const routes: Route = {
   default: '/',
+  locations: '/locations',
   login: '/login',
   profile: '/profile',
   register: '/register',
