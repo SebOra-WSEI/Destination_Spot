@@ -3,15 +3,10 @@ import { useGetReservationById } from "../../../queries/reservation/useGetReserv
 import { useParams } from "react-router";
 import { UserNotLogged } from "../../Error/UserNotLogged";
 import { Loader } from "../../Loader/Loader";
-import { UnknownError } from "../../Error/UnknownError";
 import { CenteredCard } from "../../Card/CenteredCard";
 import { CardContent, Divider, Typography } from "@mui/material";
-
-interface CardElementProps {
-  prefix: string;
-  text?: string | number
-  gutterBottom?: boolean;
-}
+import { ErrorCard } from "../../Error/ErrorCard";
+import { CardElement } from "./CardElement";
 
 export const ReservationDetailsView: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -29,7 +24,7 @@ export const ReservationDetailsView: React.FC = () => {
   }
 
   if (error) {
-    return <UnknownError />;
+    return <ErrorCard text={error} />;
   }
 
   const { details, user, spot } = data ?? {};
@@ -39,18 +34,18 @@ export const ReservationDetailsView: React.FC = () => {
       <h3 style={styles.header}>Reservation Details</h3>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div" textAlign='center'>
-          {new Date(Number(details?.reservedFrom)).toDateString()}
+          {convertEpochToDate(details?.reservedFrom).toDateString()}
         </Typography>
         <Divider variant='middle' />
         <Typography gutterBottom />
         <CardElement prefix='Spot' text={spot?.location} />
         <CardElement
           prefix='Reserved from'
-          text={new Date(Number(details?.reservedFrom)).toLocaleTimeString()}
+          text={convertEpochToDate(details?.reservedFrom).toLocaleTimeString()}
         />
         <CardElement
           prefix='Reserved to'
-          text={new Date(Number(details?.reservedTo)).toLocaleTimeString()}
+          text={convertEpochToDate(details?.reservedTo).toLocaleTimeString()}
           gutterBottom
         />
         <CardElement
@@ -63,11 +58,9 @@ export const ReservationDetailsView: React.FC = () => {
   )
 }
 
-const CardElement: React.FC<CardElementProps> = ({ prefix, text, gutterBottom }) => (
-  <Typography gutterBottom={gutterBottom} variant="body2" sx={{ color: 'text.secondary' }}>
-    {prefix}: <strong>{text}</strong>
-  </Typography>
-)
+function convertEpochToDate(epoch: string | undefined): Date {
+  return new Date(Number(epoch) * 1000)
+}
 
 const styles = {
   header: {

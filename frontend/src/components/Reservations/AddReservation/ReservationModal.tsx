@@ -148,7 +148,7 @@ const createDate = (
   const month = date.month();
   const year = date.year();
 
-  return new Date(year, month, day, h, min, sec).getTime();
+  return new Date(year, month, day, h, min, sec).getTime() / 1000;
 };
 
 const styles = {
