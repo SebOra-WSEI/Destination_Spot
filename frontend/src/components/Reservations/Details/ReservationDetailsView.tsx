@@ -10,7 +10,6 @@ import { CardElement } from "./CardElement";
 import { CookieName, getCookieValueByName } from "../../../utils/cookies";
 import { useRemoveReservation } from "../../../queries/reservation/useRemoveReservation";
 import { Role } from "../../../types/user";
-import { routes } from "../../../utils/routes";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export const ReservationDetailsView: React.FC = () => {
@@ -44,7 +43,6 @@ export const ReservationDetailsView: React.FC = () => {
 
   const handleRemove = async (id: string | undefined) => {
     await remove(id ?? '');
-    history.push(routes.reservations);
   }
 
   return (
