@@ -7,7 +7,11 @@ import {
   TextField,
 } from '@mui/material';
 import React from 'react';
-import { FONT_FAMILY, MARGIN_TOP_CONTENT } from '../../../utils/consts';
+import {
+  BUTTON_RADIUS,
+  FONT_FAMILY,
+  MARGIN_TOP_CONTENT,
+} from '../../../utils/consts';
 import { AuthBody } from '../../../types/authorization';
 import { PasswordInput } from './PasswordInput';
 import { useLocation } from 'react-router';
@@ -126,6 +130,6 @@ const styles = {
   button: {
     marginBottom: '0.2rem',
     fontFamily: FONT_FAMILY,
-    borderRadius: '0.5rem',
+    borderRadius: BUTTON_RADIUS,
   },
 };

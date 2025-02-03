@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { useAppContextProvider } from '../../AppProvider';
-import { SeverityOption } from '../../types/severity';
 import { endpoints } from '../../utils/routes';
-import { StatusCode } from '../../types/statusCode';
 import { CommonResponse, ErrorResponse } from '../../types/response';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
-import { SpotData } from '../../types/spot';
+import { SpotResponse } from '../../types/spot';
+import { SeverityOption, StatusCode } from '../../utils/consts';
+import { reloadPage } from '../../utils/reloadPage';
 
 interface UseRemoveSpotResult {
   remove: (id: number) => Promise<void>;
@@ -23,7 +23,7 @@ export const useRemoveSpot = (): UseRemoveSpotResult => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then(({ data, status }: CommonResponse<SpotData>) => {
+      .then(({ data, status }: CommonResponse<SpotResponse>) => {
         if (status !== StatusCode.OK) {
           setSeverity(SeverityOption.Error);
           setSeverityText('Internal Server Error');
@@ -32,10 +32,7 @@ export const useRemoveSpot = (): UseRemoveSpotResult => {
 
         setSeverity(SeverityOption.Success);
         setSeverityText(data.response.message);
-
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
+        reloadPage();
       })
       .catch(({ response }: ErrorResponse) => {
         setSeverity(SeverityOption.Error);

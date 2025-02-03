@@ -11,7 +11,7 @@ export interface LoggedUserData {
   user: User;
 }
 
-export interface RegisteredUserData {
+export interface RegisteredUserResponse {
   message: string;
   user: User;
 }
@@ -22,4 +22,4 @@ export interface ResetPasswordBody {
   confirmNewPassword: string;
 }
 
-export type ResetPasswordData = RegisteredUserData;
+export type ResetPasswordResponse = RegisteredUserResponse;

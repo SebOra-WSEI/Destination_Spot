@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import { SeverityOption } from './types/severity';
+import { SeverityOption } from './utils/consts';
 
 interface AppContextState {
   severityText: string;

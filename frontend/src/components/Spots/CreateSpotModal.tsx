@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CenteredModal } from '../Modal/CenteredModal';
 import { Button, DialogActions, DialogContent, TextField } from '@mui/material';
-import { FONT_FAMILY } from '../../utils/consts';
+import { BUTTON_RADIUS, FONT_FAMILY } from '../../utils/consts';
 import { useCreateSpot } from '../../queries/spots/useCreateSpot';
 
 interface CreateLocationModalProps {
@@ -70,6 +70,6 @@ const styles = {
   },
   button: {
     fontFamily: FONT_FAMILY,
-    borderRadius: '0.5rem',
+    borderRadius: BUTTON_RADIUS,
   },
 };

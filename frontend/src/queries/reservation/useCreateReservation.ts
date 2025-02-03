@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { useAppContextProvider } from '../../AppProvider';
-import { SeverityOption } from '../../types/severity';
 import { endpoints } from '../../utils/routes';
-import { StatusCode } from '../../types/statusCode';
 import { CommonResponse, ErrorResponse } from '../../types/response';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
-import { ReservationData, ReservationBody } from '../../types/reservation';
+import { ReservationResponse, ReservationBody } from '../../types/reservation';
+import { SeverityOption, StatusCode } from '../../utils/consts';
+import { reloadPage } from '../../utils/reloadPage';
 
 interface UseCreateReservationResult {
   reserve: (body: ReservationBody) => Promise<void>;
@@ -23,7 +23,7 @@ export const useCreateReservation = (): UseCreateReservationResult => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then(({ data, status }: CommonResponse<ReservationData>) => {
+      .then(({ data, status }: CommonResponse<ReservationResponse>) => {
         if (status !== StatusCode.Created) {
           setSeverity(SeverityOption.Error);
           setSeverityText('Internal Server Error');
@@ -32,10 +32,7 @@ export const useCreateReservation = (): UseCreateReservationResult => {
 
         setSeverity(SeverityOption.Success);
         setSeverityText(data.response.message);
-
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
+        reloadPage();
       })
       .catch(({ response }: ErrorResponse) => {
         setSeverity(SeverityOption.Error);

@@ -7,7 +7,7 @@ import { SmallNavbar } from './SmallNavbar';
 import { routes } from '../../utils/routes';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { useLocation } from 'react-router';
-import { Role } from '../../types/user';
+import { Role } from '../../utils/consts';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();

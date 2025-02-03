@@ -2,15 +2,15 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { endpoints } from '../../utils/routes';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
-import { ErrorResponse, UserResponse } from '../../types/response';
-import { StatusCode } from '../../types/statusCode';
-import { User } from '../../types/user';
-import { IdVariables, Query, QueryVariables } from '../../types/query';
+import { ErrorResponse } from '../../types/response';
+import { User, UserResponse } from '../../types/user';
+import { Query, QueryVariables } from '../../types/query';
+import { StatusCode } from '../../utils/consts';
 
 export const useGetUserById = ({
   skip = false,
   variables,
-}: QueryVariables<IdVariables>): Query<User> => {
+}: QueryVariables): Query<User> => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const [user, setUser] = useState<User>();

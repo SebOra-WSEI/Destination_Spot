@@ -3,13 +3,13 @@ export interface Spot {
   location: number;
 }
 
-export interface SpotResponse {
+export interface SpotsResponse {
   response: {
     spots: Array<Spot>;
   };
 }
 
-export interface SpotData {
+export interface SpotResponse {
   response: {
     message: string;
     spot: Spot;

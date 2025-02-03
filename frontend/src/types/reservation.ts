@@ -1,18 +1,18 @@
 import { Spot } from './spot';
 import { User } from './user';
 
-export interface Reservation {
-  details: Details;
-  user: User;
-  spot: Spot;
-}
-
 interface Details {
   id: number;
   spotId: number;
   userId: number;
   reservedFrom: string;
   reservedTo: string;
+}
+
+export interface Reservation {
+  details: Details;
+  user: User;
+  spot: Spot;
 }
 
 export interface ReservationBody {
@@ -29,12 +29,6 @@ export interface ReservationsResponse {
 }
 
 export interface ReservationResponse {
-  response: {
-    reservation: Reservation;
-  };
-}
-
-export interface ReservationData {
   response: {
     message: string;
     reservation: Reservation;

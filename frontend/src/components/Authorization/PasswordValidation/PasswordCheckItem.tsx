@@ -27,9 +27,6 @@ export const PasswordCheckItem: React.FC<PasswordChecksProps> = ({
 );
 
 const styles = {
-  grid: {
-    marginTop: '0.8rem',
-  },
   gridItem: {
     marginTop: '0.1rem',
   },

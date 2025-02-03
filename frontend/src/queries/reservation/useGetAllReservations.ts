@@ -4,8 +4,8 @@ import axios from 'axios';
 import { endpoints } from '../../utils/routes';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { ErrorResponse } from '../../types/response';
-import { StatusCode } from '../../types/statusCode';
 import { Reservation, ReservationsResponse } from '../../types/reservation';
+import { StatusCode } from '../../utils/consts';
 
 export const useGetAllReservations = (): Query<Array<Reservation>> => {
   const [isLoading, setIsLoading] = useState<boolean>(true);

@@ -11,7 +11,7 @@ import {
   Select,
   SelectChangeEvent,
 } from '@mui/material';
-import { FONT_FAMILY } from '../../../utils/consts';
+import { BUTTON_RADIUS, FONT_FAMILY } from '../../../utils/consts';
 import { Reservation } from '../../../types/reservation';
 import { Spot } from '../../../types/spot';
 import { useCreateReservation } from '../../../queries/reservation/useCreateReservation';
@@ -171,6 +171,6 @@ const styles = {
   },
   button: {
     fontFamily: FONT_FAMILY,
-    borderRadius: '0.5rem',
+    borderRadius: BUTTON_RADIUS,
   },
 };

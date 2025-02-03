@@ -2,7 +2,7 @@ import { Button, CardActions, Divider } from '@mui/material';
 import React from 'react';
 import { useHistory } from 'react-router';
 import { routes } from '../../../utils/routes';
-import { FONT_FAMILY } from '../../../utils/consts';
+import { BUTTON_RADIUS, FONT_FAMILY } from '../../../utils/consts';
 
 export const CreateAccountButton: React.FC = () => {
   const history = useHistory();
@@ -39,6 +39,6 @@ const styles = {
   registerButton: {
     width: '100%',
     fontFamily: FONT_FAMILY,
-    borderRadius: '0.5rem',
+    borderRadius: BUTTON_RADIUS,
   },
 };

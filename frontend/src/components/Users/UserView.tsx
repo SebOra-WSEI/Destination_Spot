@@ -8,7 +8,7 @@ import {
   CardContent,
   Typography,
 } from '@mui/material';
-import { FONT_FAMILY } from '../../utils/consts';
+import { FONT_FAMILY, Role } from '../../utils/consts';
 import EmailIcon from '@mui/icons-material/Email';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { CenteredCard } from '../Card/CenteredCard';
@@ -23,7 +23,6 @@ import { ResetPasswordModal } from './ResetPasswordModal';
 import { useGetUserById } from '../../queries/user/useGetUserById';
 import { useHistory, useParams } from 'react-router';
 import { useRemoveUser } from '../../queries/user/useRemoveUser';
-import { Role } from '../../types/user';
 
 export const UserView: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
