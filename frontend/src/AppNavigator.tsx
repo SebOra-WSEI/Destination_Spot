@@ -6,7 +6,7 @@ import { Register } from './components/Authorization/Register/Register';
 import { PageNotFound } from './components/Error/PageNotFound';
 import { ReservationNavigator } from './ReservationNavigator';
 import { UserNavigator } from './UserNavigator';
-import { SpotsNavigator } from './LocationsNavigator';
+import { SpotsNavigator } from './SpotsNavigator';
 
 export const AppNavigator: React.FC = () => (
   <Switch>
