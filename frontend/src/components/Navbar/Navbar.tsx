@@ -37,7 +37,7 @@ function loggedUserPages(role: Role) {
   ]);
 
   const adminPages = mapPageName([
-    routes.locations,
+    routes.spots,
     routes.users,
   ]);
 

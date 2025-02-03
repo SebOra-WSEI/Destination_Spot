@@ -2,13 +2,13 @@ const HOST = 'http://localhost:8080';
 
 interface Route {
   default: string;
-  locations: string;
   login: string;
   profile: string;
   register: string;
   addReservations: string;
   reservations: string;
   reservationDetails: string;
+  spots: string;
   users: string;
   userDetails: string;
 }
@@ -28,13 +28,13 @@ export const endpoints = {
 
 export const routes: Route = {
   default: '/',
-  locations: '/locations',
   login: '/login',
   profile: '/profile',
   register: '/register',
   addReservations: '/add-reservations',
   reservations: '/reservations',
   reservationDetails: '/reservations/:id',
+  spots: '/spots',
   users: '/users',
   userDetails: '/users/:id',
 };
