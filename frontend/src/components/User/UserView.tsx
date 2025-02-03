@@ -20,17 +20,34 @@ import { routes } from '../../utils/routes';
 import { UserNotLogged } from '../Error/UserNotLogged';
 import { CookieName, getCookieValueByName } from '../../utils/cookies';
 import { ResetPasswordModal } from './ResetPasswordModal';
+import { useGetUserById } from '../../queries/user/useGetUserById';
+import { useParams } from 'react-router';
 
 export const UserView: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const { id: idParams } = useParams<{ id: string }>();
+
   const userId = getCookieValueByName(CookieName.UserId);
 
-  const { data, loading, error } = useGetCurrentUser({
-    skip: !userId,
+  const {
+    data: currentUserData,
+    loading: currentUserLoading,
+    error: currentUserError
+  } = useGetCurrentUser({
+    skip: !userId || !!idParams,
   });
 
-  const { name, surname, email, role, id } = data ?? {};
+  const {
+    data: user,
+    loading: userLoading,
+    error: userError
+  } = useGetUserById({
+    variables: { id: idParams },
+    skip: !idParams
+  });
+
+  const { name, surname, email, role, id } = (currentUserData ?? user) ?? {};
 
   const userInitials = (name?.[0] ?? '') + (surname?.[0] ?? '');
 
@@ -38,11 +55,11 @@ export const UserView: React.FC = () => {
     return <UserNotLogged />;
   }
 
-  if (loading) {
+  if (currentUserLoading || userLoading) {
     return <Loader />;
   }
 
-  if (error) {
+  if (currentUserError || userError) {
     return <UnknownError link={routes.profile} />;
   }
 

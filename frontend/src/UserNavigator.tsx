@@ -13,7 +13,7 @@ export const UserNavigator: React.FC = () => {
   return (
     <Switch>
       {role === Role.Admin && (
-        <Route path={routes.userDetails} component={() => <>ccc</>} />
+        <Route path={routes.userDetails} component={UserView} />
       )}
       {role === Role.Admin && (
         <Route path={routes.users} component={UsersList} />

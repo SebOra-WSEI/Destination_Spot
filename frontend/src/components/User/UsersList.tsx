@@ -10,6 +10,7 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { useHistory } from 'react-router';
 import { routeBuilder } from '../../utils/routes';
 import { useRemoveUser } from '../../queries/user/useRemoveUser';
+import { Role } from '../../types/user';
 
 export const UsersList: React.FC = () => {
   const history = useHistory();
@@ -50,14 +51,16 @@ export const UsersList: React.FC = () => {
             }}
             secondary={email}
           />
+          {role !== Role.Admin && (
+            <Tooltip title="Remove user">
+              <IconButton onClick={() => handleRemove(String(id))}>
+                <DeleteOutlineIcon color='error' />
+              </IconButton>
+            </Tooltip>
+          )}
           <Tooltip title="View details">
             <IconButton onClick={() => history.push(routeBuilder.userDetails(String(id)))}>
               <ManageAccountsIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Remove user">
-            <IconButton onClick={() => handleRemove(String(id))}>
-              <DeleteOutlineIcon color='error' />
             </IconButton>
           </Tooltip>
         </CommonListItem>
