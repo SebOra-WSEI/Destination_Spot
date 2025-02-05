@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/SebOra-WSEI/Destination_spot/shared/response"
-	"github.com/jinzhu/gorm"
 )
 
 type Spot struct {
@@ -24,15 +23,6 @@ type SpotResponse struct {
 
 type AllSpotsResponse struct {
 	Spots []Spot `json:"spots"`
-}
-
-func (u Spot) FindById(db *gorm.DB, id string, spot *Spot) error {
-	if err := db.First(&spot, id).Error; err != nil {
-		fmt.Println("Spot not found:", err.Error())
-		return response.ErrSpotNotFound
-	}
-
-	return nil
 }
 
 func (u Spot) FindByIdSQL(db *sql.DB, c context.Context, id string, spot *Spot) error {
