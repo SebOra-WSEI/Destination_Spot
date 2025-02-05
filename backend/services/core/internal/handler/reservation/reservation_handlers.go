@@ -116,12 +116,12 @@ func Update(c *gin.Context) {
 	 }
 
 	 var reservation model.Reservation
-	 if err := reservation.FindById(database.Db, id, &reservation); err != nil {
+	 if err := reservation.FindByIdSQL(database.DbSQL, c, id, &reservation); err != nil {
 		  c.JSON(http.StatusNotFound, response.CreateError(err))
 		  return
 	 }
 
-	 if status, err := permission.User(database.Db, body.UserID, t.Claims.(jwt.MapClaims)); err != nil {
+	 if status, err := permission.UserSQL(database.DbSQL, c, body.UserID, t.Claims.(jwt.MapClaims)); err != nil {
 		  c.JSON(status, response.CreateError(err))
 		  return
 	 }
@@ -134,7 +134,7 @@ func Update(c *gin.Context) {
 		  ReservedTo:   body.ReservedTo,
 	 }
 
-	 if status, err := updatedReservation.Update(database.Db, &updatedReservation); err != nil {
+	 if status, err := updatedReservation.UpdateSQL(database.DbSQL, c, &updatedReservation); err != nil {
 		  c.JSON(status, response.CreateError(err))
 		  return
 	 }

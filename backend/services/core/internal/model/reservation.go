@@ -219,13 +219,10 @@ func (r Reservation) CreateSQL(db *sql.DB, c context.Context, newReservation *Re
 		return status, err
 	}
 
-	rows, err := db.QueryContext(
+	if _, err := db.QueryContext(
 		c, "INSERT INTO reservations (user_id, spot_id, reserved_from, reserved_to) VALUE (?,?,?,?)",
 		newReservation.UserID, newReservation.SpotID, newReservation.ReservedFrom, newReservation.ReservedTo,
-	)
-	defer rows.Close()
-
-	if err != nil {
+	); err != nil {
 		fmt.Println("Problem while creating a new reservation", err.Error())
 		return http.StatusInternalServerError, response.ErrProblemWhileCreatingNewReservation
 	}
@@ -240,6 +237,22 @@ func (r Reservation) Update(db *gorm.DB, newReservation *Reservation) (int, erro
 	}
 
 	if err := db.Save(&newReservation).Error; err != nil {
+		fmt.Println("Problem while updating a new reservation", err.Error())
+		return http.StatusInternalServerError, response.ErrWhileUpdatingReservation
+	}
+
+	return 0, nil
+}
+
+func (r Reservation) UpdateSQL(db *sql.DB, c context.Context, newReservation *Reservation) (int, error) {
+	if status, err := handleExistingReservationSQL(db, c, *newReservation); err != nil {
+		return status, err
+	}
+
+	if _, err := db.QueryContext(
+		c, "UPDATE reservations SET spot_id = ?, reserved_from = ?, reserved_to = ? WHERE id = ?",
+		newReservation.SpotID, newReservation.ReservedFrom, newReservation.ReservedTo, newReservation.ID,
+	); err != nil {
 		fmt.Println("Problem while updating a new reservation", err.Error())
 		return http.StatusInternalServerError, response.ErrWhileUpdatingReservation
 	}
