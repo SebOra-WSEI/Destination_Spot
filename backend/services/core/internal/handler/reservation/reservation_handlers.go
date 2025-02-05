@@ -73,7 +73,7 @@ func Create(c *gin.Context) {
 		  return
 	 }
 
-	 if _, err := permission.User(database.Db, body.UserID, t.Claims.(jwt.MapClaims)); err != nil {
+	 if _, err := permission.UserSQL(database.DbSQL, c, body.UserID, t.Claims.(jwt.MapClaims)); err != nil {
 		  c.JSON(http.StatusBadRequest, response.CreateError(err))
 		  return
 	 }
@@ -85,7 +85,7 @@ func Create(c *gin.Context) {
 		  ReservedTo:   body.ReservedTo,
 	 }
 
-	 if status, err := reservation.Create(database.Db, &reservation); err != nil {
+	 if status, err := reservation.CreateSQL(database.DbSQL, c, &reservation); err != nil {
 		  c.JSON(status, response.CreateError(err))
 		  return
 	 }

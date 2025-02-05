@@ -56,14 +56,38 @@ func (u User) FindById(db *gorm.DB, id string, user *User) error {
 	return nil
 }
 
-func (u User) FindByIdSQL(db *sql.DB, c context.Context, id string, user *User) error {
-	rows, err := db.QueryContext(c, "SELECT * FROM users WHERE id = ?", id)
+func (u User) FindByEmailSQL(db *sql.DB, c context.Context, email string, user *User) error {
+	rows, err := db.QueryContext(c, "SELECT * FROM users WHERE email = ?", email)
+	defer rows.Close()
+
 	if err != nil {
 		fmt.Println("User not found:", err.Error())
 		return response.ErrUserNotFound
 	}
 
+	for rows.Next() {
+		if err := rows.Scan(&user.ID, &user.Email, &user.Password, &user.Role, &user.Name, &user.Surname); err != nil {
+			fmt.Println("Problem with scanning:", err.Error())
+			return response.ErrInternalServer
+		}
+	}
+
+	if user.ID == 0 {
+		return response.ErrUserNotFound
+	}
+
+	return nil
+}
+
+func (u User) FindByIdSQL(db *sql.DB, c context.Context, id string, user *User) error {
+	rows, err := db.QueryContext(c, "SELECT * FROM users WHERE id = ?", id)
 	defer rows.Close()
+
+	if err != nil {
+		fmt.Println("User not found:", err.Error())
+		return response.ErrUserNotFound
+	}
+
 	for rows.Next() {
 		if err := rows.Scan(&user.ID, &user.Email, &user.Password, &user.Role, &user.Name, &user.Surname); err != nil {
 			fmt.Println("Problem with scanning:", err.Error())
@@ -80,12 +104,13 @@ func (u User) FindByIdSQL(db *sql.DB, c context.Context, id string, user *User) 
 
 func (u User) FindAllSQL(db *sql.DB, c context.Context, users *[]User) error {
 	rows, err := db.QueryContext(c, "SELECT * FROM users")
+	defer rows.Close()
+
 	if err != nil {
 		fmt.Println("User not found:", err.Error())
 		return response.ErrUserNotFound
 	}
 
-	defer rows.Close()
 	for rows.Next() {
 		var user User
 

@@ -55,7 +55,7 @@ func GetById(c *gin.Context) {
 
 	var user userModel.User
 	if err := user.FindByIdSQL(database.DbSQL, c, id, &user); err != nil {
-		c.JSON(http.StatusNotFound, response.CreateError(response.ErrUserNotFound))
+		c.JSON(http.StatusNotFound, response.CreateError(err))
 		return
 	}
 

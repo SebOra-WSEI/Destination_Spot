@@ -107,12 +107,12 @@ func Delete(c *gin.Context) {
 	}
 
 	var spot model.Spot
-	if err := spot.FindById(database.Db, id, &spot); err != nil {
+	if err := spot.FindByIdSQL(database.DbSQL, c, id, &spot); err != nil {
 		c.JSON(http.StatusNotFound, response.CreateError(err))
 		return
 	}
 
-	if err := spot.Delete(database.Db, &spot); err != nil {
+	if err := spot.DeleteSQL(database.DbSQL, c, &spot); err != nil {
 		c.JSON(http.StatusInternalServerError, response.CreateError(err))
 		return
 	}
