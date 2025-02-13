@@ -1,6 +1,8 @@
 package permission
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
 	"github.com/SebOra-WSEI/Destination_spot/shared/model"
 	"github.com/SebOra-WSEI/Destination_spot/shared/response"
@@ -22,6 +24,27 @@ func User(db *gorm.DB, id uint, claims jwt.MapClaims) (int, error) {
 	if err := reqUser.FindByEmail(db, reqUserEmail.(string), &reqUser); err != nil {
 		fmt.Println("Requested user not found")
 		return http.StatusNotFound, response.ErrUserNotFound
+	}
+
+	if reqUser.ID != id {
+		fmt.Println("Action only permitted by owner")
+		return http.StatusForbidden, response.ErrActionNotPermitted
+	}
+
+	return 0, nil
+}
+
+func UserSQL(db *sql.DB, c context.Context, id uint, claims jwt.MapClaims) (int, error) {
+	reqUserEmail, ok := claims["Email"]
+	if !ok {
+		fmt.Println("Email can not be found in claims")
+		return http.StatusInternalServerError, response.ErrInternalServer
+	}
+
+	var reqUser model.User
+	if err := reqUser.FindByEmailSQL(db, c, reqUserEmail.(string), &reqUser); err != nil {
+		fmt.Println("Requested user not found")
+		return http.StatusNotFound, err
 	}
 
 	if reqUser.ID != id {

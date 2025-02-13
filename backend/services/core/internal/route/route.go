@@ -6,10 +6,12 @@ import (
 	"github.com/SebOra-WSEI/Destination_spot/core/internal/handler/spot"
 	"github.com/SebOra-WSEI/Destination_spot/core/internal/handler/user"
 	"github.com/gin-gonic/gin"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 )
 
 func Init(r *gin.Engine) {
 	r.Use(getCors())
+	r.Use(otelgin.Middleware("my-server"))
 
 	// Auth service endpoints
 	r.POST("/sign-in", auth.SignIn)

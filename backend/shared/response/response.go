@@ -19,8 +19,10 @@ func Create(res interface{}) gin.H {
 
 var (
 	ErrUserNotFound                       = errors.New("User not found")
+	ErrUsersNotFound                      = errors.New("Users not found")
 	ErrSpotNotFound                       = errors.New("Spot not found")
 	ErrReservationNotFound                = errors.New("Reservation not found")
+	ErrReservationsNotFound               = errors.New("Reservations not found")
 	ErrWhileUpdatingUser                  = errors.New("Error while updating user")
 	ErrWhileUpdatingReservation           = errors.New("Error while updating reservation")
 	ErrInternalServer                     = errors.New("Internal server error")

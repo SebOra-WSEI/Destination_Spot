@@ -21,19 +21,23 @@ func GetAll(c *gin.Context) {
 		return
 	}
 
+	var reservation model.Reservation
 	var reservations []model.ReservationDetails
-	if err := database.Db.Table("reservations").Select("reservations.*, reservations.id as reservation_id, users.*, spots.*, spots.id as spot_id").
-		Joins("LEFT JOIN users ON users.id = reservations.user_id").
-		Joins("LEFT JOIN spots ON spots.id = reservations.spot_id").
-		Find(&reservations).Error; err != nil {
+
+	if err := reservation.GetAllSQL(database.DbSQL, c, &reservations); err != nil {
 		c.JSON(http.StatusInternalServerError, response.CreateError(err))
 		return
 	}
 
-	var res model.Reservation
 	c.JSON(
 		http.StatusOK,
-		response.Create(model.AllReservationsResponse{Reservations: res.GetAllWithDetails(reservations)}),
+		response.Create(
+			struct {
+				Reservations []model.ReservationWithUserAndSpot `json:"reservations"`
+			}{
+				Reservations: reservation.GetAllWithDetails(reservations),
+			},
+		),
 	)
 }
 
@@ -47,7 +51,8 @@ func GetById(c *gin.Context) {
 	}
 
 	var res model.Reservation
-	reservation, err := res.FindByIdWithDetails(database.Db, id)
+
+	reservation, err := res.FindByIdWithDetailsSQL(database.DbSQL, c, id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, response.CreateError(err))
 		return
@@ -72,7 +77,7 @@ func Create(c *gin.Context) {
 		return
 	}
 
-	if _, err := permission.User(database.Db, body.UserID, t.Claims.(jwt.MapClaims)); err != nil {
+	if _, err := permission.UserSQL(database.DbSQL, c, body.UserID, t.Claims.(jwt.MapClaims)); err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
 	}
@@ -84,7 +89,7 @@ func Create(c *gin.Context) {
 		ReservedTo:   body.ReservedTo,
 	}
 
-	if status, err := reservation.Create(database.Db, &reservation); err != nil {
+	if status, err := reservation.CreateSQL(database.DbSQL, c, &reservation); err != nil {
 		c.JSON(status, response.CreateError(err))
 		return
 	}
@@ -115,12 +120,12 @@ func Update(c *gin.Context) {
 	}
 
 	var reservation model.Reservation
-	if err := reservation.FindById(database.Db, id, &reservation); err != nil {
+	if err := reservation.FindByIdSQL(database.DbSQL, c, id, &reservation); err != nil {
 		c.JSON(http.StatusNotFound, response.CreateError(err))
 		return
 	}
 
-	if status, err := permission.User(database.Db, body.UserID, t.Claims.(jwt.MapClaims)); err != nil {
+	if status, err := permission.UserSQL(database.DbSQL, c, body.UserID, t.Claims.(jwt.MapClaims)); err != nil {
 		c.JSON(status, response.CreateError(err))
 		return
 	}
@@ -133,7 +138,7 @@ func Update(c *gin.Context) {
 		ReservedTo:   body.ReservedTo,
 	}
 
-	if status, err := updatedReservation.Update(database.Db, &updatedReservation); err != nil {
+	if status, err := updatedReservation.UpdateSQL(database.DbSQL, c, &updatedReservation); err != nil {
 		c.JSON(status, response.CreateError(err))
 		return
 	}
@@ -156,7 +161,7 @@ func Delete(c *gin.Context) {
 	}
 
 	var reservation model.Reservation
-	if err := reservation.FindById(database.Db, id, &reservation); err != nil {
+	if err := reservation.FindByIdSQL(database.DbSQL, c, id, &reservation); err != nil {
 		c.JSON(http.StatusNotFound, response.CreateError(err))
 		return
 	}
@@ -167,10 +172,12 @@ func Delete(c *gin.Context) {
 	}
 
 	if status, err := permission.Admin(t.Claims.(jwt.MapClaims)); err != nil {
-		if _, err := permission.User(database.Db, reservation.UserID, t.Claims.(jwt.MapClaims)); err == nil {
-			database.Db.Delete(&reservation)
-			c.JSON(http.StatusOK, response.Create(res))
+		if _, err := permission.UserSQL(database.DbSQL, c, reservation.UserID, t.Claims.(jwt.MapClaims)); err == nil {
+			if err := reservation.DeleteSQL(database.DbSQL, c, &reservation); err != nil {
+				c.JSON(status, response.CreateError(err))
+			}
 
+			c.JSON(http.StatusOK, response.Create(res))
 			return
 		}
 
@@ -178,7 +185,7 @@ func Delete(c *gin.Context) {
 		return
 	}
 
-	if err := reservation.Delete(database.Db, &reservation); err != nil {
+	if err := reservation.DeleteSQL(database.DbSQL, c, &reservation); err != nil {
 		c.JSON(http.StatusInternalServerError, response.CreateError(err))
 		return
 	}

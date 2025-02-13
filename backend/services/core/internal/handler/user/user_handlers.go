@@ -26,8 +26,10 @@ func GetAll(c *gin.Context) {
 		return
 	}
 
+	var user userModel.User
 	var users []userModel.User
-	if err := database.Db.Find(&users).Error; err != nil {
+
+	if err := user.FindAllSQL(database.DbSQL, c, &users); err != nil {
 		c.JSON(http.StatusInternalServerError, response.CreateError(err))
 		return
 	}
@@ -52,8 +54,8 @@ func GetById(c *gin.Context) {
 	}
 
 	var user userModel.User
-	if err := user.FindById(database.Db, id, &user); err != nil {
-		c.JSON(http.StatusNotFound, response.CreateError(response.ErrUserNotFound))
+	if err := user.FindByIdSQL(database.DbSQL, c, id, &user); err != nil {
+		c.JSON(http.StatusNotFound, response.CreateError(err))
 		return
 	}
 

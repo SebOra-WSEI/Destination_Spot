@@ -20,8 +20,9 @@ func GetAll(c *gin.Context) {
 		return
 	}
 
+	var spot model.Spot
 	var spots []model.Spot
-	if err := database.Db.Find(&spots).Error; err != nil {
+	if err := spot.FindAllSQL(database.DbSQL, c, &spots); err != nil {
 		c.JSON(http.StatusInternalServerError, response.CreateError(err))
 		return
 	}
@@ -39,7 +40,7 @@ func GetById(c *gin.Context) {
 	}
 
 	var spot model.Spot
-	if err := spot.FindById(database.Db, id, &spot); err != nil {
+	if err := spot.FindByIdSQL(database.DbSQL, c, id, &spot); err != nil {
 		c.JSON(http.StatusNotFound, response.CreateError(err))
 		return
 	}
@@ -69,7 +70,7 @@ func Create(c *gin.Context) {
 	}
 
 	var spot model.Spot
-	if err := spot.FindByLocation(database.Db, body.Location, &spot); err != nil {
+	if err := spot.FindByLocationSQL(database.DbSQL, c, body.Location, &spot); err != nil {
 		c.JSON(http.StatusBadRequest, response.CreateError(err))
 		return
 	}
@@ -78,7 +79,7 @@ func Create(c *gin.Context) {
 		Location: body.Location,
 	}
 
-	if err := newSpot.Create(database.Db, &newSpot); err != nil {
+	if err := newSpot.CreateSQL(database.DbSQL, c, &newSpot); err != nil {
 		c.JSON(http.StatusInternalServerError, response.CreateError(err))
 		return
 	}
@@ -106,12 +107,12 @@ func Delete(c *gin.Context) {
 	}
 
 	var spot model.Spot
-	if err := spot.FindById(database.Db, id, &spot); err != nil {
+	if err := spot.FindByIdSQL(database.DbSQL, c, id, &spot); err != nil {
 		c.JSON(http.StatusNotFound, response.CreateError(err))
 		return
 	}
 
-	if err := spot.Delete(database.Db, &spot); err != nil {
+	if err := spot.DeleteSQL(database.DbSQL, c, &spot); err != nil {
 		c.JSON(http.StatusInternalServerError, response.CreateError(err))
 		return
 	}
